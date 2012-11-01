@@ -1,0 +1,83 @@
+<resources>
+
+    <!-- File h -->
+    <array name="a1"></array>
+    <array name="a2"></array>
+    <array name="a3"></array>
+    <array name="a4"></array>
+    <array name="a5"></array>
+
+    <!-- File b -->
+    <array name="b1"></array>
+    <array name="b2"></array>
+    <array name="b3"></array>
+    <array name="b4"></array>
+    <array name="b5"></array>
+    <array name="b6"></array>
+    <array name="b7"></array>
+
+    <!-- File c -->
+    <array name="c1"></array>
+    <array name="c2"></array>
+    <array name="c3"></array>
+    <array name="c4"></array>
+    <array name="c5"></array>
+    <array name="c6"></array>
+    <array name="c7"></array>
+    <array name="c8"></array>
+    <array name="c9"></array>
+
+    <!-- File d -->
+    <array name="d1"></array>
+    <array name="d2"></array>
+    <array name="d3"></array>
+    <array name="d4"></array>
+    <array name="d5"></array>
+    <array name="d6"></array>
+    <array name="d7"></array>
+    <array name="d8"></array>
+    <array name="d9"></array>
+    <array name="d10"></array>
+    <array name="d11"></array>
+
+    <!-- File e -->
+    <array name="e1"></array>
+    <array name="e2"></array>
+    <array name="e3"></array>
+    <array name="e4"></array>
+    <array name="e5"></array>
+    <array name="e6"></array>
+    <array name="e7"></array>
+    <array name="e8"></array>
+    <array name="e9"></array>
+    <array name="e10"></array>
+    <array name="e11"></array>
+
+    <!-- File f -->
+    <array name="f1"></array>
+    <array name="f2"></array>
+    <array name="f3"></array>
+    <array name="f4"></array>
+    <array name="f5"></array>
+    <array name="f6"></array>
+    <array name="f7"></array>
+    <array name="f8"></array>
+    <array name="f9"></array>
+
+    <!-- File g -->
+    <array name="g1"></array>
+    <array name="g2"></array>
+    <array name="g3"></array>
+    <array name="g4"></array>
+    <array name="g5"></array>
+    <array name="g6"></array>
+    <array name="g7"></array>
+
+    <!-- File h -->
+    <array name="h1"></array>
+    <array name="h2"></array>
+    <array name="h3"></array>
+    <array name="h4"></array>
+    <array name="h5"></array>
+
+</resources>
