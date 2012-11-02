@@ -2,10 +2,8 @@ package com.petrifiednightmares.singularityChess.logic;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Region;
-
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
@@ -35,6 +33,7 @@ public class Square
 		this.sides = sides;
 		this.file = file;
 		this.rank = rank;
+		
 	}
 
 	public void setUpBitMap()

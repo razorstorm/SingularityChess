@@ -34,4 +34,18 @@ public class King extends AbstractPiece
 		return false;
 	}
 
+	
+	public static AbstractPiece[] makeKings(Game game, boolean isWhite)
+	{
+		AbstractPiece[] kings = new AbstractPiece[2];
+
+		int rank = isWhite ? 1 : 8;
+		
+		Square location1 =  game.getBoard().getSquares().get("e" + rank);
+		King r1 = new King(game,location1,isWhite);
+		kings[0]=r1;
+		location1.addPiece(r1);
+		
+		return kings;
+	}
 }

@@ -24,5 +24,24 @@ public class Knight extends AbstractPiece
 		moves.addAll(game.getBoard().getKnightMoves(this));
 		return getMoves();
 	}
+	
+	public static AbstractPiece[] makeKnights(Game game, boolean isWhite)
+	{
+		AbstractPiece[] knights = new AbstractPiece[2];
+
+		int rank = isWhite ? 1 : 8;
+		
+		Square location1 =  game.getBoard().getSquares().get("b" + rank);
+		Knight r1 = new Knight(game,location1,isWhite);
+		knights[0]=r1;
+		location1.addPiece(r1);
+		
+		Square location2 =  game.getBoard().getSquares().get("g" + rank);
+		Knight r2 = new Knight(game,location2,isWhite);
+		knights[1]=r2;
+		location2.addPiece(r2);
+		
+		return knights;
+	}
 
 }

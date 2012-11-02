@@ -25,5 +25,19 @@ public class Queen extends AbstractPiece
 		return moves;
 	}
 	
+	
+	public static AbstractPiece[] makeQueens(Game game, boolean isWhite)
+	{
+		AbstractPiece[] queens = new AbstractPiece[2];
+
+		int rank = isWhite ? 1 : 8;
+		
+		Square location1 =  game.getBoard().getSquares().get("d" + rank);
+		Queen r1 = new Queen(game,location1,isWhite);
+		queens[0]=r1;
+		location1.addPiece(r1);
+		
+		return queens;
+	}
 
 }

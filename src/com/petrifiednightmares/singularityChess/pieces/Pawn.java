@@ -15,18 +15,18 @@ public class Pawn extends AbstractPiece
 	private boolean canJump = true;
 	private boolean jumped = false;
 
-
 	public Pawn(Game game, Square location, boolean isWhite)
 	{
-		super(game, location, isWhite, BitmapFactory.decodeResource(
-				game.getDrawingPanel().getResources(), R.drawable.pawn));
+		super(game, location, isWhite, BitmapFactory.decodeResource(game.getDrawingPanel()
+				.getResources(), R.drawable.pawn));
 	}
 
 	public Set<Square> getMoves() throws GameException
 	{
 		Set<Square> moves = new TreeSet<Square>();
-		moves.addAll(game.getBoard().getPawnMoves(this));// 2 first moves, en passant n shit
-												// sigh
+		moves.addAll(game.getBoard().getPawnMoves(this));// 2 first moves, en
+															// passant n shit
+		// sigh
 		moves.addAll(game.getBoard().getPawnCaptures(this));
 
 		return moves;
@@ -36,17 +36,15 @@ public class Pawn extends AbstractPiece
 	{
 		canJump = false;
 		// TODO figure out how to turn off jumped if one turn has passed.
-//		if (target.isPawnJump())// check rank to see if its 2 "forward"
-//		{
-//			jumped = true;
-//		} else
-//		{
-//			jumped = false;
-//		}
+		// if (target.isPawnJump())// check rank to see if its 2 "forward"
+		// {
+		// jumped = true;
+		// } else
+		// {
+		// jumped = false;
+		// }
 		return super.makeMove(target);
 	}
-
-	
 
 	public boolean canJump()
 	{
@@ -56,5 +54,24 @@ public class Pawn extends AbstractPiece
 	public boolean isJumped()
 	{
 		return jumped;
+	}
+
+	public static AbstractPiece[] makePawns(Game game, boolean isWhite)
+	{
+		AbstractPiece[] pawns = new AbstractPiece[8];
+
+		// 8 pawns
+		for (int i = 0; i < 8; i++)
+		{
+			char file = (char) ('a' + i);
+			int rank = isWhite ? 2 : 7;
+			
+			Square location = game.getBoard().getSquares().get(file + "" + rank);
+			Pawn p = new Pawn(game, location, isWhite);
+			pawns[i] = p;
+			location.addPiece(p);
+		}
+		
+		return pawns;
 	}
 }

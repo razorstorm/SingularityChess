@@ -25,4 +25,24 @@ public class Bishop extends AbstractPiece
 	}
 	
 
+	
+	public static AbstractPiece[] makeBishops(Game game, boolean isWhite)
+	{
+		AbstractPiece[] bishops = new AbstractPiece[2];
+
+		int rank = isWhite ? 1 : 8;
+		
+		Square location1 =  game.getBoard().getSquares().get("c" + rank);
+		Bishop r1 = new Bishop(game,location1,isWhite);
+		bishops[0]=r1;
+		location1.addPiece(r1);
+		
+		Square location2 =  game.getBoard().getSquares().get("f" + rank);
+		Bishop r2 = new Bishop(game,location2,isWhite);
+		bishops[1]=r2;
+		location2.addPiece(r2);
+		
+		return bishops;
+	}
+	
 }

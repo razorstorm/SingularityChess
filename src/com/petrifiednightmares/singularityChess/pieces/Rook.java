@@ -25,4 +25,23 @@ public class Rook extends AbstractPiece
 		return moves;
 	}
 
+	
+	public static AbstractPiece[] makeRooks(Game game, boolean isWhite)
+	{
+		AbstractPiece[] rooks = new AbstractPiece[2];
+
+		int rank = isWhite ? 1 : 8;
+		
+		Square location1 =  game.getBoard().getSquares().get("a" + rank);
+		Rook r1 = new Rook(game,location1,isWhite);
+		rooks[0]=r1;
+		location1.addPiece(r1);
+		
+		Square location2 =  game.getBoard().getSquares().get("h" + rank);
+		Rook r2 = new Rook(game,location2,isWhite);
+		rooks[1]=r2;
+		location2.addPiece(r2);
+		
+		return rooks;
+	}
 }

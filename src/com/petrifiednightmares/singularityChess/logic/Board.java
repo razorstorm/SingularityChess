@@ -17,7 +17,7 @@ import com.petrifiednightmares.singularityChess.pieces.Pawn;
 public class Board
 {
 	// hashed by file and rank: "a3" for example.
-	HashMap<String, Square> squares;
+	private HashMap<String, Square> squares;
 	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
 	private Bitmap _boardBitMap;
 	private Canvas _boardCanvas;
@@ -39,7 +39,7 @@ public class Board
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
 			{
-				squares.put(file + "" + rank, new Square(file, rank));
+				getSquares().put(file + "" + rank, new Square(file, rank));
 			}
 		}
 		linkUpSquares();
@@ -378,11 +378,11 @@ public class Board
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
 			{
-				squares.get(file + "" + rank).setUpBitMap();
+				getSquares().get(file + "" + rank).setUpBitMap();
 			}
 			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
 			{
-				squares.get(file + "" + rank).setUpBitMap();
+				getSquares().get(file + "" + rank).setUpBitMap();
 			}
 		}
 
@@ -390,11 +390,11 @@ public class Board
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
 			{
-				squares.get(file + "" + rank).setUpBitMap();
+				getSquares().get(file + "" + rank).setUpBitMap();
 			}
 			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
 			{
-				squares.get(file + "" + rank).setUpBitMap();
+				getSquares().get(file + "" + rank).setUpBitMap();
 			}
 		}
 	}
@@ -407,8 +407,13 @@ public class Board
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
 			{
-				squares.get(file + "" + rank).onDraw(canvas);
+				getSquares().get(file + "" + rank).onDraw(canvas);
 			}
 		}
+	}
+
+	public HashMap<String, Square> getSquares()
+	{
+		return squares;
 	}
 }
