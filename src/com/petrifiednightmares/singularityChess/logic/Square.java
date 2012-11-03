@@ -2,10 +2,15 @@ package com.petrifiednightmares.singularityChess.logic;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Region;
+
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
+import com.petrifiednightmares.singularityChess.geom.Circle;
+import com.petrifiednightmares.singularityChess.geom.ComplexShape;
+import com.petrifiednightmares.singularityChess.geom.Rectangle;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 
 public class Square
@@ -20,6 +25,7 @@ public class Square
 	private Paint _paint;
 
 	private AbstractPiece piece = null;
+	private ComplexShape _shape;
 
 	public Square(char file, int rank)
 	{
@@ -33,7 +39,7 @@ public class Square
 		this.sides = sides;
 		this.file = file;
 		this.rank = rank;
-		
+
 	}
 
 	public void setUpBitMap()
@@ -47,8 +53,10 @@ public class Square
 			_paint = GameDrawingPanel.lightPaint;
 		}
 		_paint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		
-		//Create bitmaps if don't exist yet
+
+		setupShape();
+
+		// Create bitmaps if don't exist yet
 
 		if (Square._squareBitMap == null)
 			Square._squareBitMap = Bitmap.createBitmap(GameDrawingPanel.WIDTH,
@@ -56,26 +64,46 @@ public class Square
 		if (Square._squareCanvas == null)
 			Square._squareCanvas = new Canvas(_squareBitMap);
 
-		
-		//draw onto bitmap
+		// draw onto bitmap
 		Square._squareCanvas.save();
 
-		if (file <= 'd')
-		{
-			Square._squareCanvas.clipRect(GameDrawingPanel.WIDTH / 2 - ('d' - file + 1) * 12
-					* GameDrawingPanel.UNIT, 0, GameDrawingPanel.WIDTH / 2 - ('d' - file) * 12
-					* GameDrawingPanel.UNIT, GameDrawingPanel.HEIGHT, Region.Op.INTERSECT);
-		} else
-		{
-			Square._squareCanvas.clipRect(GameDrawingPanel.WIDTH / 2 + (file - 'e') * 12
-					* GameDrawingPanel.UNIT, 0, GameDrawingPanel.WIDTH / 2 + (file - 'e' + 1) * 12
-					* GameDrawingPanel.UNIT, GameDrawingPanel.HEIGHT, Region.Op.INTERSECT);
-		}
+		_shape.clip(Square._squareCanvas);
 
 		Square._squareCanvas.drawCircle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
 				(1 + fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT, _paint);
 
 		Square._squareCanvas.restore();
+
+	}
+
+	private void setupShape()
+	{
+		_shape = new ComplexShape();
+
+		Circle outterCircle = new Circle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
+				(1 + fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT);
+
+		_shape.addInsideShape(outterCircle);
+
+		Rectangle borderRect;
+
+		if (file <= 'd')
+		{
+			borderRect = new Rectangle(GameDrawingPanel.WIDTH / 2 - ('d' - file + 1) * 12
+					* GameDrawingPanel.UNIT, 0, GameDrawingPanel.WIDTH / 2 - ('d' - file) * 12
+					* GameDrawingPanel.UNIT, GameDrawingPanel.HEIGHT);
+		} else
+		{
+			borderRect = new Rectangle(GameDrawingPanel.WIDTH / 2 + (file - 'e') * 12
+					* GameDrawingPanel.UNIT, 0, GameDrawingPanel.WIDTH / 2 + (file - 'e' + 1) * 12
+					* GameDrawingPanel.UNIT, GameDrawingPanel.HEIGHT);
+		}
+		_shape.addInsideShape(borderRect);
+
+		Circle innerCircle = new Circle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
+				(fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT);
+
+		_shape.addOutsideShape(innerCircle);
 
 	}
 
@@ -102,8 +130,26 @@ public class Square
 
 	public void onDraw(Canvas canvas)
 	{
-//		canvas.drawBitmap(_squareBitMap, 0, 0, null);
-		//TODO draw the pieces, if any
+		// canvas.drawBitmap(_squareBitMap, 0, 0, null);
+		// TODO draw the pieces, if any
+
+		Paint p123 = new Paint();
+		p123.setColor(Color.CYAN);
+		// p.getFlags()
+		canvas.save();
+
+		_shape.clip(canvas);
+
+		if (rank == Board.boardRanks[file - 'a'] / 2 + 1)
+			canvas.drawCircle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
+					(1 + fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT, p123);
+		else if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
+			canvas.drawRect(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT / 2, p123);
+		else
+			canvas.drawRect(0, GameDrawingPanel.HEIGHT / 2, GameDrawingPanel.WIDTH,
+					GameDrawingPanel.HEIGHT, p123);
+
+		canvas.restore();
 	}
 
 	public void removePiece()

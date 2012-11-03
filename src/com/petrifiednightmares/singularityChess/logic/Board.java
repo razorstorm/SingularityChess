@@ -316,59 +316,9 @@ public class Board
 
 	public void onDraw(Canvas canvas)
 	{
-		// canvas.drawBitmap(_boardBitMap, 0, 0, null);
-		// Debug.startMethodTracing("drawingSquares");
-		drawSquares(canvas);
-		// Debug.stopMethodTracing();
-
-		// canvas.drawRect(0, 0, 100, 500, GameDrawingPanel.atopDarkPaint);
-		//
-		// canvas.drawLine(GameDrawingPanel.PADDING, 0,
-		// GameDrawingPanel.PADDING,
-		// GameDrawingPanel.HEIGHT, GameDrawingPanel.atopDarkPaint);
-		// canvas.drawLine(GameDrawingPanel.PADDING + 12 *
-		// GameDrawingPanel.UNIT, 0,
-		// GameDrawingPanel.PADDING + 12 * GameDrawingPanel.UNIT,
-		// GameDrawingPanel.HEIGHT,
-		// GameDrawingPanel.atopDarkPaint);
-		// canvas.drawLine(GameDrawingPanel.PADDING + 24 *
-		// GameDrawingPanel.UNIT, 0,
-		// GameDrawingPanel.PADDING + 24 * GameDrawingPanel.UNIT,
-		// GameDrawingPanel.HEIGHT,
-		// GameDrawingPanel.atopDarkPaint);
-		// canvas.drawLine(GameDrawingPanel.PADDING + 36 *
-		// GameDrawingPanel.UNIT, 0,
-		// GameDrawingPanel.PADDING + 36 * GameDrawingPanel.UNIT,
-		// GameDrawingPanel.HEIGHT,
-		// GameDrawingPanel.atopDarkPaint);
-		//
-		// canvas.drawLine(GameDrawingPanel.WIDTH / 2, 0, GameDrawingPanel.WIDTH
-		// / 2,
-		// GameDrawingPanel.HEIGHT, GameDrawingPanel.atopDarkPaint);
-		//
-		// canvas.drawLine(GameDrawingPanel.WIDTH - GameDrawingPanel.PADDING, 0,
-		// GameDrawingPanel.WIDTH - GameDrawingPanel.PADDING,
-		// GameDrawingPanel.HEIGHT,
-		// GameDrawingPanel.atopDarkPaint);
-		// canvas.drawLine(GameDrawingPanel.WIDTH - GameDrawingPanel.PADDING -
-		// 12
-		// * GameDrawingPanel.UNIT, 0, GameDrawingPanel.WIDTH -
-		// GameDrawingPanel.PADDING - 12
-		// * GameDrawingPanel.UNIT, GameDrawingPanel.HEIGHT,
-		// GameDrawingPanel.atopDarkPaint);
-		// canvas.drawLine(GameDrawingPanel.WIDTH - GameDrawingPanel.PADDING -
-		// 24
-		// * GameDrawingPanel.UNIT, 0, GameDrawingPanel.WIDTH -
-		// GameDrawingPanel.PADDING - 24
-		// * GameDrawingPanel.UNIT, GameDrawingPanel.HEIGHT,
-		// GameDrawingPanel.atopDarkPaint);
-		// canvas.drawLine(GameDrawingPanel.WIDTH - GameDrawingPanel.PADDING -
-		// 36
-		// * GameDrawingPanel.UNIT, 0, GameDrawingPanel.WIDTH -
-		// GameDrawingPanel.PADDING - 36
-		// * GameDrawingPanel.UNIT, GameDrawingPanel.HEIGHT,
-		// GameDrawingPanel.atopDarkPaint);
-
+		canvas.drawBitmap(Square._squareBitMap, 0, 0, null);
+//		drawSquares(canvas);
+		squares.get("d5").onDraw(canvas);
 	}
 
 	private void setupSquaresBitmap()
@@ -401,7 +351,7 @@ public class Board
 
 	private void drawSquares(Canvas canvas)
 	{
-		canvas.drawBitmap(Square._squareBitMap, 0, 0, null);
+		
 		
 		for (char file = 'a'; file <= 'h'; file++)
 		{

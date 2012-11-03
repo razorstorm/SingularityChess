@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.R;
+import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
 
@@ -64,9 +65,10 @@ public class Pawn extends AbstractPiece
 		for (int i = 0; i < 8; i++)
 		{
 			char file = (char) ('a' + i);
-			int rank = isWhite ? 2 : 7;
+			int rank = isWhite ? 2 : Board.boardRanks[file-'a']-1;
 			
 			Square location = game.getBoard().getSquares().get(file + "" + rank);
+			System.out.println(file+""+rank);
 			Pawn p = new Pawn(game, location, isWhite);
 			pawns[i] = p;
 			location.addPiece(p);

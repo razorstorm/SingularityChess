@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.R;
+import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
 
@@ -30,7 +31,7 @@ public class Bishop extends AbstractPiece
 	{
 		AbstractPiece[] bishops = new AbstractPiece[2];
 
-		int rank = isWhite ? 1 : 8;
+		int rank = isWhite ? 1 : Board.boardRanks['c'-'a'];
 		
 		Square location1 =  game.getBoard().getSquares().get("c" + rank);
 		Bishop r1 = new Bishop(game,location1,isWhite);

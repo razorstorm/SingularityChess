@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.R;
+import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
 
@@ -30,7 +31,7 @@ public class Rook extends AbstractPiece
 	{
 		AbstractPiece[] rooks = new AbstractPiece[2];
 
-		int rank = isWhite ? 1 : 8;
+		int rank = isWhite ? 1 : Board.boardRanks['a'-'a'];
 		
 		Square location1 =  game.getBoard().getSquares().get("a" + rank);
 		Rook r1 = new Rook(game,location1,isWhite);
