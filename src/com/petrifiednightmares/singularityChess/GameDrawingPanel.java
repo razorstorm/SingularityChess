@@ -23,7 +23,8 @@ public class GameDrawingPanel extends SurfaceView implements SurfaceHolder.Callb
 
 	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING;
 
-	public static Paint darkPaint, lightPaint, atopDarkPaint;
+	
+	public static Paint darkPaint, lightPaint, highlightPaint,attackPaint,piecePaint;
 
 	Game game;
 
@@ -43,14 +44,24 @@ public class GameDrawingPanel extends SurfaceView implements SurfaceHolder.Callb
 
 		darkPaint = new Paint();
 		darkPaint.setColor(Color.rgb(50, 50, 50));
+		darkPaint.setAntiAlias(true);
 
 		lightPaint = new Paint();
 		lightPaint.setColor(Color.rgb(200, 200, 200));
+		lightPaint.setAntiAlias(true);
+		
+		highlightPaint = new Paint();
+		highlightPaint.setColor(Color.rgb(224,255,255));
+		highlightPaint.setAntiAlias(true);
+		
+		attackPaint = new Paint();
+		attackPaint.setColor(Color.rgb(205,92,92));
+		attackPaint.setAntiAlias(true);
+		
+		piecePaint = new Paint();
+		piecePaint.setColor(Color.GREEN); // TODO fix
+		piecePaint.setAntiAlias(true);
 
-		atopDarkPaint = new Paint(GameDrawingPanel.darkPaint.getColor());
-		atopDarkPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
-		atopDarkPaint.setAntiAlias(true);
-		atopDarkPaint.setStrokeWidth(2);
 
 		_background = BitmapFactory.decodeResource(getResources(), R.drawable.felt);
 

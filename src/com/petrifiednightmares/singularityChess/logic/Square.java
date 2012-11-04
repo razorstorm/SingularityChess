@@ -2,9 +2,7 @@ package com.petrifiednightmares.singularityChess.logic;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Region;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
@@ -26,6 +24,7 @@ public class Square
 
 	private AbstractPiece piece = null;
 	private ComplexShape _shape;
+	private boolean _highlighted;
 
 	public Square(char file, int rank)
 	{
@@ -39,7 +38,16 @@ public class Square
 		this.sides = sides;
 		this.file = file;
 		this.rank = rank;
+	}
 
+	public void highlight()
+	{
+		_highlighted = true;
+	}
+
+	public void unhighlight()
+	{
+		_highlighted = false;
 	}
 
 	public void setUpBitMap()
@@ -105,6 +113,20 @@ public class Square
 
 		_shape.addOutsideShape(innerCircle);
 
+		// Determines which side of the board the square is on
+		Rectangle boardSideRect;
+		if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
+		{
+			boardSideRect = new Rectangle(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT / 2);
+			_shape.addInsideShape(boardSideRect);
+		} else if (rank < Board.boardRanks[file - 'a'] / 2 + 1)
+		{
+
+			boardSideRect = new Rectangle(0, GameDrawingPanel.HEIGHT / 2, GameDrawingPanel.WIDTH,
+					GameDrawingPanel.HEIGHT);
+			_shape.addInsideShape(boardSideRect);
+		}
+
 	}
 
 	private int fileOutwards()
@@ -128,28 +150,61 @@ public class Square
 
 	}
 
-	public void onDraw(Canvas canvas)
+	private void drawPiece(Canvas c)
 	{
-		// canvas.drawBitmap(_squareBitMap, 0, 0, null);
+//		if (piece != null)
+		{
+//			float textWidth = GameDrawingPanel.piecePaint.measureText(piece.toString());
+//			c.drawCircle(_shape.getX(), _shape.getY(), 5,GameDrawingPanel.piecePaint);
+//			c.drawText(piece.toString(), _shape.getX() - textWidth / 2, _shape.getY(),
+//					GameDrawingPanel.attackPaint);
+			
+			float textWidth = GameDrawingPanel.piecePaint.measureText(file+""+rank);
+			c.drawText(file+""+rank, _shape.getX() - textWidth / 2, _shape.getY(),
+					GameDrawingPanel.piecePaint);
+			
+//			if(file=='e' && rank ==4)
+//			{
+//				System.out.println("e4");
+//				System.out.println(_shape.getX()+" "+_shape.getY());
+//			}
+		}
+
+	}
+
+	public void onDraw(Canvas c)
+	{
 		// TODO draw the pieces, if any
+		drawPiece(c);
 
-		Paint p123 = new Paint();
-		p123.setColor(Color.CYAN);
-		// p.getFlags()
-		canvas.save();
+		if (_highlighted)
+		{
+			_paint = GameDrawingPanel.highlightPaint;
+			if (piece != null)
+			{
+				_paint = GameDrawingPanel.attackPaint;
+			}
 
-		_shape.clip(canvas);
+			drawSquare(c);
+		}
+	}
+
+	private void drawSquare(Canvas c)
+	{
+		c.save();
+
+		_shape.clip(c);
 
 		if (rank == Board.boardRanks[file - 'a'] / 2 + 1)
-			canvas.drawCircle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
-					(1 + fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT, p123);
+			c.drawCircle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
+					(1 + fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT, _paint);
 		else if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
-			canvas.drawRect(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT / 2, p123);
+			c.drawRect(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT / 2, _paint);
 		else
-			canvas.drawRect(0, GameDrawingPanel.HEIGHT / 2, GameDrawingPanel.WIDTH,
-					GameDrawingPanel.HEIGHT, p123);
+			c.drawRect(0, GameDrawingPanel.HEIGHT / 2, GameDrawingPanel.WIDTH,
+					GameDrawingPanel.HEIGHT, _paint);
 
-		canvas.restore();
+		c.restore();
 	}
 
 	public void removePiece()

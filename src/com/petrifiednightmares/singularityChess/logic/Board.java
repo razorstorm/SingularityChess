@@ -4,12 +4,8 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Region;
-import android.os.Debug;
 
-import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
@@ -19,8 +15,6 @@ public class Board
 	// hashed by file and rank: "a3" for example.
 	private HashMap<String, Square> squares;
 	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
-	private Bitmap _boardBitMap;
-	private Canvas _boardCanvas;
 
 	public Board()
 	{
@@ -317,8 +311,7 @@ public class Board
 	public void onDraw(Canvas canvas)
 	{
 		canvas.drawBitmap(Square._squareBitMap, 0, 0, null);
-//		drawSquares(canvas);
-		squares.get("d5").onDraw(canvas);
+		drawSquares(canvas);
 	}
 
 	private void setupSquaresBitmap()
@@ -351,13 +344,12 @@ public class Board
 
 	private void drawSquares(Canvas canvas)
 	{
-		
-		
 		for (char file = 'a'; file <= 'h'; file++)
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
 			{
-				getSquares().get(file + "" + rank).onDraw(canvas);
+//				System.out.println(file+""+rank);
+				squares.get(file + "" + rank).onDraw(canvas);
 			}
 		}
 	}

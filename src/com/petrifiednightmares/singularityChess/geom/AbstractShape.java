@@ -31,4 +31,8 @@ public abstract class AbstractShape
 	// use difference
 	public abstract void outsideClip(Canvas c);
 
+	public String toString()
+	{
+		return getClass().getName();
+	}
 }
