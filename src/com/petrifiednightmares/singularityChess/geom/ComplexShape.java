@@ -66,6 +66,37 @@ public class ComplexShape
 		_y = bounds.centerY();
 	}
 
+	// bad solution :(
+	/*
+	 * Problem: Need to find center of the square so I can know where to draw
+	 * the piece 
+	 * 
+	 * Solution 1: Use a very hardcoded solution that resides on the
+	 * assumption that there are 2 circles and a rectangle to every ComplexShape
+	 * class. Use this to find an inscribed rectangle, and then find the center.
+	 **** Downsides: Not very abstract, not extensible, breaks abstraction. Also,
+	 * has to do a lot of if and elses because orientation invariant is not
+	 * conserved 
+	 * 
+	 * Solution 2: Do some type of pixel level geometry to find the
+	 * inscribed rectangle.
+	 **** Downsides: Don't know how, probably slow
+	 *
+	 * Solution 3: Do some sort of center of mass (or center of volume) calculation to find the center
+	 **** Downsides: Don't know how, probably slow
+	 *
+	 *Solution 4: Use getClipBounds to get the circumscribed rectangle and then find center
+	 **** Downsides: Inaccurate, will pick a very bad center for oddly shaped Squares. 
+	 */
+//	private Rect getInnerClipBounds(Rect outterBounds)
+//	{
+//		int left = outterBounds.left;
+//		int right = outterBounds.right;
+//		
+//		int topLeft = 
+//		return null;
+//	}
+
 	public int getX()
 	{
 		return _x;
