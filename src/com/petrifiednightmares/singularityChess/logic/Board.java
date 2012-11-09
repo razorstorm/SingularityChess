@@ -15,15 +15,13 @@ public class Board
 	// hashed by file and rank: "a3" for example.
 	private HashMap<String, Square> squares;
 	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
+	private Game _game; //back reference to game
 
-	public Board()
+	public Board(Game game)
 	{
 		squares = new HashMap<String, Square>();
+		this._game = game;
 		initializeSquares();
-		// _boardBitMap = Bitmap.createBitmap(GameDrawingPanel.WIDTH,
-		// GameDrawingPanel.HEIGHT,
-		// Bitmap.Config.ARGB_8888);
-		// _boardCanvas = new Canvas(_boardBitMap);
 		setupSquaresBitmap();
 	}
 
@@ -348,7 +346,6 @@ public class Board
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
 			{
-//				System.out.println(file+""+rank);
 				squares.get(file + "" + rank).onDraw(canvas);
 			}
 		}
@@ -357,5 +354,30 @@ public class Board
 	public HashMap<String, Square> getSquares()
 	{
 		return squares;
+	}
+
+	public void onClick(int x, int y)
+	{
+		//TODO cycle through Squares to do collision detection
+		//then figure out what to do depending on what the square's stats are.
+		
+		//will call game's UI functions as necessary
+	}
+	
+	private void unhighlightAllSquares()
+	{
+		for(String key: squares.keySet())
+		{
+			squares.get(key).unhighlight();
+		}
+	}
+	public void highlightMoves(AbstractPiece p) throws GameException
+	{
+		unhighlightAllSquares();
+		Set<Square> moves = p.getMoves();
+		for(Square s: moves)
+		{
+			s.highlight();
+		}
 	}
 }
