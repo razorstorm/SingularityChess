@@ -26,6 +26,11 @@ public class Square
 	private ComplexShape _shape;
 	private boolean _highlighted;
 
+	public boolean containsPoint(int x, int y)
+	{
+		return _shape.containsPoint(x, y);
+	}
+	
 	public Square(char file, int rank)
 	{
 		this.file = file;
