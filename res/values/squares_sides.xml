@@ -1,83 +1,403 @@
 <resources>
 
-    <!-- File h -->
-    <array name="a1"></array>
-    <array name="a2"></array>
-    <array name="a3"></array>
-    <array name="a4"></array>
-    <array name="a5"></array>
+    <!-- File a -->
+    <array name="sides_a1">
+        <item>a2</item>
+        <item>b1</item>
+        <item>0</item>
+        <item>0</item>
+    </array>
+    <array name="sides_a2">
+        <item>a3</item>
+        <item>b2</item>
+        <item>a1</item>
+        <item>0</item>
+    </array>
+    <array name="sides_a3">
+        <item>a4</item>
+        <item>b5</item>
+        <item>b3</item>
+        <item>a2</item>
+    </array>
+    <array name="sides_a4">
+        <item>a5</item>
+        <item>b6</item>
+        <item>a3</item>
+        <item>0</item>
+    </array>
+    <array name="sides_a5">
+        <item>0</item>
+        <item>b7</item>
+        <item>a4</item>
+        <item>0</item>
+    </array>
 
     <!-- File b -->
-    <array name="b1"></array>
-    <array name="b2"></array>
-    <array name="b3"></array>
-    <array name="b4"></array>
-    <array name="b5"></array>
-    <array name="b6"></array>
-    <array name="b7"></array>
+    <array name="sides_b1">
+        <item>b2</item>
+        <item>c1</item>
+        <item>0</item>
+        <item>a1</item>
+    </array>
+    <array name="sides_b2">
+        <item>b3</item>
+        <item>c2</item>
+        <item>b1</item>
+        <item>a2</item>
+    </array>
+    <array name="sides_b3">
+        <item>b4</item>
+        <item>c3</item>
+        <item>b2</item>
+        <item>a3</item>
+    </array>
+    <array name="sides_b4">
+        <item>b5</item>
+        <item>c6</item>
+        <item>c4</item>
+        <item>b3</item>
+    </array>
+    <array name="sides_b5">
+        <item>b6</item>
+        <item>c7</item>
+        <item>b4</item>
+        <item>a3</item>
+    </array>
+    <array name="sides_b6">
+        <item>b7</item>
+        <item>c8</item>
+        <item>b5</item>
+        <item>a4</item>
+    </array>
+    <array name="sides_b7">
+        <item>0</item>
+        <item>c9</item>
+        <item>b6</item>
+        <item>a5</item>
+    </array>
 
     <!-- File c -->
-    <array name="c1"></array>
-    <array name="c2"></array>
-    <array name="c3"></array>
-    <array name="c4"></array>
-    <array name="c5"></array>
-    <array name="c6"></array>
-    <array name="c7"></array>
-    <array name="c8"></array>
-    <array name="c9"></array>
+    <array name="sides_c1">
+        <item>c2</item>
+        <item>d1</item>
+        <item>0</item>
+        <item>b1</item>
+    </array>
+    <array name="sides_c2">
+        <item>c3</item>
+        <item>d2</item>
+        <item>c1</item>
+        <item>b2</item>
+    </array>
+    <array name="sides_c3">
+        <item>c4</item>
+        <item>d3</item>
+        <item>c2</item>
+        <item>b3</item>
+    </array>
+    <array name="sides_c4">
+        <item>c5</item>
+        <item>d4</item>
+        <item>c3</item>
+        <item>b4</item>
+    </array>
+    <array name="sides_c5">
+        <item>c6</item>
+        <item>d7</item>
+        <item>d5</item>
+        <item>c4</item>
+    </array>
+    <array name="sides_c6">
+        <item>c7</item>
+        <item>d8</item>
+        <item>c5</item>
+        <item>b4</item>
+    </array>
+    <array name="sides_c7">
+        <item>c8</item>
+        <item>d9</item>
+        <item>c6</item>
+        <item>b5</item>
+    </array>
+    <array name="sides_c8">
+        <item>c9</item>
+        <item>d10</item>
+        <item>c7</item>
+        <item>b6</item>
+    </array>
+    <array name="sides_c9">
+        <item>0</item>
+        <item>d11</item>
+        <item>c8</item>
+        <item>b7</item>
+    </array>
 
     <!-- File d -->
-    <array name="d1"></array>
-    <array name="d2"></array>
-    <array name="d3"></array>
-    <array name="d4"></array>
-    <array name="d5"></array>
-    <array name="d6"></array>
-    <array name="d7"></array>
-    <array name="d8"></array>
-    <array name="d9"></array>
-    <array name="d10"></array>
-    <array name="d11"></array>
+    <array name="sides_d1">
+        <item>d2</item>
+        <item>e1</item>
+        <item>0</item>
+        <item>c1</item>
+    </array>
+    <array name="sides_d2">
+        <item>d3</item>
+        <item>e2</item>
+        <item>d1</item>
+        <item>c2</item>
+    </array>
+    <array name="sides_d3">
+        <item>d4</item>
+        <item>e3</item>
+        <item>d2</item>
+        <item>c3</item>
+    </array>
+    <array name="sides_d4">
+        <item>d5</item>
+        <item>e4</item>
+        <item>d3</item>
+        <item>c4</item>
+    </array>
+    <array name="sides_d5">
+        <item>d6</item>
+        <item>e5</item>
+        <item>d4</item>
+        <item>c5</item>
+    </array>
+    <array name="sides_d6">
+        <item>d7</item>
+        <item>e6</item>
+        <item>e6</item>
+        <item>d5</item>
+    </array>
+    <array name="sides_d7">
+        <item>d8</item>
+        <item>e7</item>
+        <item>d6</item>
+        <item>c5</item>
+    </array>
+    <array name="sides_d8">
+        <item>d9</item>
+        <item>e8</item>
+        <item>d7</item>
+        <item>c6</item>
+    </array>
+    <array name="sides_d9">
+        <item>d10</item>
+        <item>e9</item>
+        <item>d8</item>
+        <item>c7</item>
+    </array>
+    <array name="sides_d10">
+        <item>d11</item>
+        <item>e10</item>
+        <item>d9</item>
+        <item>c8</item>
+    </array>
+    <array name="sides_d11">
+        <item>0</item>
+        <item>e11</item>
+        <item>d10</item>
+        <item>c9</item>
+    </array>
 
     <!-- File e -->
-    <array name="e1"></array>
-    <array name="e2"></array>
-    <array name="e3"></array>
-    <array name="e4"></array>
-    <array name="e5"></array>
-    <array name="e6"></array>
-    <array name="e7"></array>
-    <array name="e8"></array>
-    <array name="e9"></array>
-    <array name="e10"></array>
-    <array name="e11"></array>
+    <array name="sides_e1">
+        <item>d1</item>
+        <item>e2</item>
+        <item>f1</item>
+        <item>0</item>
+    </array>
+    <array name="sides_e2">
+        <item>d2</item>
+        <item>e3</item>
+        <item>f2</item>
+        <item>e1</item>
+    </array>
+    <array name="sides_e3">
+        <item>d3</item>
+        <item>e4</item>
+        <item>f3</item>
+        <item>e2</item>
+    </array>
+    <array name="sides_e4">
+        <item>d4</item>
+        <item>e5</item>
+        <item>f4</item>
+        <item>e3</item>
+    </array>
+    <array name="sides_e5">
+        <item>d5</item>
+        <item>e6</item>
+        <item>f5</item>
+        <item>e4</item>
+    </array>
+    <array name="sides_e6">
+        <item>d6</item>
+        <item>d6</item>
+        <item>e7</item>
+        <item>e5</item>
+    </array>
+    <array name="sides_e7">
+        <item>d7</item>
+        <item>e8</item>
+        <item>f5</item>
+        <item>e6</item>
+    </array>
+    <array name="sides_e8">
+        <item>d8</item>
+        <item>e9</item>
+        <item>f6</item>
+        <item>e7</item>
+    </array>
+    <array name="sides_e9">
+        <item>d9</item>
+        <item>e10</item>
+        <item>f7</item>
+        <item>e8</item>
+    </array>
+    <array name="sides_e10">
+        <item>d10</item>
+        <item>e11</item>
+        <item>f8</item>
+        <item>e9</item>
+    </array>
+    <array name="sides_e11">
+        <item>d11</item>
+        <item>0</item>
+        <item>f9</item>
+        <item>e10</item>
+    </array>
 
     <!-- File f -->
-    <array name="f1"></array>
-    <array name="f2"></array>
-    <array name="f3"></array>
-    <array name="f4"></array>
-    <array name="f5"></array>
-    <array name="f6"></array>
-    <array name="f7"></array>
-    <array name="f8"></array>
-    <array name="f9"></array>
+    <array name="sides_f1">
+        <item>e1</item>
+        <item>f2</item>
+        <item>g1</item>
+        <item>0</item>
+    </array>
+    <array name="sides_f2">
+        <item>e2</item>
+        <item>f3</item>
+        <item>g2</item>
+        <item>f1</item>
+    </array>
+    <array name="sides_f3">
+        <item>e3</item>
+        <item>f4</item>
+        <item>g3</item>
+        <item>f2</item>
+    </array>
+    <array name="sides_f4">
+        <item>e4</item>
+        <item>f5</item>
+        <item>g4</item>
+        <item>f3</item>
+    </array>
+    <array name="sides_f5">
+        <item>e5</item>
+        <item>e7</item>
+        <item>f6</item>
+        <item>f4</item>
+    </array>
+    <array name="sides_f6">
+        <item>e8</item>
+        <item>f7</item>
+        <item>g4</item>
+        <item>f5</item>
+    </array>
+    <array name="sides_f7">
+        <item>e9</item>
+        <item>f8</item>
+        <item>g5</item>
+        <item>f6</item>
+    </array>
+    <array name="sides_f8">
+        <item>e10</item>
+        <item>f9</item>
+        <item>g6</item>
+        <item>f7</item>
+    </array>
+    <array name="sides_f9">
+        <item>e11</item>
+        <item>0</item>
+        <item>g7</item>
+        <item>f8</item>
+    </array>
 
     <!-- File g -->
-    <array name="g1"></array>
-    <array name="g2"></array>
-    <array name="g3"></array>
-    <array name="g4"></array>
-    <array name="g5"></array>
-    <array name="g6"></array>
-    <array name="g7"></array>
+    <array name="sides_g1">
+        <item>f1</item>
+        <item>g2</item>
+        <item>h1</item>
+        <item>0</item>
+    </array>
+    <array name="sides_g2">
+        <item>f2</item>
+        <item>g3</item>
+        <item>h2</item>
+        <item>g1</item>
+    </array>
+    <array name="sides_g3">
+        <item>f3</item>
+        <item>g4</item>
+        <item>h3</item>
+        <item>g2</item>
+    </array>
+    <array name="sides_g4">
+        <item>f4</item>
+        <item>f6</item>
+        <item>g5</item>
+        <item>g3</item>
+    </array>
+    <array name="sides_g5">
+        <item>f7</item>
+        <item>g6</item>
+        <item>h3</item>
+        <item>g4</item>
+    </array>
+    <array name="sides_g6">
+        <item>f8</item>
+        <item>g7</item>
+        <item>h4</item>
+        <item>g5</item>
+    </array>
+    <array name="sides_g7">
+        <item>f9</item>
+        <item>0</item>
+        <item>h5</item>
+        <item>g6</item>
+    </array>
 
     <!-- File h -->
-    <array name="h1"></array>
-    <array name="h2"></array>
-    <array name="h3"></array>
-    <array name="h4"></array>
-    <array name="h5"></array>
+    <array name="sides_h1">
+        <item>g1</item>
+        <item>h2</item>
+        <item>0</item>
+        <item>0</item>
+    </array>
+    <array name="sides_h2">
+        <item>h1</item>
+        <item>g2</item>
+        <item>h3</item>
+        <item>0</item>
+    </array>
+    <array name="sides_h3">
+        <item>h2</item>
+        <item>g3</item>
+        <item>g5</item>
+        <item>h4</item>
+    </array>
+    <array name="sides_h4">
+        <item>h3</item>
+        <item>g6</item>
+        <item>h5</item>
+        <item>0</item>
+    </array>
+    <array name="sides_h5">
+        <item>h4</item>
+        <item>g7</item>
+        <item>0</item>
+        <item>0</item>
+    </array>
 
 </resources>
