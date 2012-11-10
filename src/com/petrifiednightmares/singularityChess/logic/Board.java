@@ -19,11 +19,13 @@ public class Board
 	// hashed by file and rank: "a3" for example.
 	private HashMap<String, Square> squares;
 	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
+	private Game _game; //back reference to game
 	private Resources _res;
 
-	public Board(Resources res)
+	public Board(Resources res,Game game)
 	{
 		this._res = res;
+		this._game = game;
 		squares = new HashMap<String, Square>();
 		initializeSquares();
 		// _boardBitMap = Bitmap.createBitmap(GameDrawingPanel.WIDTH,
