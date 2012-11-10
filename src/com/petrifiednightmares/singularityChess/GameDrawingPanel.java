@@ -59,7 +59,7 @@ public class GameDrawingPanel extends SurfaceView implements SurfaceHolder.Callb
 		attackPaint.setAntiAlias(true);
 		
 		piecePaint = new Paint();
-		piecePaint.setColor(Color.GREEN); // TODO fix
+		piecePaint.setColor(Color.RED); // TODO fix
 		piecePaint.setAntiAlias(true);
 
 
