@@ -8,13 +8,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.View.OnTouchListener;
 
 import com.petrifiednightmares.singularityChess.logic.Game;
 
-public class GameDrawingPanel extends SurfaceView implements SurfaceHolder.Callback
+public class GameDrawingPanel extends SurfaceView implements OnTouchListener, SurfaceHolder.Callback
 {
 	PanelThread _thread;
 	Bitmap _background;
@@ -50,7 +53,8 @@ public class GameDrawingPanel extends SurfaceView implements SurfaceHolder.Callb
 		lightPaint.setAntiAlias(true);
 		
 		highlightPaint = new Paint();
-		highlightPaint.setColor(Color.rgb(224,255,255));
+		highlightPaint.setColor(Color.rgb(36,109,218));
+		highlightPaint.setAlpha(200);
 		highlightPaint.setAntiAlias(true);
 		
 		attackPaint = new Paint();
@@ -65,6 +69,7 @@ public class GameDrawingPanel extends SurfaceView implements SurfaceHolder.Callb
 		_background = BitmapFactory.decodeResource(getResources(), R.drawable.felt);
 
 		game = new Game(this);
+		this.setOnTouchListener(this);
 	}
 
 	@Override
@@ -108,6 +113,16 @@ public class GameDrawingPanel extends SurfaceView implements SurfaceHolder.Callb
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	public boolean onTouch(View v, MotionEvent event) 
+	{	
+		if (event.getAction() == MotionEvent.ACTION_DOWN)
+		{
+			game.onClick((int)event.getX(), (int)event.getY());
+        }
+		
+		return true;
 	}
 
 }
@@ -174,7 +189,7 @@ class PanelThread extends Thread
 			else
 			{
 				//we're behind, fuck it.
-				System.out.println("behind!");
+				//System.out.println("behind!");
 				nextGameTick = System.currentTimeMillis();
 			}
 		}

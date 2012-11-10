@@ -14,6 +14,7 @@ import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
+import com.petrifiednightmares.singularityChess.pieces.Rook;
 
 public class Board
 {
@@ -367,12 +368,6 @@ public class Board
 		return moves;
 	}
 
-	public Square getSquareClicked(int x, int y)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void onDraw(Canvas canvas)
 	{
 		canvas.drawBitmap(Square._squareBitMap, 0, 0, null);
@@ -424,8 +419,25 @@ public class Board
 	{
 		//TODO cycle through Squares to do collision detection
 		//then figure out what to do depending on what the square's stats are.
-		
-		//will call game's UI functions as necessary
+		for(String key: squares.keySet())
+		{
+			Square s = squares.get(key);
+			if (s.containsPoint(x, y))
+			{
+				this.unhighlightAllSquares();
+				Rook testingRook = new Rook(this._game, s, true);
+				try
+				{
+					highlightMoves(testingRook);
+				} catch (GameException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				break;
+			}
+		}
 	}
 	
 	private void unhighlightAllSquares()
@@ -435,9 +447,10 @@ public class Board
 			squares.get(key).unhighlight();
 		}
 	}
+	
 	public void highlightMoves(AbstractPiece p) throws GameException
 	{
-		unhighlightAllSquares();
+		//unhighlightAllSquares();
 		Set<Square> moves = p.getMoves();
 		for(Square s: moves)
 		{

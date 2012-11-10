@@ -43,9 +43,12 @@ public class Game
 	{
 		Square location = board.getSquares().get("c3");
 		Rook testingRook = new Rook(this, location, true);
+		Square location2 = board.getSquares().get("f7");
+		Rook testingRook2 = new Rook(this, location2, true);
 		try
 		{
 			board.highlightMoves(testingRook);
+			board.highlightMoves(testingRook2);
 		} catch (GameException e)
 		{
 			// TODO Auto-generated catch block
@@ -135,8 +138,7 @@ public class Game
 	
 	public void onClick(int x, int y)
 	{
-		board.onClick(x,y);
-		//this calls board's onclick, which passes the information to the right square which will call Game or Board's UI functions.
+		board.onClick(x,y);		
 	}
 	
 }
