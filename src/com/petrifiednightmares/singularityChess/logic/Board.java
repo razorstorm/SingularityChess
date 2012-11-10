@@ -411,6 +411,33 @@ public class Board
 		}
 	}
 
+
+	public void onClick(int x, int y)
+	{
+		//TODO cycle through Squares to do collision detection
+		//then figure out what to do depending on what the square's stats are.
+		
+		//will call game's UI functions as necessary
+	}
+	
+	private void unhighlightAllSquares()
+	{
+		for(String key: squares.keySet())
+		{
+			squares.get(key).unhighlight();
+		}
+	}
+	public void highlightMoves(AbstractPiece p) throws GameException
+	{
+		unhighlightAllSquares();
+		Set<Square> moves = p.getMoves();
+		for(Square s: moves)
+		{
+			s.highlight();
+		}
+	}
+	
+	
 	public HashMap<String, Square> getSquares()
 	{
 		return squares;
