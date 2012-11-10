@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.HashSet;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -142,11 +141,8 @@ public class Board
 			{
 				while (true)
 				{
-					System.out.println("previous square is: "+ prevSquare);
-					System.out.println("current square is: "+ currSquare);
 					// move to next side
 					Square newSquare = currSquare.getNextSide(prevSquare);
-					System.out.println("new square is: "+ newSquare);
 
 					prevSquare = currSquare;
 					currSquare = newSquare;
