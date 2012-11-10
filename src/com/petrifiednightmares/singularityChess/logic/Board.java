@@ -2,8 +2,9 @@ package com.petrifiednightmares.singularityChess.logic;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -106,7 +107,7 @@ public class Board
 
 	public Set<Square> getSideMovements(AbstractPiece piece, boolean limit) throws GameException
 	{
-		Set<Square> moves = new TreeSet<Square>();
+		Set<Square> moves = new HashSet<Square>();
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 
@@ -182,7 +183,7 @@ public class Board
 
 	public Set<Square> getCornerMovements(AbstractPiece piece, boolean limit) throws GameException
 	{
-		Set<Square> moves = new TreeSet<Square>();
+		Set<Square> moves = new HashSet<Square>();
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 
@@ -258,7 +259,7 @@ public class Board
 	// 2 first moves, empassant n shit
 	public Set<Square> getPawnMoves(AbstractPiece piece) throws GameException
 	{
-		Set<Square> moves = new TreeSet<Square>();
+		Set<Square> moves = new HashSet<Square>();
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 		boolean canJump = ((Pawn) piece).canJump();
@@ -295,7 +296,7 @@ public class Board
 	// en passant n shit
 	public Set<Square> getPawnCaptures(AbstractPiece piece)
 	{
-		Set<Square> moves = new TreeSet<Square>();
+		Set<Square> moves = new HashSet<Square>();
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 
@@ -321,7 +322,7 @@ public class Board
 
 	public Set<Square> getKnightMoves(AbstractPiece piece) throws GameException
 	{
-		Set<Square> moves = new TreeSet<Square>();
+		Set<Square> moves = new HashSet<Square>();
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 

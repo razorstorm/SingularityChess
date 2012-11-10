@@ -249,7 +249,7 @@ public class Square
 				return new Square[] { _sides[(i + 1) % 4], _sides[(i - 1) % 4] };
 			}
 		}
-		throw new GameException("given side " + firstSide + " is not adjacent to this square");
+		throw new GameException("given side " + firstSide + " is not adjacent to this square "+this);
 	}
 
 	public Square getNextCorner(Square firstCorner) throws GameException
