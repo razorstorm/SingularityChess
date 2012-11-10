@@ -3,17 +3,19 @@ package com.petrifiednightmares.singularityChess;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 
 import com.petrifiednightmares.singularityChess.logic.Game;
 
@@ -26,6 +28,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener, Su
 
 	
 	public static Paint darkPaint, lightPaint, highlightPaint,attackPaint,piecePaint;
+	private static Bitmap _darkTexture, _lightTexture;
 
 	Game game;
 
@@ -44,13 +47,24 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener, Su
 		UNIT = (int) (MIN_DIMENSION / 100.0);
 		PADDING = 4 * UNIT;
 
+		_darkTexture = BitmapFactory.decodeResource(getResources(), R.drawable.wood_2);
+	    BitmapShader darkShader = new BitmapShader(_darkTexture, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		
 		darkPaint = new Paint();
-		darkPaint.setColor(Color.rgb(50, 50, 50));
+		darkPaint.setShader(darkShader);
+//		darkPaint.setColor(Color.rgb(50, 50, 50));
 		darkPaint.setAntiAlias(true);
+		darkPaint.setFilterBitmap(true);
 
+		_lightTexture = BitmapFactory.decodeResource(getResources(), R.drawable.retina_wood_2);
+	    BitmapShader lightShader = new BitmapShader(_lightTexture, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+	
+		
 		lightPaint = new Paint();
-		lightPaint.setColor(Color.rgb(200, 200, 200));
+//		lightPaint.setColor(Color.rgb(200, 200, 200));
+		lightPaint.setShader(lightShader);
 		lightPaint.setAntiAlias(true);
+		lightPaint.setFilterBitmap(true);
 		
 		highlightPaint = new Paint();
 		highlightPaint.setColor(Color.rgb(36,109,218));
