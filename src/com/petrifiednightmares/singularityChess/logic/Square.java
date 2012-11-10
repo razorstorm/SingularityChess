@@ -161,28 +161,13 @@ public class Square
 
 	// TODO move this into AbstractPiece's subclasses. Then we can just call
 	// like piece.onDraw(). Makes more sense for polymorphism
-	private void drawPiece(Canvas c)
+	private void labelSquare(Canvas c)
 	{
-		// if (piece != null)
-		{
-			// float textWidth =
-			// GameDrawingPanel.piecePaint.measureText(piece.toString());
-			// c.drawCircle(_shape.getX(), _shape.getY(),
-			// 5,GameDrawingPanel.piecePaint);
-			// c.drawText(piece.toString(), _shape.getX() - textWidth / 2,
-			// _shape.getY(),
-			// GameDrawingPanel.attackPaint);
 
 			float textWidth = GameDrawingPanel.piecePaint.measureText(file + "" + rank);
 			c.drawText(file + "" + rank, _shape.getX() - textWidth / 2, _shape.getY(),
 					GameDrawingPanel.piecePaint);
 
-			// if(file=='e' && rank ==4)
-			// {
-			// System.out.println("e4");
-			// System.out.println(_shape.getX()+" "+_shape.getY());
-			// }
-		}
 
 	}
 
@@ -191,7 +176,9 @@ public class Square
 		if (NEEDS_REDRAW)
 		{
 			NEEDS_REDRAW = false;
-			drawPiece(c);
+			labelSquare(c);
+			if(piece!=null)
+				piece.onDraw(c,_shape.getX(), _shape.getY());
 
 			if (_highlighted)
 			{

@@ -426,6 +426,7 @@ public class Board
 			{
 				this.unhighlightAllSquares();
 				Rook testingRook = new Rook(this._game, s, true);
+				s.addPiece(testingRook);
 				try
 				{
 					highlightMoves(testingRook);

@@ -3,11 +3,11 @@ package com.petrifiednightmares.singularityChess.pieces;
 import java.util.Set;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
-
 
 public abstract class AbstractPiece
 {
@@ -26,22 +26,31 @@ public abstract class AbstractPiece
 		this.isWhite = isWhite;
 		this.icon = icon;
 	}
-	
+
 	public void select()
 	{
-		isSelected=true;
+		isSelected = true;
 	}
+
 	public void unselect()
 	{
-		isSelected=false;
+		isSelected = false;
 	}
-	
+
 	public boolean getIsSelected()
 	{
 		return isSelected;
 	}
 
 	public abstract Set<Square> getMoves() throws GameException;
+
+	public void onDraw(Canvas c, int x, int y)
+	{
+		int left = x - icon.getWidth() / 2;
+		int top = y - icon.getHeight() / 2;
+		c.drawBitmap(icon, left, top, null);
+		System.out.println("ondraw");
+	}
 
 	// returns captured pieces
 	public AbstractPiece makeMove(Square target)
@@ -86,4 +95,5 @@ public abstract class AbstractPiece
 	{
 		return true;
 	}
+
 }

@@ -46,8 +46,10 @@ public class Game
 	{
 		Square location = board.getSquares().get("c3");
 		Rook testingRook = new Rook(this, location, true);
+		location.addPiece(testingRook);
 		Square location2 = board.getSquares().get("f7");
 		Rook testingRook2 = new Rook(this, location2, true);
+		location2.addPiece(testingRook2);
 		try
 		{
 			board.highlightMoves(testingRook);
