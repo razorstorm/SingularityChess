@@ -31,7 +31,7 @@ public class Game
 	public Game(GameDrawingPanel drawingPanel)
 	{
 		this.drawingPanel = drawingPanel;
-		board = new Board();
+		board = new Board(drawingPanel.getResources());
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];

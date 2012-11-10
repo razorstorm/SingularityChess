@@ -13,8 +13,8 @@ import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 
 public class Square
 {
-	private Square[] corners;
-	private Square[] sides;
+	private Square[] _corners;
+	private Square[] _sides;
 	private final char file; // rooks are on file a and h
 	private final int rank; // white on 1 black on 8
 	static Bitmap _squareBitMap;
@@ -34,8 +34,8 @@ public class Square
 
 	public Square(Square[] corners, Square[] sides, char file, int rank)
 	{
-		this.corners = corners;
-		this.sides = sides;
+		this._corners = corners;
+		this._sides = sides;
 		this.file = file;
 		this.rank = rank;
 	}
@@ -152,22 +152,25 @@ public class Square
 
 	private void drawPiece(Canvas c)
 	{
-//		if (piece != null)
+		// if (piece != null)
 		{
-//			float textWidth = GameDrawingPanel.piecePaint.measureText(piece.toString());
-//			c.drawCircle(_shape.getX(), _shape.getY(), 5,GameDrawingPanel.piecePaint);
-//			c.drawText(piece.toString(), _shape.getX() - textWidth / 2, _shape.getY(),
-//					GameDrawingPanel.attackPaint);
-			
-			float textWidth = GameDrawingPanel.piecePaint.measureText(file+""+rank);
-			c.drawText(file+""+rank, _shape.getX() - textWidth / 2, _shape.getY(),
+			// float textWidth =
+			// GameDrawingPanel.piecePaint.measureText(piece.toString());
+			// c.drawCircle(_shape.getX(), _shape.getY(),
+			// 5,GameDrawingPanel.piecePaint);
+			// c.drawText(piece.toString(), _shape.getX() - textWidth / 2,
+			// _shape.getY(),
+			// GameDrawingPanel.attackPaint);
+
+			float textWidth = GameDrawingPanel.piecePaint.measureText(file + "" + rank);
+			c.drawText(file + "" + rank, _shape.getX() - textWidth / 2, _shape.getY(),
 					GameDrawingPanel.piecePaint);
-			
-//			if(file=='e' && rank ==4)
-//			{
-//				System.out.println("e4");
-//				System.out.println(_shape.getX()+" "+_shape.getY());
-//			}
+
+			// if(file=='e' && rank ==4)
+			// {
+			// System.out.println("e4");
+			// System.out.println(_shape.getX()+" "+_shape.getY());
+			// }
 		}
 
 	}
@@ -226,10 +229,10 @@ public class Square
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			Square s = sides[i];
+			Square s = _sides[i];
 			if (s.equals(firstSide))
 			{
-				return sides[(i + 2) % 4]; // might be null
+				return _sides[(i + 2) % 4]; // might be null
 			}
 		}
 		throw new GameException("given side " + firstSide + " is not adjacent to this square");
@@ -240,10 +243,10 @@ public class Square
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			Square s = sides[i];
+			Square s = _sides[i];
 			if (s.equals(firstSide))
 			{
-				return new Square[] { sides[(i + 1) % 4], sides[(i - 1) % 4] };
+				return new Square[] { _sides[(i + 1) % 4], _sides[(i - 1) % 4] };
 			}
 		}
 		throw new GameException("given side " + firstSide + " is not adjacent to this square");
@@ -253,10 +256,10 @@ public class Square
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			Square c = corners[i];
+			Square c = _corners[i];
 			if (c.equals(firstCorner))
 			{
-				return corners[(i + 2) % 4]; // might be null
+				return _corners[(i + 2) % 4]; // might be null
 			}
 		}
 		throw new GameException("given corner " + firstCorner + " is not adjacent to this square");
@@ -270,12 +273,12 @@ public class Square
 
 	public Square[] getCorners()
 	{
-		return corners;
+		return _corners;
 	}
 
 	public Square[] getSides()
 	{
-		return sides;
+		return _sides;
 	}
 
 	public char getFile()
@@ -286,5 +289,15 @@ public class Square
 	public int getRank()
 	{
 		return rank;
+	}
+
+	public void setSides(Square[] sides)
+	{
+		this._sides = sides;
+	}
+	
+	public void setCorners(Square[] corners)
+	{
+		this._corners = corners;
 	}
 }

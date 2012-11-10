@@ -1,12 +1,16 @@
 package com.petrifiednightmares.singularityChess.logic;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.petrifiednightmares.singularityChess.GameException;
+import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
 
@@ -15,9 +19,11 @@ public class Board
 	// hashed by file and rank: "a3" for example.
 	private HashMap<String, Square> squares;
 	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
+	private Resources _res;
 
-	public Board()
+	public Board(Resources res)
 	{
+		this._res = res;
 		squares = new HashMap<String, Square>();
 		initializeSquares();
 		// _boardBitMap = Bitmap.createBitmap(GameDrawingPanel.WIDTH,
@@ -33,7 +39,7 @@ public class Board
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
 			{
-				getSquares().put(file + "" + rank, new Square(file, rank));
+				squares.put(file + "" + rank, new Square(file, rank));
 			}
 		}
 		linkUpSquares();
@@ -42,7 +48,58 @@ public class Board
 	// links up the square's corners and sides
 	private void linkUpSquares()
 	{
-		// TypedArray icons = res.obtainTypedArray(R.array.icons);
+		for (char file = 'a'; file <= 'h'; file++)
+		{
+			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
+			{
+				int cornersId=0;
+				try {
+				    Class<R.array> res = R.array.class;
+				    Field field = res.getField("corners_"+file+""+rank);
+				    cornersId = field.getInt(null);
+				}
+				catch (Exception e) {
+				    Log.e("MyTag", "Failure to get corners id.", e);
+				    e.printStackTrace();
+				}
+				
+				String[] corners = _res.getStringArray(cornersId);
+				Square[] cornerSquares = new Square[4];
+				for(int i =0; i<4;i++)
+				{
+					if(corners[i] != "0")
+						cornerSquares[i] = squares.get(corners[i]);
+					else
+						cornerSquares[i] = null;
+				}
+				
+				squares.get(file +""+rank).setCorners(cornerSquares);
+				
+				
+				int sidesId=0;
+				try {
+				    Class<R.array> res = R.array.class;
+				    Field field = res.getField("sides_"+file+""+rank);
+				    sidesId = field.getInt(null);
+				}
+				catch (Exception e) {
+				    Log.e("MyTag", "Failure to get sides id.", e);
+				    e.printStackTrace();
+				}
+				
+				String[] sides = _res.getStringArray(sidesId);
+				Square[] sideSquares = new Square[4];
+				for(int i =0; i<4;i++)
+				{
+					if(sides[i] != "0")
+						sideSquares[i] = squares.get(sides[i]);
+					else
+						sideSquares[i] = null;
+				}
+				
+				squares.get(file +""+rank).setSides(cornerSquares);
+			}
+		}
 	}
 
 	public Set<Square> getSideMovements(AbstractPiece piece, boolean limit) throws GameException
@@ -348,7 +405,7 @@ public class Board
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
 			{
-//				System.out.println(file+""+rank);
+				// System.out.println(file+""+rank);
 				squares.get(file + "" + rank).onDraw(canvas);
 			}
 		}
