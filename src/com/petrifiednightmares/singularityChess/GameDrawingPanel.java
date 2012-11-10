@@ -19,16 +19,19 @@ import android.view.WindowManager;
 
 import com.petrifiednightmares.singularityChess.logic.Game;
 
-public class GameDrawingPanel extends SurfaceView implements OnTouchListener, SurfaceHolder.Callback
+public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
+		SurfaceHolder.Callback
 {
 	PanelThread _thread;
-	Bitmap _background;
+	public static Bitmap background;
 
 	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING;
 
-	
-	public static Paint darkPaint, lightPaint, highlightPaint,attackPaint,piecePaint;
+	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint;
 	private static Bitmap _darkTexture, _lightTexture;
+
+	private static Bitmap _drawingBitmap;
+	private static Canvas _drawingCanvas;
 
 	Game game;
 
@@ -47,40 +50,44 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener, Su
 		UNIT = (int) (MIN_DIMENSION / 100.0);
 		PADDING = 4 * UNIT;
 
+		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+		_drawingBitmap = Bitmap.createBitmap(WIDTH, HEIGHT, conf);
+		_drawingCanvas = new Canvas(_drawingBitmap);
+
 		_darkTexture = BitmapFactory.decodeResource(getResources(), R.drawable.wood_2);
-	    BitmapShader darkShader = new BitmapShader(_darkTexture, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-		
+		BitmapShader darkShader = new BitmapShader(_darkTexture, Shader.TileMode.REPEAT,
+				Shader.TileMode.REPEAT);
+
 		darkPaint = new Paint();
 		darkPaint.setShader(darkShader);
-//		darkPaint.setColor(Color.rgb(50, 50, 50));
+		// darkPaint.setColor(Color.rgb(50, 50, 50));
 		darkPaint.setAntiAlias(true);
 		darkPaint.setFilterBitmap(true);
 
 		_lightTexture = BitmapFactory.decodeResource(getResources(), R.drawable.retina_wood_2);
-	    BitmapShader lightShader = new BitmapShader(_lightTexture, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-	
-		
+		BitmapShader lightShader = new BitmapShader(_lightTexture, Shader.TileMode.REPEAT,
+				Shader.TileMode.REPEAT);
+
 		lightPaint = new Paint();
-//		lightPaint.setColor(Color.rgb(200, 200, 200));
+		// lightPaint.setColor(Color.rgb(200, 200, 200));
 		lightPaint.setShader(lightShader);
 		lightPaint.setAntiAlias(true);
 		lightPaint.setFilterBitmap(true);
-		
+
 		highlightPaint = new Paint();
-		highlightPaint.setColor(Color.rgb(36,109,218));
+		highlightPaint.setColor(Color.rgb(36, 109, 218));
 		highlightPaint.setAlpha(200);
 		highlightPaint.setAntiAlias(true);
-		
+
 		attackPaint = new Paint();
-		attackPaint.setColor(Color.rgb(205,92,92));
+		attackPaint.setColor(Color.rgb(205, 92, 92));
 		attackPaint.setAntiAlias(true);
-		
+
 		piecePaint = new Paint();
 		piecePaint.setColor(Color.RED); // TODO fix
 		piecePaint.setAntiAlias(true);
 
-
-		_background = BitmapFactory.decodeResource(getResources(), R.drawable.felt);
+		background = BitmapFactory.decodeResource(getResources(), R.drawable.felt);
 
 		game = new Game(this);
 		this.setOnTouchListener(this);
@@ -89,12 +96,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener, Su
 	@Override
 	public void onDraw(Canvas canvas)
 	{
-		// draw background
-		canvas.drawBitmap(_background, 0, 0, null);
-
 		// do drawing stuff here.
 		// canvas.drawBitmap(_bitmap, 0, 0, _paint);
-		game.onDraw(canvas);
+		game.onDraw(_drawingCanvas);
+
+		canvas.drawBitmap(_drawingBitmap, 0, 0, null);
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
@@ -126,16 +132,16 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener, Su
 	public void updateGame()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	public boolean onTouch(View v, MotionEvent event) 
-	{	
+	public boolean onTouch(View v, MotionEvent event)
+	{
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
-			game.onClick((int)event.getX(), (int)event.getY());
-        }
-		
+			game.onClick((int) event.getX(), (int) event.getY());
+		}
+
 		return true;
 	}
 
@@ -166,7 +172,7 @@ class PanelThread extends Thread
 	{
 		long sleepTime = 0;
 		long nextGameTick = System.currentTimeMillis();
-		
+
 		Canvas c;
 		while (_run)
 		{ // When setRunning(false) occurs, _run is
@@ -187,10 +193,10 @@ class PanelThread extends Thread
 					_surfaceHolder.unlockCanvasAndPost(c);
 				}
 			}
-			
+
 			nextGameTick += MILLISECONDS_PER_FRAME;
 			sleepTime = nextGameTick - System.currentTimeMillis();
-			if(sleepTime >= 0)
+			if (sleepTime >= 0)
 			{
 				try
 				{
@@ -199,11 +205,10 @@ class PanelThread extends Thread
 				{
 					continue;
 				}
-			}
-			else
+			} else
 			{
-				//we're behind, fuck it.
-				//System.out.println("behind!");
+				// we're behind, fuck it.
+				// System.out.println("behind!");
 				nextGameTick = System.currentTimeMillis();
 			}
 		}

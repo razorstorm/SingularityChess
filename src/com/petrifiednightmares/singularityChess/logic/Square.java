@@ -26,11 +26,13 @@ public class Square
 	private ComplexShape _shape;
 	private boolean _highlighted;
 
+	public boolean NEEDS_REDRAW = true;
+
 	public boolean containsPoint(int x, int y)
 	{
 		return _shape.containsPoint(x, y);
 	}
-	
+
 	public Square(char file, int rank)
 	{
 		this.file = file;
@@ -48,11 +50,13 @@ public class Square
 	public void highlight()
 	{
 		_highlighted = true;
+		NEEDS_REDRAW = true;
 	}
 
 	public void unhighlight()
 	{
 		_highlighted = false;
+		NEEDS_REDRAW = true;
 	}
 
 	public void setUpBitMap()
@@ -155,6 +159,8 @@ public class Square
 
 	}
 
+	// TODO move this into AbstractPiece's subclasses. Then we can just call
+	// like piece.onDraw(). Makes more sense for polymorphism
 	private void drawPiece(Canvas c)
 	{
 		// if (piece != null)
@@ -182,18 +188,21 @@ public class Square
 
 	public void onDraw(Canvas c)
 	{
-		// TODO draw the pieces, if any
-		drawPiece(c);
-
-		if (_highlighted)
+		if (NEEDS_REDRAW)
 		{
-			_paint = GameDrawingPanel.highlightPaint;
-			if (piece != null)
-			{
-				_paint = GameDrawingPanel.attackPaint;
-			}
+			NEEDS_REDRAW = false;
+			drawPiece(c);
 
-			drawSquare(c);
+			if (_highlighted)
+			{
+				_paint = GameDrawingPanel.highlightPaint;
+				if (piece != null)
+				{
+					_paint = GameDrawingPanel.attackPaint;
+				}
+
+				drawSquare(c);
+			}
 		}
 	}
 
@@ -218,11 +227,13 @@ public class Square
 	public void removePiece()
 	{
 		this.piece = null;
+		NEEDS_REDRAW = true;
 	}
 
 	public void addPiece(AbstractPiece piece)
 	{
 		this.piece = piece;
+		NEEDS_REDRAW = true;
 	}
 
 	public AbstractPiece getPiece()
@@ -240,7 +251,8 @@ public class Square
 				return _sides[(i + 2) % 4]; // might be null
 			}
 		}
-		throw new GameException("given side square " + firstSide + " is not adjacent to this square" + this);
+		throw new GameException("given side square " + firstSide
+				+ " is not adjacent to this square" + this);
 	}
 
 	// This is for knights, it gets the elbow shaped ones.
@@ -254,7 +266,8 @@ public class Square
 				return new Square[] { _sides[(i + 1) % 4], _sides[(i - 1) % 4] };
 			}
 		}
-		throw new GameException("given square side " + firstSide + " is not adjacent to this square " + this +".");
+		throw new GameException("given square side " + firstSide
+				+ " is not adjacent to this square " + this + ".");
 	}
 
 	public Square getNextCorner(Square firstCorner) throws GameException
@@ -267,7 +280,8 @@ public class Square
 				return _corners[(i + 2) % 4]; // might be null
 			}
 		}
-		throw new GameException("given corner " + firstCorner + " is not adjacent to this square" + this);
+		throw new GameException("given corner " + firstCorner + " is not adjacent to this square"
+				+ this);
 	}
 
 	@Override
@@ -300,7 +314,7 @@ public class Square
 	{
 		this._sides = sides;
 	}
-	
+
 	public void setCorners(Square[] corners)
 	{
 		this._corners = corners;

@@ -22,6 +22,7 @@ public class Board
 	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
 	private Game _game; //back reference to game
 	private Resources _res;
+	public static boolean NEEDS_REDRAW=true;
 
 	public Board(Resources res,Game game)
 	{
@@ -101,6 +102,34 @@ public class Board
 				}
 				
 				squares.get(file +""+rank).setSides(sideSquares);
+			}
+		}
+	}
+
+	private void setupSquaresBitmap()
+	{
+		// Have to draw from outwards in
+		for (char file = 'a'; file <= 'd'; file++)
+		{
+			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
+			{
+				getSquares().get(file + "" + rank).setUpBitMap();
+			}
+			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
+			{
+				getSquares().get(file + "" + rank).setUpBitMap();
+			}
+		}
+	
+		for (char file = 'h'; file >= 'e'; file--)
+		{
+			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
+			{
+				getSquares().get(file + "" + rank).setUpBitMap();
+			}
+			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
+			{
+				getSquares().get(file + "" + rank).setUpBitMap();
 			}
 		}
 	}
@@ -366,36 +395,12 @@ public class Board
 
 	public void onDraw(Canvas canvas)
 	{
-		canvas.drawBitmap(Square._squareBitMap, 0, 0, null);
+		if(NEEDS_REDRAW)
+		{
+			canvas.drawBitmap(Square._squareBitMap, 0, 0, null);
+			NEEDS_REDRAW = false;
+		}
 		drawSquares(canvas);
-	}
-
-	private void setupSquaresBitmap()
-	{
-		// Have to draw from outwards in
-		for (char file = 'a'; file <= 'd'; file++)
-		{
-			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
-			{
-				getSquares().get(file + "" + rank).setUpBitMap();
-			}
-			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
-			{
-				getSquares().get(file + "" + rank).setUpBitMap();
-			}
-		}
-
-		for (char file = 'h'; file >= 'e'; file--)
-		{
-			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
-			{
-				getSquares().get(file + "" + rank).setUpBitMap();
-			}
-			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
-			{
-				getSquares().get(file + "" + rank).setUpBitMap();
-			}
-		}
 	}
 
 	private void drawSquares(Canvas canvas)
@@ -404,7 +409,6 @@ public class Board
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
 			{
-				// System.out.println(file+""+rank);
 				squares.get(file + "" + rank).onDraw(canvas);
 			}
 		}
@@ -442,11 +446,11 @@ public class Board
 		{
 			squares.get(key).unhighlight();
 		}
+		NEEDS_REDRAW=true;
 	}
 	
 	public void highlightMoves(AbstractPiece p) throws GameException
 	{
-		//unhighlightAllSquares();
 		Set<Square> moves = p.getMoves();
 		for(Square s: moves)
 		{

@@ -27,18 +27,21 @@ public class Game
 
 	AbstractPiece selectedPiece;
 	Set<Square> selectedPieceMoves;
+	
+	public static boolean NEEDS_REDRAW=true;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
 		this.drawingPanel = drawingPanel;
-		board = new Board(drawingPanel.getResources(),this);
+		board = new Board(drawingPanel.getResources(), this);
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
-//		initializePieces(whitePieces, true);
-//		initializePieces(blackPieces, false);
+		// initializePieces(whitePieces, true);
+		// initializePieces(blackPieces, false);
 		initializeDebug(); // for testing purposes
 	}
+
 	private void initializeDebug()
 	{
 		Square location = board.getSquares().get("c3");
@@ -55,7 +58,7 @@ public class Game
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
 	{
 		// 8 pawns
@@ -63,19 +66,18 @@ public class Game
 
 		// 2 rooks
 		System.arraycopy(Rook.makeRooks(this, isWhite), 0, piecesArray, 8, 2);
-		
+
 		// 2 bishops
 		System.arraycopy(Bishop.makeBishops(this, isWhite), 0, piecesArray, 10, 2);
-		
+
 		// 2 knights
 		System.arraycopy(Knight.makeKnights(this, isWhite), 0, piecesArray, 12, 2);
 
 		// king
 		System.arraycopy(King.makeKings(this, isWhite), 0, piecesArray, 13, 1);
-		
+
 		// queen
 		System.arraycopy(Queen.makeQueens(this, isWhite), 0, piecesArray, 14, 1);
-		
 
 	}
 
@@ -120,6 +122,12 @@ public class Game
 
 	public void onDraw(Canvas canvas)
 	{
+		if (NEEDS_REDRAW)
+		{
+			NEEDS_REDRAW = false;
+			// draw background
+			canvas.drawBitmap(GameDrawingPanel.background, 0, 0, null);
+		}
 		board.onDraw(canvas);
 
 	}
@@ -133,12 +141,13 @@ public class Game
 	{
 		return drawingPanel;
 	}
-	
-	//*********************************UI related shits***********************************/
-	
+
+	// *********************************UI related
+	// shits***********************************/
+
 	public void onClick(int x, int y)
 	{
-		board.onClick(x,y);		
+		board.onClick(x, y);
 	}
-	
+
 }
