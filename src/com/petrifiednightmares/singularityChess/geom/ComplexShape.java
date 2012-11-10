@@ -38,7 +38,7 @@ public class ComplexShape
 			if (!s.containsPoint(x, y))
 			{
 				return false;
-			}
+			}	
 		}
 		for (AbstractShape s : outsideShape)
 		{
@@ -63,7 +63,7 @@ public class ComplexShape
 
 		Rect bounds = c.getClipBounds();
 		_x = bounds.centerX();
-		_y = bounds.centerY();
+		_y = 100;
 	}
 
 	// bad solution :(

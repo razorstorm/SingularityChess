@@ -31,7 +31,7 @@ public class Game
 	public Game(GameDrawingPanel drawingPanel)
 	{
 		this.drawingPanel = drawingPanel;
-		board = new Board(this);
+		board = new Board();
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
@@ -116,15 +116,4 @@ public class Game
 	{
 		return drawingPanel;
 	}
-	
-	
-	//*********************************UI related shits***********************************/
-	
-	public void onClick(int x, int y)
-	{
-		board.onClick(x,y);
-		//this calls board's onclick, which passes the information to the right square which will call Game or Board's UI functions.
-	}
-	
-
 }
