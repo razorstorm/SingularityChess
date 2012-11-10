@@ -100,7 +100,7 @@ public class Board
 						sideSquares[i] = null;
 				}
 				
-				squares.get(file +""+rank).setSides(cornerSquares);
+				squares.get(file +""+rank).setSides(sideSquares);
 			}
 		}
 	}
@@ -119,6 +119,7 @@ public class Board
 		for (int i = 0; i < 4; i++)
 		{
 			currSquare = sides[i];
+			prevSquare = startSquare;
 			if (currSquare == null)
 			{
 				continue;
@@ -141,8 +142,11 @@ public class Board
 			{
 				while (true)
 				{
+					System.out.println("previous square is: "+ prevSquare);
+					System.out.println("current square is: "+ currSquare);
 					// move to next side
 					Square newSquare = currSquare.getNextSide(prevSquare);
+					System.out.println("new square is: "+ newSquare);
 
 					prevSquare = currSquare;
 					currSquare = newSquare;
@@ -194,6 +198,7 @@ public class Board
 
 		for (int i = 0; i < 4; i++)
 		{
+			prevSquare = startSquare;
 			currSquare = corners[i];
 			if (currSquare == null)
 			{

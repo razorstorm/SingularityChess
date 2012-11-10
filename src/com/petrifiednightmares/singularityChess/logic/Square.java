@@ -230,7 +230,7 @@ public class Square
 		for (int i = 0; i < 4; i++)
 		{
 			Square s = _sides[i];
-			if (s.equals(firstSide))
+			if (firstSide.equals(s))
 			{
 				return _sides[(i + 2) % 4]; // might be null
 			}
@@ -244,7 +244,7 @@ public class Square
 		for (int i = 0; i < 4; i++)
 		{
 			Square s = _sides[i];
-			if (s.equals(firstSide))
+			if (firstSide.equals(s))
 			{
 				return new Square[] { _sides[(i + 1) % 4], _sides[(i - 1) % 4] };
 			}
@@ -257,7 +257,7 @@ public class Square
 		for (int i = 0; i < 4; i++)
 		{
 			Square c = _corners[i];
-			if (c.equals(firstCorner))
+			if (firstCorner.equals(c))
 			{
 				return _corners[(i + 2) % 4]; // might be null
 			}

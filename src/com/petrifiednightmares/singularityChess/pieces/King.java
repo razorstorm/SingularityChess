@@ -1,7 +1,7 @@
 package com.petrifiednightmares.singularityChess.pieces;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import android.graphics.BitmapFactory;
 
@@ -21,7 +21,7 @@ public class King extends AbstractPiece
 
 	public Set<Square> getMoves() throws GameException
 	{
-		Set<Square> moves = new TreeSet<Square>();
+		Set<Square> moves = new HashSet<Square>();
 		moves.addAll(game.getBoard().getSideMovements(this, true));
 		moves.addAll(game.getBoard().getCornerMovements(this, true));
 
