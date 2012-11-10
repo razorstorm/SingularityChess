@@ -235,7 +235,7 @@ public class Square
 				return _sides[(i + 2) % 4]; // might be null
 			}
 		}
-		throw new GameException("given side " + firstSide + " is not adjacent to this square");
+		throw new GameException("given side square " + firstSide + " is not adjacent to this square" + this);
 	}
 
 	// This is for knights, it gets the elbow shaped ones.
@@ -249,7 +249,7 @@ public class Square
 				return new Square[] { _sides[(i + 1) % 4], _sides[(i - 1) % 4] };
 			}
 		}
-		throw new GameException("given side " + firstSide + " is not adjacent to this square "+this);
+		throw new GameException("given square side " + firstSide + " is not adjacent to this square " + this +".");
 	}
 
 	public Square getNextCorner(Square firstCorner) throws GameException
@@ -262,7 +262,7 @@ public class Square
 				return _corners[(i + 2) % 4]; // might be null
 			}
 		}
-		throw new GameException("given corner " + firstCorner + " is not adjacent to this square");
+		throw new GameException("given corner " + firstCorner + " is not adjacent to this square" + this);
 	}
 
 	@Override
