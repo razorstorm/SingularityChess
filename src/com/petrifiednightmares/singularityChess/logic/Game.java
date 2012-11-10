@@ -116,4 +116,13 @@ public class Game
 	{
 		return drawingPanel;
 	}
+	
+	//*********************************UI related shits***********************************/
+	
+	public void onClick(int x, int y)
+	{
+		board.onClick(x,y);
+		//this calls board's onclick, which passes the information to the right square which will call Game or Board's UI functions.
+	}
+	
 }
