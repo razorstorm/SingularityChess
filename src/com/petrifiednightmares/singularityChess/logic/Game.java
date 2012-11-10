@@ -35,10 +35,24 @@ public class Game
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
-		initializePieces(whitePieces, true);
-		initializePieces(blackPieces, false);
+//		initializePieces(whitePieces, true);
+//		initializePieces(blackPieces, false);
+		initializeDebug(); // for testing purposes
 	}
-
+	private void initializeDebug()
+	{
+		Square location = board.getSquares().get("c3");
+		Rook testingRook = new Rook(this, location, true);
+		try
+		{
+			board.highlightMoves(testingRook);
+		} catch (GameException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
 	{
 		// 8 pawns
