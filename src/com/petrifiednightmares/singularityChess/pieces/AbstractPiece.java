@@ -15,7 +15,8 @@ public abstract class AbstractPiece
 	protected Square location;
 	protected boolean alive;
 	protected boolean isWhite;
-	protected String icon;
+	private String icon; //DO NOT CHANGE THIS, let's keep the unicode as a label
+	//If using bitmaps again, add a new variable
 	private boolean _isSelected;
 
 	public AbstractPiece(Game game, Square location, boolean isWhite, String icon)
@@ -50,9 +51,9 @@ public abstract class AbstractPiece
 
 	public void onDraw(Canvas c, int x, int y)
 	{
-		float textWidth = GameDrawingPanel.piecePaint.measureText(icon);
+		float textWidth = GameDrawingPanel.piecePaint.measureText(getIcon());
 
-		c.drawText(icon, x - textWidth / 2, y,
+		c.drawText(getIcon(), x - textWidth / 2, y,
 				GameDrawingPanel.piecePaint);
 	}
 
@@ -99,5 +100,11 @@ public abstract class AbstractPiece
 	{
 		return true;
 	}
+
+	public String getIcon()
+	{
+		return icon;
+	}
+
 
 }
