@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
+import com.petrifiednightmares.singularityChess.MoveLogger;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Bishop;
 import com.petrifiednightmares.singularityChess.pieces.King;
@@ -28,12 +29,17 @@ public class Game
 	AbstractPiece selectedPiece;
 	Set<Square> selectedPieceMoves;
 
+	MoveLogger ml;
+
 	public static boolean NEEDS_REDRAW = true;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
+
 		this.drawingPanel = drawingPanel;
 		board = new Board(drawingPanel.getResources(), this);
+		ml = new MoveLogger();
+
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
@@ -92,6 +98,7 @@ public class Game
 
 	public boolean canMakeMove(Square target)
 	{
+		//need to make sure the king is not in check. 
 		return selectedPiece != null && selectedPieceMoves != null
 				&& selectedPieceMoves.contains(target) && selectedPiece.isWhite() == isWhiteTurn;
 	}
@@ -100,11 +107,24 @@ public class Game
 	{
 		if (selectedPiece != null && selectedPieceMoves.contains(target))
 		{
+			Square sourceLocation = selectedPiece.getLocation();
+
 			AbstractPiece capturedPiece = selectedPiece.makeMove(target);
+
+			String actionLog;
 			// log to movelogger
+			if (capturedPiece == null)
+			{
+				actionLog = ml.addMove(selectedPiece, sourceLocation, target);
+			} else
+			{
+				actionLog = ml.addMove(selectedPiece, sourceLocation, target, capturedPiece);
+			}
+			//TODO, display actionLog
+			System.out.println(actionLog);
+
 			switchTurns();
 			checkMove();
-
 			unselect();
 		} else
 		{
