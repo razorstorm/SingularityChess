@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.util.Log;
 
 import com.petrifiednightmares.singularityChess.GameException;
+import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
@@ -306,7 +307,7 @@ public class Board
 					if (canJump)
 					{
 						sides = next.getSides();
-						for ( i = 0; i < 4; i++)
+						for (i = 0; i < 4; i++)
 						{
 							Square jumpnext = sides[i];
 							if (jumpnext != null && jumpnext.getFile() == startSquare.getFile()
@@ -334,23 +335,29 @@ public class Board
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 
-		Square[] corners = startSquare.getCorners();
-		for (int i = 0; i < 4; i++)
+		Square[] corners = new Square[] {
+				squares.get((char) (startSquare.getFile() - 1) + "" + (startSquare.getRank()
+						+ (isWhite ? 1 : -1))),
+				squares.get((char) (startSquare.getFile() + 1) + "" + (startSquare.getRank()
+						+ (isWhite ? 1 : -1))) };
+		for (int i = 0; i < 2; i++)
 		{
 			Square next = corners[i];
+			System.out.println("Looking at :"+next);
 
-			if (next != null && next.getFile() != startSquare.getFile()
-					&& next.getRank() == startSquare.getRank() + (isWhite ? 1 : -1))
+			if (next != null && next.hasPiece())
 			{
 				AbstractPiece obstructingPiece = next.getPiece();
 				// if the square is capturable
-				if (obstructingPiece != null && obstructingPiece.isWhite() != isWhite
-						&& obstructingPiece.isCapturable())
+				if (obstructingPiece.isWhite() != isWhite && obstructingPiece.isCapturable())
 				{
-					moves.add(startSquare);
+					System.out.println("adding "+next);
+					moves.add(next);
 				}
 			}
 		}
+		System.out.println(moves);
+		System.out.println(moves.toArray());
 		return moves;
 	}
 
@@ -422,24 +429,28 @@ public class Board
 
 	public void onClick(int x, int y)
 	{
-		// TODO cycle through Squares to do collision detection
+		// cycle through Squares to do collision detection
 		// then figure out what to do depending on what the square's stats are.
 		for (String key : squares.keySet())
 		{
 			Square s = squares.get(key);
 			if (s.containsPoint(x, y))
 			{
-				if (s.hasPiece())
+
+				if (_game.canMakeMove(s))
 				{
-					unhighlightAllSquares();
 					try
 					{
-						highlightMoves(s.getPiece());
-					} catch (GameException e)
+						_game.makeMove(s);
+					} catch (InvalidMoveException e)
 					{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+				} else if (s.hasPiece())
+				{
+					_game.select(s.getPiece());
+
 				}
 
 				break;
@@ -447,7 +458,7 @@ public class Board
 		}
 	}
 
-	private void unhighlightAllSquares()
+	void unhighlightAllSquares()
 	{
 		for (String key : squares.keySet())
 		{
@@ -456,9 +467,8 @@ public class Board
 		NEEDS_REDRAW = true;
 	}
 
-	public void highlightMoves(AbstractPiece p) throws GameException
+	public void highlightMoves(Set<Square> moves) throws GameException
 	{
-		Set<Square> moves = p.getMoves();
 		for (Square s : moves)
 		{
 			s.highlight();

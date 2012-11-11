@@ -252,7 +252,8 @@ public class Square
 			Square s = _sides[i];
 			if (firstSide.equals(s))
 			{
-				return new Square[] { _sides[(i + 1) % 4], _sides[(i - 1) % 4] };
+				//+ 3 is same thing as -1
+				return new Square[] { _sides[(i + 1) % 4], _sides[(i + 3) % 4] };
 			}
 		}
 		throw new GameException("given square side " + firstSide

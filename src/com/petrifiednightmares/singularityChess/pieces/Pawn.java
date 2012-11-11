@@ -31,14 +31,7 @@ public class Pawn extends AbstractPiece
 	public AbstractPiece makeMove(Square target)
 	{
 		canJump = false;
-		// TODO figure out how to turn off jumped if one turn has passed.
-		// if (target.isPawnJump())// check rank to see if its 2 "forward"
-		// {
-		// jumped = true;
-		// } else
-		// {
-		// jumped = false;
-		// }
+
 		return super.makeMove(target);
 	}
 

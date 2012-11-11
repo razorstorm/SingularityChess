@@ -41,7 +41,6 @@ public class Game
 		initializePieces(blackPieces, false);
 	}
 
-
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
 	{
 		// 8 pawns
@@ -91,16 +90,38 @@ public class Game
 		}
 	}
 
-	public AbstractPiece makeMove(Square target) throws InvalidMoveException
+	public boolean canMakeMove(Square target)
+	{
+		return selectedPiece != null && selectedPieceMoves != null
+				&& selectedPieceMoves.contains(target) && selectedPiece.isWhite() == isWhiteTurn;
+	}
+
+	public void makeMove(Square target) throws InvalidMoveException
 	{
 		if (selectedPiece != null && selectedPieceMoves.contains(target))
 		{
-			return selectedPiece.makeMove(target);
+			AbstractPiece capturedPiece = selectedPiece.makeMove(target);
+			// log to movelogger
+			switchTurns();
+			checkMove();
+
+			unselect();
 		} else
 		{
 			throw new InvalidMoveException(
 					"Invalid Move: Either piece not selected or illegal move");
 		}
+	}
+
+	private void switchTurns()
+	{
+		isWhiteTurn = !isWhiteTurn;
+	}
+
+	private void checkMove()
+	{
+		// check to see if theres a check, a checkmate, or a pawn can get
+		// promoted.
 	}
 
 	public void onDraw(Canvas canvas)
@@ -131,6 +152,28 @@ public class Game
 	public void onClick(int x, int y)
 	{
 		board.onClick(x, y);
+	}
+
+	public void select(AbstractPiece piece)
+	{
+		try
+		{
+			board.unhighlightAllSquares();
+			selectedPiece = piece;
+			selectedPieceMoves = piece.getMoves();
+			board.highlightMoves(selectedPieceMoves);
+		} catch (GameException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void unselect()
+	{
+		board.unhighlightAllSquares();
+		selectedPiece = null;
+		selectedPieceMoves = null;
 	}
 
 }
