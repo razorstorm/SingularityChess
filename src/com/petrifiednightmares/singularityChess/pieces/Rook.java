@@ -3,10 +3,7 @@ package com.petrifiednightmares.singularityChess.pieces;
 import java.util.HashSet;
 import java.util.Set;
 
-import android.graphics.BitmapFactory;
-
 import com.petrifiednightmares.singularityChess.GameException;
-import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
@@ -15,8 +12,7 @@ public class Rook extends AbstractPiece
 {
 	public Rook(Game game, Square location, boolean isWhite)
 	{
-		super(game, location, isWhite, BitmapFactory.decodeResource(
-				game.getDrawingPanel().getResources(), R.drawable.rook));
+		super(game, location, isWhite, isWhite?"♖":"♜");
 	}
 
 	public Set<Square> getMoves() throws GameException
@@ -44,5 +40,10 @@ public class Rook extends AbstractPiece
 		location2.addPiece(r2);
 		
 		return rooks;
+	}
+	
+	public String toString()
+	{
+		return "Rook";
 	}
 }

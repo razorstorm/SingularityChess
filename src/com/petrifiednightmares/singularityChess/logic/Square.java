@@ -166,7 +166,7 @@ public class Square
 
 			float textWidth = GameDrawingPanel.piecePaint.measureText(file + "" + rank);
 			c.drawText(file + "" + rank, _shape.getX() - textWidth / 2, _shape.getY(),
-					GameDrawingPanel.piecePaint);
+					GameDrawingPanel.labelPaint);
 
 
 	}

@@ -3,10 +3,7 @@ package com.petrifiednightmares.singularityChess.pieces;
 import java.util.HashSet;
 import java.util.Set;
 
-import android.graphics.BitmapFactory;
-
 import com.petrifiednightmares.singularityChess.GameException;
-import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
@@ -18,16 +15,14 @@ public class Pawn extends AbstractPiece
 
 	public Pawn(Game game, Square location, boolean isWhite)
 	{
-		super(game, location, isWhite, BitmapFactory.decodeResource(game.getDrawingPanel()
-				.getResources(), R.drawable.pawn));
+		super(game, location, isWhite, isWhite?"♙":"♟");
 	}
 
 	public Set<Square> getMoves() throws GameException
 	{
 		Set<Square> moves = new HashSet<Square>();
-		moves.addAll(game.getBoard().getPawnMoves(this));// 2 first moves, en
-															// passant n shit
-		// sigh
+		moves.addAll(game.getBoard().getPawnMoves(this));
+
 		moves.addAll(game.getBoard().getPawnCaptures(this));
 
 		return moves;
@@ -75,5 +70,10 @@ public class Pawn extends AbstractPiece
 		}
 		
 		return pawns;
+	}
+	
+	public String toString()
+	{
+		return "Pawn";
 	}
 }

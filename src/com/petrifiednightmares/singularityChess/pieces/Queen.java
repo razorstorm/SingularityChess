@@ -3,10 +3,7 @@ package com.petrifiednightmares.singularityChess.pieces;
 import java.util.HashSet;
 import java.util.Set;
 
-import android.graphics.BitmapFactory;
-
 import com.petrifiednightmares.singularityChess.GameException;
-import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
@@ -15,8 +12,7 @@ public class Queen extends AbstractPiece
 {
 	public Queen(Game game,Square location, boolean isWhite)
 	{
-		super(game,location,isWhite,BitmapFactory.decodeResource(
-				game.getDrawingPanel().getResources(), R.drawable.queen));
+		super(game,location,isWhite,isWhite?"♕":"♛");
 	}
 	public Set<Square> getMoves() throws GameException
 	{
@@ -40,5 +36,8 @@ public class Queen extends AbstractPiece
 		
 		return queens;
 	}
-
+	public String toString()
+	{
+		return "Queen";
+	}
 }

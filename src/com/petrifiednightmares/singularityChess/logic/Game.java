@@ -27,8 +27,8 @@ public class Game
 
 	AbstractPiece selectedPiece;
 	Set<Square> selectedPieceMoves;
-	
-	public static boolean NEEDS_REDRAW=true;
+
+	public static boolean NEEDS_REDRAW = true;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
@@ -37,9 +37,9 @@ public class Game
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
-		// initializePieces(whitePieces, true);
-		// initializePieces(blackPieces, false);
-		initializeDebug(); // for testing purposes
+		initializePieces(whitePieces, true);
+		initializePieces(blackPieces, false);
+//		initializeDebug(); // for testing purposes
 	}
 
 	private void initializeDebug()

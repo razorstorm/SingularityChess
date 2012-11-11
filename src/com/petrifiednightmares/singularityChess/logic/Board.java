@@ -12,8 +12,8 @@ import android.util.Log;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
+import com.petrifiednightmares.singularityChess.pieces.Bishop;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
-import com.petrifiednightmares.singularityChess.pieces.Rook;
 
 public class Board
 {
@@ -30,10 +30,6 @@ public class Board
 		this._game = game;
 		squares = new HashMap<String, Square>();
 		initializeSquares();
-		// _boardBitMap = Bitmap.createBitmap(GameDrawingPanel.WIDTH,
-		// GameDrawingPanel.HEIGHT,
-		// Bitmap.Config.ARGB_8888);
-		// _boardCanvas = new Canvas(_boardBitMap);
 		setupSquaresBitmap();
 	}
 
@@ -425,7 +421,7 @@ public class Board
 			if (s.containsPoint(x, y))
 			{
 				this.unhighlightAllSquares();
-				Rook testingRook = new Rook(this._game, s, true);
+				Bishop testingRook = new Bishop(this._game, s, true);
 				s.addPiece(testingRook);
 				try
 				{

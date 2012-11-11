@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -27,7 +28,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING;
 
-	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint;
+	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint,labelPaint;
 	private static Bitmap _darkTexture, _lightTexture;
 
 	private static Bitmap _drawingBitmap;
@@ -84,9 +85,14 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		attackPaint.setAntiAlias(true);
 
 		piecePaint = new Paint();
-		piecePaint.setColor(Color.RED); // TODO fix
+		piecePaint.setColor(Color.BLACK); 
 		piecePaint.setAntiAlias(true);
+		piecePaint.setTypeface(Typeface.create("Tacoma",Typeface.NORMAL));
+		piecePaint.setTextSize(25);
 
+		labelPaint = new Paint();
+		labelPaint.setColor(Color.RED); 
+		
 		background = BitmapFactory.decodeResource(getResources(), R.drawable.felt);
 
 		game = new Game(this);

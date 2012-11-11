@@ -5,6 +5,7 @@ import java.util.Set;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
@@ -15,41 +16,46 @@ public abstract class AbstractPiece
 	protected Square location;
 	protected boolean alive;
 	protected boolean isWhite;
-	protected Bitmap icon;
-	private boolean isSelected;
+//	protected Bitmap icon;
+	protected String icon;
+	private boolean _isSelected;
 
-	public AbstractPiece(Game game, Square location, boolean isWhite, Bitmap icon)
+	public AbstractPiece(Game game, Square location, boolean isWhite, String icon)
 	{
 		this.game = game;
 		this.location = location;
 		this.alive = true;
 		this.isWhite = isWhite;
+		if(icon == null)
+		{
+			System.err.println("Piece: "+this+" got null");
+		}
 		this.icon = icon;
 	}
 
 	public void select()
 	{
-		isSelected = true;
+		_isSelected = true;
 	}
 
 	public void unselect()
 	{
-		isSelected = false;
+		_isSelected = false;
 	}
 
 	public boolean getIsSelected()
 	{
-		return isSelected;
+		return _isSelected;
 	}
 
 	public abstract Set<Square> getMoves() throws GameException;
 
 	public void onDraw(Canvas c, int x, int y)
 	{
-		int left = x - icon.getWidth() / 2;
-		int top = y - icon.getHeight() / 2;
-		c.drawBitmap(icon, left, top, null);
-		System.out.println("ondraw");
+		float textWidth = GameDrawingPanel.piecePaint.measureText(icon);
+
+		c.drawText(icon, x - textWidth / 2, y,
+				GameDrawingPanel.piecePaint);
 	}
 
 	// returns captured pieces
