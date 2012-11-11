@@ -87,7 +87,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		piecePaint = new Paint();
 		piecePaint.setColor(Color.BLACK); 
 		piecePaint.setAntiAlias(true);
-		piecePaint.setTypeface(Typeface.create("Tacoma",Typeface.NORMAL));
+		piecePaint.setTypeface(Typeface.create("Tahoma",Typeface.BOLD));
 		piecePaint.setTextSize(25);
 
 		labelPaint = new Paint();

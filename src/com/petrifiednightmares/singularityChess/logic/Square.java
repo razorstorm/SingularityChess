@@ -22,7 +22,7 @@ public class Square
 	private boolean _isWhite;
 	private Paint _paint;
 
-	private AbstractPiece piece = null;
+	private AbstractPiece _piece = null;
 	private ComplexShape _shape;
 	private boolean _highlighted;
 
@@ -177,19 +177,21 @@ public class Square
 		{
 			NEEDS_REDRAW = false;
 			labelSquare(c);
-			if(piece!=null)
-				piece.onDraw(c,_shape.getX(), _shape.getY());
+			
 
 			if (_highlighted)
 			{
 				_paint = GameDrawingPanel.highlightPaint;
-				if (piece != null)
+				if (_piece != null)
 				{
 					_paint = GameDrawingPanel.attackPaint;
 				}
 
 				drawSquare(c);
 			}
+			
+			if(_piece!=null)
+				_piece.onDraw(c,_shape.getX(), _shape.getY());
 		}
 	}
 
@@ -213,19 +215,19 @@ public class Square
 
 	public void removePiece()
 	{
-		this.piece = null;
+		this._piece = null;
 		NEEDS_REDRAW = true;
 	}
 
 	public void addPiece(AbstractPiece piece)
 	{
-		this.piece = piece;
+		this._piece = piece;
 		NEEDS_REDRAW = true;
 	}
 
 	public AbstractPiece getPiece()
 	{
-		return this.piece;
+		return this._piece;
 	}
 
 	public Square getNextSide(Square firstSide) throws GameException
@@ -306,4 +308,10 @@ public class Square
 	{
 		this._corners = corners;
 	}
+	
+	public boolean hasPiece()
+	{
+		return _piece!=null;
+	}
+	
 }

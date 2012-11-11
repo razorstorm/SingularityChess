@@ -2,7 +2,6 @@ package com.petrifiednightmares.singularityChess.pieces;
 
 import java.util.Set;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
@@ -16,7 +15,6 @@ public abstract class AbstractPiece
 	protected Square location;
 	protected boolean alive;
 	protected boolean isWhite;
-//	protected Bitmap icon;
 	protected String icon;
 	private boolean _isSelected;
 

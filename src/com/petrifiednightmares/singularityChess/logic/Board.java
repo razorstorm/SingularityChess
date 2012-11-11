@@ -12,7 +12,6 @@ import android.util.Log;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
-import com.petrifiednightmares.singularityChess.pieces.Bishop;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
 
 public class Board
@@ -20,11 +19,11 @@ public class Board
 	// hashed by file and rank: "a3" for example.
 	private HashMap<String, Square> squares;
 	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
-	private Game _game; //back reference to game
+	private Game _game; // back reference to game
 	private Resources _res;
-	public static boolean NEEDS_REDRAW=true;
+	public static boolean NEEDS_REDRAW = true;
 
-	public Board(Resources res,Game game)
+	public Board(Resources res, Game game)
 	{
 		this._res = res;
 		this._game = game;
@@ -52,52 +51,53 @@ public class Board
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
 			{
-				int cornersId=0;
-				try {
-				    Class<R.array> res = R.array.class;
-				    Field field = res.getField("corners_"+file+""+rank);
-				    cornersId = field.getInt(null);
+				int cornersId = 0;
+				try
+				{
+					Class<R.array> res = R.array.class;
+					Field field = res.getField("corners_" + file + "" + rank);
+					cornersId = field.getInt(null);
+				} catch (Exception e)
+				{
+					Log.e("MyTag", "Failure to get corners id.", e);
+					e.printStackTrace();
 				}
-				catch (Exception e) {
-				    Log.e("MyTag", "Failure to get corners id.", e);
-				    e.printStackTrace();
-				}
-				
+
 				String[] corners = _res.getStringArray(cornersId);
 				Square[] cornerSquares = new Square[4];
-				for(int i =0; i<4;i++)
+				for (int i = 0; i < 4; i++)
 				{
-					if(corners[i] != "0")
+					if (corners[i] != "0")
 						cornerSquares[i] = squares.get(corners[i]);
 					else
 						cornerSquares[i] = null;
 				}
-				
-				squares.get(file +""+rank).setCorners(cornerSquares);
-				
-				
-				int sidesId=0;
-				try {
-				    Class<R.array> res = R.array.class;
-				    Field field = res.getField("sides_"+file+""+rank);
-				    sidesId = field.getInt(null);
+
+				squares.get(file + "" + rank).setCorners(cornerSquares);
+
+				int sidesId = 0;
+				try
+				{
+					Class<R.array> res = R.array.class;
+					Field field = res.getField("sides_" + file + "" + rank);
+					sidesId = field.getInt(null);
+				} catch (Exception e)
+				{
+					Log.e("MyTag", "Failure to get sides id.", e);
+					e.printStackTrace();
 				}
-				catch (Exception e) {
-				    Log.e("MyTag", "Failure to get sides id.", e);
-				    e.printStackTrace();
-				}
-				
+
 				String[] sides = _res.getStringArray(sidesId);
 				Square[] sideSquares = new Square[4];
-				for(int i =0; i<4;i++)
+				for (int i = 0; i < 4; i++)
 				{
-					if(sides[i] != "0")
+					if (sides[i] != "0")
 						sideSquares[i] = squares.get(sides[i]);
 					else
 						sideSquares[i] = null;
 				}
-				
-				squares.get(file +""+rank).setSides(sideSquares);
+
+				squares.get(file + "" + rank).setSides(sideSquares);
 			}
 		}
 	}
@@ -116,7 +116,7 @@ public class Board
 				getSquares().get(file + "" + rank).setUpBitMap();
 			}
 		}
-	
+
 		for (char file = 'h'; file >= 'e'; file--)
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
@@ -295,7 +295,7 @@ public class Board
 		for (int i = 0; i < 4; i++)
 		{
 			Square next = sides[i];
-			if (next.getFile() == startSquare.getFile()
+			if (next!= null && next.getFile() == startSquare.getFile()
 					&& next.getRank() == startSquare.getRank() + (isWhite ? 1 : -1))
 			{
 				AbstractPiece obstructingPiece = next.getPiece();
@@ -331,14 +331,13 @@ public class Board
 		for (int i = 0; i < 4; i++)
 		{
 			Square next = corners[i];
-
-			if (next.getFile() != startSquare.getFile()
+			
+			if (next!=null && next.getFile() != startSquare.getFile()
 					&& next.getRank() == startSquare.getRank() + (isWhite ? 1 : -1))
 			{
 				AbstractPiece obstructingPiece = next.getPiece();
 				// if the square is capturable
-				// TODO en passant...
-				if (obstructingPiece.isWhite() != isWhite && obstructingPiece.isCapturable())
+				if ( obstructingPiece != null && obstructingPiece.isWhite() != isWhite && obstructingPiece.isCapturable())
 				{
 					moves.add(startSquare);
 				}
@@ -391,7 +390,7 @@ public class Board
 
 	public void onDraw(Canvas canvas)
 	{
-		if(NEEDS_REDRAW)
+		if (NEEDS_REDRAW)
 		{
 			canvas.drawBitmap(Square._squareBitMap, 0, 0, null);
 			NEEDS_REDRAW = false;
@@ -410,52 +409,51 @@ public class Board
 		}
 	}
 
-
 	public void onClick(int x, int y)
 	{
-		//TODO cycle through Squares to do collision detection
-		//then figure out what to do depending on what the square's stats are.
-		for(String key: squares.keySet())
+		// TODO cycle through Squares to do collision detection
+		// then figure out what to do depending on what the square's stats are.
+		for (String key : squares.keySet())
 		{
 			Square s = squares.get(key);
 			if (s.containsPoint(x, y))
 			{
-				this.unhighlightAllSquares();
-				Bishop testingRook = new Bishop(this._game, s, true);
-				s.addPiece(testingRook);
-				try
+				if (s.hasPiece())
 				{
-					highlightMoves(testingRook);
-				} catch (GameException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					unhighlightAllSquares();
+					try
+					{
+						highlightMoves(s.getPiece());
+					} catch (GameException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				
+
 				break;
 			}
 		}
 	}
-	
+
 	private void unhighlightAllSquares()
 	{
-		for(String key: squares.keySet())
+		for (String key : squares.keySet())
 		{
 			squares.get(key).unhighlight();
 		}
-		NEEDS_REDRAW=true;
+		NEEDS_REDRAW = true;
 	}
-	
+
 	public void highlightMoves(AbstractPiece p) throws GameException
 	{
 		Set<Square> moves = p.getMoves();
-		for(Square s: moves)
+		for (Square s : moves)
 		{
 			s.highlight();
 		}
 	}
-	
-	
+
 	public HashMap<String, Square> getSquares()
 	{
 		return squares;
