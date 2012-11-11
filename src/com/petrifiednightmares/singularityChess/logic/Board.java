@@ -343,7 +343,6 @@ public class Board
 		for (int i = 0; i < 2; i++)
 		{
 			Square next = corners[i];
-			System.out.println("Looking at :"+next);
 
 			if (next != null && next.hasPiece())
 			{
@@ -351,13 +350,10 @@ public class Board
 				// if the square is capturable
 				if (obstructingPiece.isWhite() != isWhite && obstructingPiece.isCapturable())
 				{
-					System.out.println("adding "+next);
 					moves.add(next);
 				}
 			}
 		}
-		System.out.println(moves);
-		System.out.println(moves.toArray());
 		return moves;
 	}
 

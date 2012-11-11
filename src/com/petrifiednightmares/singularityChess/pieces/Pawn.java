@@ -56,7 +56,6 @@ public class Pawn extends AbstractPiece
 			int rank = isWhite ? 2 : Board.boardRanks[file-'a']-1;
 			
 			Square location = game.getBoard().getSquares().get(file + "" + rank);
-			System.out.println(file+""+rank);
 			Pawn p = new Pawn(game, location, isWhite);
 			pawns[i] = p;
 			location.addPiece(p);
