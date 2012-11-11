@@ -19,7 +19,7 @@ public class Knight extends AbstractPiece
 	{
 		Set<Square> moves = new HashSet<Square>();
 		moves.addAll(game.getBoard().getKnightMoves(this));
-		return getMoves();
+		return moves;
 	}
 	
 	public static AbstractPiece[] makeKnights(Game game, boolean isWhite)

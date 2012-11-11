@@ -283,7 +283,7 @@ public class Board
 		return moves;
 	}
 
-	// 2 first moves, empassant n shit
+	// 2 first moves
 	public Set<Square> getPawnMoves(AbstractPiece piece) throws GameException
 	{
 		Set<Square> moves = new HashSet<Square>();
@@ -295,23 +295,30 @@ public class Board
 		for (int i = 0; i < 4; i++)
 		{
 			Square next = sides[i];
-			if (next!= null && next.getFile() == startSquare.getFile()
+			if (next != null && next.getFile() == startSquare.getFile()
 					&& next.getRank() == startSquare.getRank() + (isWhite ? 1 : -1))
 			{
 				AbstractPiece obstructingPiece = next.getPiece();
 				// if the square is empty
 				if (obstructingPiece == null)
 				{
-					moves.add(startSquare);
+					moves.add(next);
 					if (canJump)
 					{
-						next = next.getNextSide(startSquare);
-
-						obstructingPiece = next.getPiece();
-						// if the square is empty
-						if (obstructingPiece == null)
+						sides = next.getSides();
+						for ( i = 0; i < 4; i++)
 						{
-							moves.add(next);
+							Square jumpnext = sides[i];
+							if (jumpnext != null && jumpnext.getFile() == startSquare.getFile()
+									&& jumpnext.getRank() == next.getRank() + (isWhite ? 1 : -1))
+							{
+								obstructingPiece = jumpnext.getPiece();
+								// if the square is empty
+								if (obstructingPiece == null)
+								{
+									moves.add(jumpnext);
+								}
+							}
 						}
 					}
 				}
@@ -331,13 +338,14 @@ public class Board
 		for (int i = 0; i < 4; i++)
 		{
 			Square next = corners[i];
-			
-			if (next!=null && next.getFile() != startSquare.getFile()
+
+			if (next != null && next.getFile() != startSquare.getFile()
 					&& next.getRank() == startSquare.getRank() + (isWhite ? 1 : -1))
 			{
 				AbstractPiece obstructingPiece = next.getPiece();
 				// if the square is capturable
-				if ( obstructingPiece != null && obstructingPiece.isWhite() != isWhite && obstructingPiece.isCapturable())
+				if (obstructingPiece != null && obstructingPiece.isWhite() != isWhite
+						&& obstructingPiece.isCapturable())
 				{
 					moves.add(startSquare);
 				}
@@ -359,6 +367,7 @@ public class Board
 
 		for (int i = 0; i < 4; i++)
 		{
+			prevSquare = startSquare;
 			currSquare = sides[i];
 			if (currSquare == null)
 			{
@@ -375,6 +384,8 @@ public class Board
 			Square[] potentialMoves = currSquare.getAdjacentSides(prevSquare);
 			for (Square s : potentialMoves)
 			{
+				if (s == null)
+					continue;
 				AbstractPiece obstructingPiece = s.getPiece();
 				// if the square is empty
 				if (obstructingPiece == null
