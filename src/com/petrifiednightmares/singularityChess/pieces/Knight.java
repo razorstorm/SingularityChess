@@ -25,7 +25,7 @@ public class Knight extends AbstractPiece
 	public static AbstractPiece[] makeKnights(Game game, boolean isWhite)
 	{
 		AbstractPiece[] knights = new AbstractPiece[2];
-
+		
 		int rank = isWhite ? 1 : Board.boardRanks['b'-'a'];
 		
 		Square location1 =  game.getBoard().getSquares().get("b" + rank);

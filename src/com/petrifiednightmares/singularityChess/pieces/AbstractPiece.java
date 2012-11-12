@@ -106,5 +106,40 @@ public abstract class AbstractPiece
 		return icon;
 	}
 
+	public boolean checkingKing()
+	{
+		try
+		{
+			Set<Square> moves = getMoves();
+			for(Square m: moves)
+			{
+				if(m.hasPiece())
+				{
+					AbstractPiece p = m.getPiece();
+					if(p.isWhite != isWhite && p instanceof King)
+					{
+						return true;
+					}
+				}
+			}
+		} catch (GameException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public void revive(Square s)
+	{
+		alive = true;
+		setLocation(s);
+	}
+	
+	public void setLocation(Square s)
+	{
+		location = s;
+		s.addPiece(this);
+	}
 
 }

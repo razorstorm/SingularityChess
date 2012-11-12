@@ -62,11 +62,11 @@ public class Game
 		System.arraycopy(Knight.makeKnights(this, isWhite), 0, piecesArray, 12, 2);
 
 		// king
-		System.arraycopy(King.makeKings(this, isWhite), 0, piecesArray, 13, 1);
+		System.arraycopy(King.makeKings(this, isWhite), 0, piecesArray, 14, 1);
 
 		// queen
-		System.arraycopy(Queen.makeQueens(this, isWhite), 0, piecesArray, 14, 1);
-
+		System.arraycopy(Queen.makeQueens(this, isWhite), 0, piecesArray, 15, 1);
+		
 	}
 
 	public Set<Square> selectAndGetMoves(Square s) throws GameException
@@ -103,7 +103,7 @@ public class Game
 				&& selectedPieceMoves.contains(target) && selectedPiece.isWhite() == isWhiteTurn;
 	}
 
-	public void makeMove(Square target) throws InvalidMoveException
+	public boolean makeMove(Square target) throws InvalidMoveException
 	{
 		if (selectedPiece != null && selectedPieceMoves.contains(target))
 		{
@@ -111,6 +111,11 @@ public class Game
 
 			AbstractPiece capturedPiece = selectedPiece.makeMove(target);
 
+			if(!checkMoveValidity())
+			{
+				unmakeMove(capturedPiece,selectedPiece,target,sourceLocation);
+				return false;
+			}
 			String actionLog;
 			// log to movelogger
 			if (capturedPiece == null)
@@ -122,23 +127,43 @@ public class Game
 			}
 			//TODO, display actionLog
 			System.out.println(actionLog);
-
+			
+			checkPostMoveConditions();
+			
 			switchTurns();
-			checkMove();
 			unselect();
 		} else
 		{
 			throw new InvalidMoveException(
 					"Invalid Move: Either piece not selected or illegal move");
 		}
+		return true;
 	}
-
+	private void unmakeMove(AbstractPiece capturedPiece, AbstractPiece actor,Square destinationLocation, Square sourceLocation)
+	{
+		capturedPiece.revive(destinationLocation);
+		actor.setLocation(sourceLocation);
+	}
 	private void switchTurns()
 	{
 		isWhiteTurn = !isWhiteTurn;
 	}
-
-	private void checkMove()
+	private boolean checkMoveValidity()
+	{
+		//Make sure king not in check
+		AbstractPiece[] pieces=isWhiteTurn?whitePieces:blackPieces;
+		for(AbstractPiece p : pieces)
+		{
+			if(p.isAlive())
+			{
+				if(p.checkingKing())
+					return false;
+			}
+		}
+		
+		return true;
+	}
+	private void checkPostMoveConditions()
 	{
 		// check to see if theres a check, a checkmate, or a pawn can get
 		// promoted.
