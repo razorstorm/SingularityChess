@@ -25,6 +25,9 @@ public class Square
 	private AbstractPiece _piece = null;
 	private ComplexShape _shape;
 	private boolean _highlighted;
+	private boolean _selected;
+	
+	double flashCount;
 
 	private static int _heightCenter = GameDrawingPanel.TOP_PADDING + 6
 			* GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE;;
@@ -59,7 +62,15 @@ public class Square
 	public void unhighlight()
 	{
 		_highlighted = false;
+		_selected = false;
 		NEEDS_REDRAW = true;
+	}
+
+	public void select()
+	{
+		flashCount = 200;
+		_selected = true;
+		NEEDS_REDRAW=true;
 	}
 
 	public void setUpBitMap()
@@ -163,8 +174,6 @@ public class Square
 
 	}
 
-	// TODO move this into AbstractPiece's subclasses. Then we can just call
-	// like piece.onDraw(). Makes more sense for polymorphism
 	private void labelSquare(Canvas c)
 	{
 
@@ -191,10 +200,40 @@ public class Square
 
 				drawSquare(c);
 			}
+			if (_selected)
+			{
+				flashSquare(c);
+			}
 
 			if (_piece != null)
 				_piece.onDraw(c, _shape.getX(), _shape.getY());
 		}
+	}
+
+	private void flashSquare(Canvas c)
+	{
+		
+		_isWhite = ((file - 'a') + 1) % 2 == rank % 2;
+		_paint = GameDrawingPanel.darkPaint;
+		if (_isWhite)
+		{
+			_paint = GameDrawingPanel.lightPaint;
+		}
+		
+		drawSquare(c);
+		
+	
+		
+		
+		_paint = GameDrawingPanel.flashPaint;
+		_paint.setAlpha((int)(127*Math.sin(flashCount)+127));
+		
+		flashCount += 0.1;
+		
+		drawSquare(c);
+		
+		
+		NEEDS_REDRAW=true;
 	}
 
 	private void drawSquare(Canvas c)
@@ -205,12 +244,12 @@ public class Square
 
 		if (rank == Board.boardRanks[file - 'a'] / 2 + 1)
 			c.drawCircle(GameDrawingPanel.WIDTH / 2, _heightCenter,
-					(1 + fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT, _paint);
+					(1 + fileOutwards() + rankOutwards())
+							* GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE, _paint);
 		else if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
 			c.drawRect(0, 0, GameDrawingPanel.WIDTH, _heightCenter, _paint);
 		else
-			c.drawRect(0,_heightCenter, GameDrawingPanel.WIDTH,
-					GameDrawingPanel.HEIGHT, _paint);
+			c.drawRect(0, _heightCenter, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT, _paint);
 
 		c.restore();
 	}

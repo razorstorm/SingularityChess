@@ -446,7 +446,6 @@ public class Board
 				} else if (s.hasPiece())
 				{
 					_game.select(s.getPiece());
-
 				}
 
 				break;
@@ -462,7 +461,10 @@ public class Board
 		}
 		NEEDS_REDRAW = true;
 	}
-
+	public void select(Square s)
+	{
+		s.select();
+	}
 	public void highlightMoves(Set<Square> moves) throws GameException
 	{
 		for (Square s : moves)

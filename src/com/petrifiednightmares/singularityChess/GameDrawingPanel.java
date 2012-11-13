@@ -29,7 +29,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE,TOP_PADDING,CIRCLE_RADIUS_DIFFERENCE;
 
-	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint;
+	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint,flashPaint;
 	private static Bitmap _darkTexture, _lightTexture;
 
 	private static Bitmap _drawingBitmap;
@@ -81,6 +81,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		highlightPaint.setColor(Color.rgb(36, 109, 218));
 		highlightPaint.setAlpha(200);
 		highlightPaint.setAntiAlias(true);
+		
+		flashPaint = new Paint();
+		flashPaint.setColor(Color.rgb(0, 255, 0));
+		flashPaint.setAlpha(200);
+		flashPaint.setAntiAlias(true);
 
 		attackPaint = new Paint();
 		attackPaint.setColor(Color.rgb(205, 92, 92));

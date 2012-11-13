@@ -207,6 +207,7 @@ public class Game
 			selectedPiece = piece;
 			selectedPieceMoves = piece.getMoves();
 			board.highlightMoves(selectedPieceMoves);
+			board.select(piece.getLocation());
 		} catch (GameException e)
 		{
 			// TODO Auto-generated catch block
