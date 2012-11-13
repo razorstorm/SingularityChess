@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.Typeface;
@@ -26,9 +27,9 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	PanelThread _thread;
 	public static Bitmap background;
 
-	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING;
+	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE;
 
-	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint,labelPaint;
+	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint;
 	private static Bitmap _darkTexture, _lightTexture;
 
 	private static Bitmap _drawingBitmap;
@@ -36,7 +37,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 	Game game;
 
-	@SuppressWarnings("deprecation")
 	public GameDrawingPanel(Context context, AttributeSet aSet)
 	{
 		super(context, aSet);
@@ -50,6 +50,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		MIN_DIMENSION = Math.min(WIDTH, HEIGHT);
 		UNIT = (int) (MIN_DIMENSION / 100.0);
 		PADDING = 4 * UNIT;
+		PIECE_SIZE = 10 * UNIT;
 
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
 		_drawingBitmap = Bitmap.createBitmap(WIDTH, HEIGHT, conf);
@@ -85,15 +86,21 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		attackPaint.setAntiAlias(true);
 
 		piecePaint = new Paint();
-		piecePaint.setColor(Color.BLACK); 
+		piecePaint.setColor(Color.BLACK);
 		piecePaint.setAntiAlias(true);
-		piecePaint.setTypeface(Typeface.create("Tahoma",Typeface.BOLD));
+		piecePaint.setTypeface(Typeface.create("Tahoma", Typeface.BOLD));
 		piecePaint.setTextSize(25);
 
 		labelPaint = new Paint();
-		labelPaint.setColor(Color.RED); 
-		
+		labelPaint.setColor(Color.RED);
+
 		background = BitmapFactory.decodeResource(getResources(), R.drawable.felt);
+		float scaleWidth = ((float) WIDTH) / background.getWidth();
+		float scaleHeight = ((float) HEIGHT) / background.getHeight();
+		Matrix matrix = new Matrix();
+		matrix.postScale(scaleWidth, scaleHeight);
+
+		background = Bitmap.createBitmap(background, 0, 0, background.getWidth(), background.getHeight(), matrix, false);
 
 		game = new Game(this);
 		this.setOnTouchListener(this);

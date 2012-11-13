@@ -2,9 +2,9 @@ package com.petrifiednightmares.singularityChess.pieces;
 
 import java.util.Set;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
@@ -15,21 +15,21 @@ public abstract class AbstractPiece
 	protected Square location;
 	protected boolean alive;
 	protected boolean isWhite;
-	private String icon; //DO NOT CHANGE THIS, let's keep the unicode as a label
+	private String _label; //DO NOT CHANGE THIS, let's keep the unicode as a label
 	//If using bitmaps again, add a new variable
 	private boolean _isSelected;
+	
+	private Bitmap _icon;
 
-	public AbstractPiece(Game game, Square location, boolean isWhite, String icon)
+	public AbstractPiece(Game game, Square location, boolean isWhite, String label, Bitmap icon)
 	{
 		this.game = game;
 		this.location = location;
 		this.alive = true;
 		this.isWhite = isWhite;
-		if(icon == null)
-		{
-			System.err.println("Piece: "+this+" got null");
-		}
-		this.icon = icon;
+		this._label = label;
+		
+		this._icon = icon;
 	}
 
 	public void select()
@@ -51,10 +51,12 @@ public abstract class AbstractPiece
 
 	public void onDraw(Canvas c, int x, int y)
 	{
-		float textWidth = GameDrawingPanel.piecePaint.measureText(getIcon());
+//		float textWidth = GameDrawingPanel.piecePaint.measureText(getIcon());
+		
+		c.drawBitmap(_icon,x-_icon.getWidth()/2,y-_icon.getHeight()/2,null);
 
-		c.drawText(getIcon(), x - textWidth / 2, y,
-				GameDrawingPanel.piecePaint);
+//		c.drawText(getIcon(), x - textWidth / 2, y,
+//				GameDrawingPanel.piecePaint);
 	}
 
 	// returns captured pieces
@@ -103,7 +105,7 @@ public abstract class AbstractPiece
 
 	public String getIcon()
 	{
-		return icon;
+		return _label;
 	}
 
 	public boolean checkingKing()
