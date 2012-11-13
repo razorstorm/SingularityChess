@@ -51,12 +51,7 @@ public abstract class AbstractPiece
 
 	public void onDraw(Canvas c, int x, int y)
 	{
-//		float textWidth = GameDrawingPanel.piecePaint.measureText(getIcon());
-		
 		c.drawBitmap(_icon,x-_icon.getWidth()/2,y-_icon.getHeight()/2,null);
-
-//		c.drawText(getIcon(), x - textWidth / 2, y,
-//				GameDrawingPanel.piecePaint);
 	}
 
 	// returns captured pieces

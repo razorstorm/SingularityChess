@@ -56,7 +56,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		_drawingBitmap = Bitmap.createBitmap(WIDTH, HEIGHT, conf);
 		_drawingCanvas = new Canvas(_drawingBitmap);
 
-		_darkTexture = BitmapFactory.decodeResource(getResources(), R.drawable.wood_2);
+		_darkTexture = BitmapFactory.decodeResource(getResources(), R.drawable.wood_1);
 		BitmapShader darkShader = new BitmapShader(_darkTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 
@@ -66,7 +66,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		darkPaint.setAntiAlias(true);
 		darkPaint.setFilterBitmap(true);
 
-		_lightTexture = BitmapFactory.decodeResource(getResources(), R.drawable.retina_wood_2);
+		_lightTexture = BitmapFactory.decodeResource(getResources(), R.drawable.retina_wood_1);
 		BitmapShader lightShader = new BitmapShader(_lightTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 
