@@ -27,7 +27,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	PanelThread _thread;
 	public static Bitmap background;
 
-	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE;
+	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE,TOP_PADDING,CIRCLE_RADIUS_DIFFERENCE;
 
 	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint;
 	private static Bitmap _darkTexture, _lightTexture;
@@ -51,6 +51,9 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		UNIT = (int) (MIN_DIMENSION / 100.0);
 		PADDING = 4 * UNIT;
 		PIECE_SIZE = 10 * UNIT;
+		TOP_PADDING = 10 * UNIT;
+		CIRCLE_RADIUS_DIFFERENCE = 12 * UNIT;
+		
 
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
 		_drawingBitmap = Bitmap.createBitmap(WIDTH, HEIGHT, conf);
@@ -62,7 +65,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		darkPaint = new Paint();
 		darkPaint.setShader(darkShader);
-		// darkPaint.setColor(Color.rgb(50, 50, 50));
 		darkPaint.setAntiAlias(true);
 		darkPaint.setFilterBitmap(true);
 
@@ -71,7 +73,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 				Shader.TileMode.REPEAT);
 
 		lightPaint = new Paint();
-		// lightPaint.setColor(Color.rgb(200, 200, 200));
 		lightPaint.setShader(lightShader);
 		lightPaint.setAntiAlias(true);
 		lightPaint.setFilterBitmap(true);

@@ -26,6 +26,9 @@ public class Square
 	private ComplexShape _shape;
 	private boolean _highlighted;
 
+	private static int _heightCenter = GameDrawingPanel.TOP_PADDING + 6
+			* GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE;;
+
 	public boolean NEEDS_REDRAW = true;
 
 	public boolean containsPoint(int x, int y)
@@ -86,8 +89,9 @@ public class Square
 
 		_shape.clip(Square._squareCanvas);
 
-		Square._squareCanvas.drawCircle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
-				(1 + fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT, _paint);
+		Square._squareCanvas.drawCircle(GameDrawingPanel.WIDTH / 2, _heightCenter,
+				(1 + fileOutwards() + rankOutwards()) * GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE,
+				_paint);
 
 		Square._squareCanvas.restore();
 
@@ -97,8 +101,8 @@ public class Square
 	{
 		_shape = new ComplexShape();
 
-		Circle outterCircle = new Circle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
-				(1 + fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT);
+		Circle outterCircle = new Circle(GameDrawingPanel.WIDTH / 2, _heightCenter,
+				(1 + fileOutwards() + rankOutwards()) * GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE);
 
 		_shape.addInsideShape(outterCircle);
 
@@ -117,8 +121,8 @@ public class Square
 		}
 		_shape.addInsideShape(borderRect);
 
-		Circle innerCircle = new Circle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
-				(fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT);
+		Circle innerCircle = new Circle(GameDrawingPanel.WIDTH / 2, _heightCenter,
+				(fileOutwards() + rankOutwards()) * GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE);
 
 		_shape.addOutsideShape(innerCircle);
 
@@ -126,12 +130,12 @@ public class Square
 		Rectangle boardSideRect;
 		if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
 		{
-			boardSideRect = new Rectangle(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT / 2);
+			boardSideRect = new Rectangle(0, 0, GameDrawingPanel.WIDTH, _heightCenter);
 			_shape.addInsideShape(boardSideRect);
 		} else if (rank < Board.boardRanks[file - 'a'] / 2 + 1)
 		{
 
-			boardSideRect = new Rectangle(0, GameDrawingPanel.HEIGHT / 2, GameDrawingPanel.WIDTH,
+			boardSideRect = new Rectangle(0, _heightCenter, GameDrawingPanel.WIDTH,
 					GameDrawingPanel.HEIGHT);
 			_shape.addInsideShape(boardSideRect);
 		}
@@ -164,10 +168,9 @@ public class Square
 	private void labelSquare(Canvas c)
 	{
 
-			float textWidth = GameDrawingPanel.piecePaint.measureText(file + "" + rank);
-			c.drawText(file + "" + rank, _shape.getX() - textWidth / 2, _shape.getY(),
-					GameDrawingPanel.labelPaint);
-
+		float textWidth = GameDrawingPanel.piecePaint.measureText(file + "" + rank);
+		c.drawText(file + "" + rank, _shape.getX() - textWidth / 2, _shape.getY(),
+				GameDrawingPanel.labelPaint);
 
 	}
 
@@ -177,7 +180,6 @@ public class Square
 		{
 			NEEDS_REDRAW = false;
 			labelSquare(c);
-			
 
 			if (_highlighted)
 			{
@@ -189,9 +191,9 @@ public class Square
 
 				drawSquare(c);
 			}
-			
-			if(_piece!=null)
-				_piece.onDraw(c,_shape.getX(), _shape.getY());
+
+			if (_piece != null)
+				_piece.onDraw(c, _shape.getX(), _shape.getY());
 		}
 	}
 
@@ -202,12 +204,12 @@ public class Square
 		_shape.clip(c);
 
 		if (rank == Board.boardRanks[file - 'a'] / 2 + 1)
-			c.drawCircle(GameDrawingPanel.WIDTH / 2, GameDrawingPanel.HEIGHT / 2,
+			c.drawCircle(GameDrawingPanel.WIDTH / 2, _heightCenter,
 					(1 + fileOutwards() + rankOutwards()) * 12 * GameDrawingPanel.UNIT, _paint);
 		else if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
-			c.drawRect(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT / 2, _paint);
+			c.drawRect(0, 0, GameDrawingPanel.WIDTH, _heightCenter, _paint);
 		else
-			c.drawRect(0, GameDrawingPanel.HEIGHT / 2, GameDrawingPanel.WIDTH,
+			c.drawRect(0,_heightCenter, GameDrawingPanel.WIDTH,
 					GameDrawingPanel.HEIGHT, _paint);
 
 		c.restore();
@@ -252,7 +254,7 @@ public class Square
 			Square s = _sides[i];
 			if (firstSide.equals(s))
 			{
-				//+ 3 is same thing as -1
+				// + 3 is same thing as -1
 				return new Square[] { _sides[(i + 1) % 4], _sides[(i + 3) % 4] };
 			}
 		}
@@ -309,10 +311,10 @@ public class Square
 	{
 		this._corners = corners;
 	}
-	
+
 	public boolean hasPiece()
 	{
-		return _piece!=null;
+		return _piece != null;
 	}
-	
+
 }
