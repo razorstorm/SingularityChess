@@ -193,9 +193,13 @@ public class Square
 			if (_highlighted)
 			{
 				_paint = GameDrawingPanel.highlightPaint;
-				if (_piece != null)
+				if (_piece != null && _piece.isCapturable()==true)
 				{
 					_paint = GameDrawingPanel.attackPaint;
+				}
+				else if(_piece!=null && _piece.isCapturable() == false)
+				{
+					_paint = GameDrawingPanel.kingThreatenPaint;
 				}
 
 				drawSquare(c);

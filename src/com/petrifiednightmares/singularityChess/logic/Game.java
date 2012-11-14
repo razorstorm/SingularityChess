@@ -66,7 +66,7 @@ public class Game
 
 		// queen
 		System.arraycopy(Queen.makeQueens(this, isWhite), 0, piecesArray, 15, 1);
-		
+
 	}
 
 	public Set<Square> selectAndGetMoves(Square s) throws GameException
@@ -125,11 +125,11 @@ public class Game
 			{
 				actionLog = ml.addMove(selectedPiece, sourceLocation, target, capturedPiece);
 			}
-			//TODO, display actionLog
+			// TODO, display actionLog
 			System.out.println(actionLog);
-			
+
 			checkPostMoveConditions();
-			
+
 			switchTurns();
 			unselect();
 		} else
