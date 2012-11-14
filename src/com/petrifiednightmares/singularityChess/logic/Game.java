@@ -31,11 +31,12 @@ public class Game
 
 	MoveLogger ml;
 
-	public static boolean NEEDS_REDRAW = true;
+	public static boolean NEEDS_REDRAW;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
 
+		NEEDS_REDRAW=true;
 		this.drawingPanel = drawingPanel;
 		board = new Board(drawingPanel.getResources(), this);
 		ml = new MoveLogger();

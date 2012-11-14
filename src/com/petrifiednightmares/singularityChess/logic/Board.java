@@ -22,10 +22,11 @@ public class Board
 	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
 	private Game _game; // back reference to game
 	private Resources _res;
-	public static boolean NEEDS_REDRAW = true;
+	public static boolean NEEDS_REDRAW;
 
 	public Board(Resources res, Game game)
 	{
+		NEEDS_REDRAW=true;
 		this._res = res;
 		this._game = game;
 		squares = new HashMap<String, Square>();
