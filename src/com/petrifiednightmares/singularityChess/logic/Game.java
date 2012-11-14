@@ -99,9 +99,10 @@ public class Game
 
 	public boolean canMakeMove(Square target)
 	{
-		//need to make sure the king is not in check. 
+		// need to make sure the king is not in check.
 		return selectedPiece != null && selectedPieceMoves != null
-				&& selectedPieceMoves.contains(target) && selectedPiece.isWhite() == isWhiteTurn;
+				&& selectedPieceMoves.contains(target) && selectedPiece.isWhite() == isWhiteTurn
+				&& (!target.hasPiece() || target.getPiece().isCapturable());
 	}
 
 	public boolean makeMove(Square target) throws InvalidMoveException
@@ -112,9 +113,9 @@ public class Game
 
 			AbstractPiece capturedPiece = selectedPiece.makeMove(target);
 
-			if(!checkMoveValidity())
+			if (!checkMoveValidity())
 			{
-				unmakeMove(capturedPiece,selectedPiece,target,sourceLocation);
+				unmakeMove(capturedPiece, selectedPiece, target, sourceLocation);
 				return false;
 			}
 			String actionLog;
@@ -140,30 +141,41 @@ public class Game
 		}
 		return true;
 	}
-	private void unmakeMove(AbstractPiece capturedPiece, AbstractPiece actor,Square destinationLocation, Square sourceLocation)
+
+	private void unmakeMove(AbstractPiece capturedPiece, AbstractPiece actor,
+			Square destinationLocation, Square sourceLocation)
 	{
-		capturedPiece.revive(destinationLocation);
+		destinationLocation.removePiece();
+		if (capturedPiece != null)
+			capturedPiece.revive(destinationLocation);
 		actor.setLocation(sourceLocation);
+		
 	}
+
 	private void switchTurns()
 	{
 		isWhiteTurn = !isWhiteTurn;
 	}
+
 	private boolean checkMoveValidity()
 	{
-		//Make sure king not in check
-		AbstractPiece[] pieces=isWhiteTurn?whitePieces:blackPieces;
-		for(AbstractPiece p : pieces)
+		// Make sure king not in check
+		AbstractPiece[] enemyPieces = isWhiteTurn ? blackPieces : whitePieces;
+		for (AbstractPiece p : enemyPieces)
 		{
-			if(p.isAlive())
+			if (p.isAlive())
 			{
-				if(p.checkingKing())
+				if (p.checkingKing())
+				{
+					drawingPanel.displayMessage(p + " on square " + p.getLocation() + " is checking king");
 					return false;
+				}
 			}
 		}
-		
+
 		return true;
 	}
+
 	private void checkPostMoveConditions()
 	{
 		// check to see if theres a check, a checkmate, or a pawn can get

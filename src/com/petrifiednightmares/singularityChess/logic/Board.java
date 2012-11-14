@@ -156,7 +156,7 @@ public class Board
 			if (obstructingPiece == null)
 			{
 				moves.add(currSquare);
-			} else if (obstructingPiece.isWhite() != isWhite && obstructingPiece.isCapturable())
+			} else if (obstructingPiece.isWhite() != isWhite)
 			{
 				moves.add(currSquare);
 				continue;
@@ -189,8 +189,7 @@ public class Board
 						moves.add(currSquare);
 					}
 					// if can capture, add as move, but stop searching
-					else if (obstructingPiece.isWhite() != isWhite
-							&& obstructingPiece.isCapturable())
+					else if (obstructingPiece.isWhite() != isWhite)
 					{
 						moves.add(currSquare);
 						break;
@@ -233,7 +232,7 @@ public class Board
 			if (obstructingPiece == null)
 			{
 				moves.add(currSquare);
-			} else if (obstructingPiece.isWhite() != isWhite && obstructingPiece.isCapturable())
+			} else if (obstructingPiece.isWhite() != isWhite)
 			{
 				moves.add(currSquare);
 				continue;
@@ -266,8 +265,7 @@ public class Board
 						moves.add(currSquare);
 					}
 					// if can capture, add as move, but stop searching
-					else if (obstructingPiece.isWhite() != isWhite
-							&& obstructingPiece.isCapturable())
+					else if (obstructingPiece.isWhite() != isWhite)
 					{
 						moves.add(currSquare);
 						break;
@@ -337,10 +335,10 @@ public class Board
 		boolean isWhite = piece.isWhite();
 
 		Square[] corners = new Square[] {
-				squares.get((char) (startSquare.getFile() - 1) + "" + (startSquare.getRank()
-						+ (isWhite ? 1 : -1))),
-				squares.get((char) (startSquare.getFile() + 1) + "" + (startSquare.getRank()
-						+ (isWhite ? 1 : -1))) };
+				squares.get((char) (startSquare.getFile() - 1) + ""
+						+ (startSquare.getRank() + (isWhite ? 1 : -1))),
+				squares.get((char) (startSquare.getFile() + 1) + ""
+						+ (startSquare.getRank() + (isWhite ? 1 : -1))) };
 		for (int i = 0; i < 2; i++)
 		{
 			Square next = corners[i];
@@ -349,7 +347,7 @@ public class Board
 			{
 				AbstractPiece obstructingPiece = next.getPiece();
 				// if the square is capturable
-				if (obstructingPiece.isWhite() != isWhite && obstructingPiece.isCapturable())
+				if (obstructingPiece.isWhite() != isWhite)
 				{
 					moves.add(next);
 				}
@@ -392,9 +390,7 @@ public class Board
 					continue;
 				AbstractPiece obstructingPiece = s.getPiece();
 				// if the square is empty
-				if (obstructingPiece == null
-						|| (obstructingPiece.isWhite() != isWhite && obstructingPiece
-								.isCapturable()))
+				if (obstructingPiece == null || (obstructingPiece.isWhite() != isWhite))
 				{
 					moves.add(s);
 				}

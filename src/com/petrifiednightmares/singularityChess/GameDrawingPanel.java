@@ -34,6 +34,8 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 	private static Bitmap _drawingBitmap;
 	private static Canvas _drawingCanvas;
+	
+	GameActivity gameActivity;
 
 	Game game;
 
@@ -115,6 +117,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		game = new Game(this);
 		this.setOnTouchListener(this);
 	}
+	
+	public void setGameActivity(GameActivity g)
+	{
+		this.gameActivity=g;
+	}
 
 	@Override
 	public void onDraw(Canvas canvas)
@@ -166,6 +173,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		}
 
 		return true;
+	}
+	
+	public void displayMessage(String message)
+	{
+		gameActivity.displayMessage(message);
 	}
 
 }
@@ -236,4 +248,6 @@ class PanelThread extends Thread
 			}
 		}
 	}
+	
+
 }
