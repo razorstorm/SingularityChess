@@ -15,7 +15,7 @@ public class Knight extends AbstractPiece
 {
 	public Knight(Game game, Square location, boolean isWhite)
 	{
-		super(game, location, isWhite, isWhite ? "♘" : "♞", SingularBitmapFactory
+		super(game, location, isWhite, isWhite ? "\u2658" : "\u265E", SingularBitmapFactory
 				.buildScaledBitmap(game.getDrawingPanel().getResources(),
 						isWhite ? R.drawable.knight : R.drawable.black_knight,
 						GameDrawingPanel.PIECE_SIZE, GameDrawingPanel.PIECE_SIZE));

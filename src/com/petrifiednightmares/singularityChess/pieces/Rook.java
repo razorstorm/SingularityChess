@@ -15,7 +15,7 @@ public class Rook extends AbstractPiece
 {
 	public Rook(Game game, Square location, boolean isWhite)
 	{
-		super(game, location, isWhite, isWhite ? "♖" : "♜", SingularBitmapFactory
+		super(game, location, isWhite, isWhite ? "\u2656" : "\u265C", SingularBitmapFactory
 				.buildScaledBitmap(game.getDrawingPanel().getResources(), isWhite ? R.drawable.rook
 						: R.drawable.black_rook, GameDrawingPanel.PIECE_SIZE,
 						GameDrawingPanel.PIECE_SIZE));
