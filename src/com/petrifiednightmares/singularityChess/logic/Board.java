@@ -1,6 +1,7 @@
 package com.petrifiednightmares.singularityChess.logic;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class Board
 
 	public Board(Resources res, Game game)
 	{
-		NEEDS_REDRAW=true;
+		NEEDS_REDRAW = true;
 		this._res = res;
 		this._game = game;
 		squares = new HashMap<String, Square>();
@@ -327,29 +328,37 @@ public class Board
 		return moves;
 	}
 
-	// en passant n shit
+	// TODO fix captures
 	public Set<Square> getPawnCaptures(AbstractPiece piece)
 	{
 		Set<Square> moves = new HashSet<Square>();
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 
-		Square[] corners = new Square[] {
-				squares.get((char) (startSquare.getFile() - 1) + ""
-						+ (startSquare.getRank() + (isWhite ? 1 : -1))),
-				squares.get((char) (startSquare.getFile() + 1) + ""
-						+ (startSquare.getRank() + (isWhite ? 1 : -1))) };
-		for (int i = 0; i < 2; i++)
+		Square[] corners = startSquare.getCorners();
+		int[] cornerRanks = new int[4];
+		for (int i = 0; i < 4; i++)
+		{
+			if (corners[i] != null)
+				cornerRanks[i] = corners[i].getRank();
+		}
+
+		Arrays.sort(cornerRanks);
+
+		for (int i = 0; i < 4; i++)
 		{
 			Square next = corners[i];
 
 			if (next != null && next.hasPiece())
 			{
-				AbstractPiece obstructingPiece = next.getPiece();
-				// if the square is capturable
-				if (obstructingPiece.isWhite() != isWhite)
+				if (next.getRank() == cornerRanks[0] || next.getRank() == cornerRanks[1])
 				{
-					moves.add(next);
+					AbstractPiece obstructingPiece = next.getPiece();
+					// if the square is capturable
+					if (obstructingPiece.isWhite() != isWhite)
+					{
+						moves.add(next);
+					}
 				}
 			}
 		}
