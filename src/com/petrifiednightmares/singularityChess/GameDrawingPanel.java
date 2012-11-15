@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -27,14 +28,16 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	PanelThread _thread;
 	public static Bitmap background;
 
-	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE,TOP_PADDING,CIRCLE_RADIUS_DIFFERENCE;
+	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE, TOP_PADDING,
+			CIRCLE_RADIUS_DIFFERENCE,TOP_BAR_BOTTOM;
 
-	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint,flashPaint,kingThreatenPaint;
+	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint,
+			flashPaint, kingThreatenPaint, turnNamePaint,topBarPaint;
 	private static Bitmap _darkTexture, _lightTexture;
 
 	private static Bitmap _drawingBitmap;
 	private static Canvas _drawingCanvas;
-	
+
 	GameActivity gameActivity;
 
 	Game game;
@@ -54,8 +57,8 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		PADDING = 4 * UNIT;
 		PIECE_SIZE = 10 * UNIT;
 		TOP_PADDING = 10 * UNIT;
+		TOP_BAR_BOTTOM = 8 * UNIT;
 		CIRCLE_RADIUS_DIFFERENCE = 12 * UNIT;
-		
 
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
 		_drawingBitmap = Bitmap.createBitmap(WIDTH, HEIGHT, conf);
@@ -83,7 +86,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		highlightPaint.setColor(Color.rgb(36, 109, 218));
 		highlightPaint.setAlpha(200);
 		highlightPaint.setAntiAlias(true);
-		
+
 		flashPaint = new Paint();
 		flashPaint.setColor(Color.rgb(0, 255, 0));
 		flashPaint.setAlpha(200);
@@ -92,9 +95,9 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		attackPaint = new Paint();
 		attackPaint.setColor(Color.rgb(205, 92, 92));
 		attackPaint.setAntiAlias(true);
-		
+
 		kingThreatenPaint = new Paint();
-		kingThreatenPaint.setColor(Color.rgb(255, 127 , 0));
+		kingThreatenPaint.setColor(Color.rgb(255, 127, 0));
 		kingThreatenPaint.setAntiAlias(true);
 
 		piecePaint = new Paint();
@@ -106,21 +109,31 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		labelPaint = new Paint();
 		labelPaint.setColor(Color.RED);
 
+		topBarPaint = new Paint();
+		topBarPaint.setAntiAlias(true);
+		topBarPaint.setShader(new LinearGradient(0, 0, 0, getHeight(), Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
+		 
+		
+		turnNamePaint = new Paint();
+		turnNamePaint.setColor(Color.WHITE);
+		turnNamePaint.setShadowLayer(10, 0, 0, Color.BLACK);
+
 		background = BitmapFactory.decodeResource(getResources(), R.drawable.felt);
 		float scaleWidth = ((float) WIDTH) / background.getWidth();
 		float scaleHeight = ((float) HEIGHT) / background.getHeight();
 		Matrix matrix = new Matrix();
 		matrix.postScale(scaleWidth, scaleHeight);
 
-		background = Bitmap.createBitmap(background, 0, 0, background.getWidth(), background.getHeight(), matrix, false);
+		background = Bitmap.createBitmap(background, 0, 0, background.getWidth(),
+				background.getHeight(), matrix, false);
 
 		game = new Game(this);
 		this.setOnTouchListener(this);
 	}
-	
+
 	public void setGameActivity(GameActivity g)
 	{
-		this.gameActivity=g;
+		this.gameActivity = g;
 	}
 
 	@Override
@@ -174,7 +187,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		return true;
 	}
-	
+
 	public void displayMessage(String message)
 	{
 		gameActivity.displayMessage(message);
@@ -248,6 +261,5 @@ class PanelThread extends Thread
 			}
 		}
 	}
-	
 
 }

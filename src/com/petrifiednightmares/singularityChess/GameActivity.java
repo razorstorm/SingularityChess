@@ -19,6 +19,7 @@ public class GameActivity extends Activity {
         
         
         GameDrawingPanel gdp = (GameDrawingPanel) findViewById(R.id.canvas);
+        
         gdp.setGameActivity(this);
     }
 

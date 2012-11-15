@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
-import com.petrifiednightmares.singularityChess.MoveLogger;
+import com.petrifiednightmares.singularityChess.logging.MoveLogger;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Bishop;
 import com.petrifiednightmares.singularityChess.pieces.King;
@@ -15,6 +15,7 @@ import com.petrifiednightmares.singularityChess.pieces.Knight;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
 import com.petrifiednightmares.singularityChess.pieces.Queen;
 import com.petrifiednightmares.singularityChess.pieces.Rook;
+import com.petrifiednightmares.singularityChess.ui.TopBar;
 
 public class Game
 {
@@ -33,10 +34,14 @@ public class Game
 
 	public static boolean NEEDS_REDRAW;
 
+	private String whiteName, blackName;
+
+	TopBar topBar;
+
 	public Game(GameDrawingPanel drawingPanel)
 	{
 
-		NEEDS_REDRAW=true;
+		NEEDS_REDRAW = true;
 		this.drawingPanel = drawingPanel;
 		board = new Board(drawingPanel.getResources(), this);
 		ml = new MoveLogger();
@@ -46,6 +51,11 @@ public class Game
 		blackPieces = new AbstractPiece[16];
 		initializePieces(whitePieces, true);
 		initializePieces(blackPieces, false);
+
+		whiteName = "\u2659 White";
+		blackName = "\u265F Black";
+
+		this.topBar = new TopBar(whiteName);
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
@@ -149,12 +159,13 @@ public class Game
 		if (capturedPiece != null)
 			capturedPiece.revive(destinationLocation);
 		actor.setLocation(sourceLocation);
-		
+
 	}
 
 	private void switchTurns()
 	{
 		isWhiteTurn = !isWhiteTurn;
+		topBar.setTurnName(isWhiteTurn ? whiteName : blackName);
 	}
 
 	private boolean checkMoveValidity()
@@ -167,7 +178,8 @@ public class Game
 			{
 				if (p.checkingKing())
 				{
-					drawingPanel.displayMessage(p + " on square " + p.getLocation() + " is checking king");
+					drawingPanel.displayMessage(p + " on square " + p.getLocation()
+							+ " is checking king");
 					return false;
 				}
 			}
@@ -191,7 +203,7 @@ public class Game
 			canvas.drawBitmap(GameDrawingPanel.background, 0, 0, null);
 		}
 		board.onDraw(canvas);
-
+		topBar.onDraw(canvas);
 	}
 
 	public Board getBoard()
@@ -203,9 +215,9 @@ public class Game
 	{
 		return drawingPanel;
 	}
-	
-	
-	//**********************************Saving and restoring *********************************************************//
+
+	// **********************************Saving and restoring
+	// *********************************************************//
 
 	// *********************************UI related
 	// shits***********************************/

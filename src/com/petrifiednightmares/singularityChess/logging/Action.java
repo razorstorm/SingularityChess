@@ -1,4 +1,4 @@
-package com.petrifiednightmares.singularityChess;
+package com.petrifiednightmares.singularityChess.logging;
 
 import com.petrifiednightmares.singularityChess.logic.Square;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;

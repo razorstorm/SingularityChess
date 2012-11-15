@@ -1,4 +1,4 @@
-package com.petrifiednightmares.singularityChess;
+package com.petrifiednightmares.singularityChess.logging;
 
 import java.util.LinkedList;
 
