@@ -21,6 +21,7 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 
 import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		SurfaceHolder.Callback
@@ -32,8 +33,8 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 			CIRCLE_RADIUS_DIFFERENCE,TOP_BAR_BOTTOM;
 
 	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint,
-			flashPaint, kingThreatenPaint, turnNamePaint,topBarPaint;
-	private static Bitmap _darkTexture, _lightTexture;
+			flashPaint, kingThreatenPaint, turnNamePaint,topBarPaint,topBarTexturePaint;
+	private static Bitmap _darkTexture, _lightTexture,_topBarTexture;
 
 	private static Bitmap _drawingBitmap;
 	private static Canvas _drawingCanvas;
@@ -77,6 +78,16 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		BitmapShader lightShader = new BitmapShader(_lightTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 
+		_topBarTexture = SingularBitmapFactory.buildBitmap(getResources(), R.drawable.wild_oliva);
+		BitmapShader topBarShader = new BitmapShader(_topBarTexture, Shader.TileMode.REPEAT,
+				Shader.TileMode.REPEAT);
+		
+		topBarTexturePaint = new Paint();
+		topBarTexturePaint.setShader(topBarShader);
+		topBarTexturePaint.setAntiAlias(true);
+		topBarTexturePaint.setFilterBitmap(true);
+		
+		
 		lightPaint = new Paint();
 		lightPaint.setShader(lightShader);
 		lightPaint.setAntiAlias(true);
@@ -111,12 +122,14 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		topBarPaint = new Paint();
 		topBarPaint.setAntiAlias(true);
-		topBarPaint.setShader(new LinearGradient(0, 0, 0, getHeight(), Color.BLACK, Color.WHITE, Shader.TileMode.MIRROR));
+		topBarPaint.setShader(new LinearGradient(0, 0, 0, TOP_BAR_BOTTOM, Color.WHITE, Color.rgb(50,50,50), Shader.TileMode.MIRROR));
+		topBarPaint.setAlpha(150);
 		 
 		
 		turnNamePaint = new Paint();
 		turnNamePaint.setColor(Color.WHITE);
 		turnNamePaint.setShadowLayer(10, 0, 0, Color.BLACK);
+		turnNamePaint.setTextSize(20);
 
 		background = BitmapFactory.decodeResource(getResources(), R.drawable.felt);
 		float scaleWidth = ((float) WIDTH) / background.getWidth();

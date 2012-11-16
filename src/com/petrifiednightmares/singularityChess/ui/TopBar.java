@@ -27,9 +27,11 @@ public class TopBar
 			NEEDS_REDRAW = false;
 
 			c.drawRect(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.TOP_BAR_BOTTOM,
+					GameDrawingPanel.topBarTexturePaint);
+			c.drawRect(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.TOP_BAR_BOTTOM,
 					GameDrawingPanel.topBarPaint);
 
-			c.drawText(_turnName, 0, 0, GameDrawingPanel.turnNamePaint);
+			c.drawText(_turnName, 20, 20, GameDrawingPanel.turnNamePaint);
 		}
 	}
 }
