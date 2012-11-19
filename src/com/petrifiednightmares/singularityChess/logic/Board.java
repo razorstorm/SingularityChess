@@ -455,7 +455,6 @@ public class Board
 				}
 				else
 				{
-					System.out.println("no piece at "+s);
 				}
 
 				break;

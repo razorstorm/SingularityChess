@@ -48,8 +48,8 @@
     <array name="corners_b3">
         <item>a2</item>
         <item>b5</item>
+        <item>c4</item>
         <item>c2</item>
-        <item>a2</item>
     </array>
     <array name="corners_b4">
         <item>a3</item>
