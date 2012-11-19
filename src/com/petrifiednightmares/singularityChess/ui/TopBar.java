@@ -1,6 +1,7 @@
 package com.petrifiednightmares.singularityChess.ui;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 
@@ -8,15 +9,19 @@ public class TopBar
 {
 	private static boolean NEEDS_REDRAW;
 	private String _turnName;
+	Rect bounds;
+	private boolean _isWhite;
 
 	public TopBar(String turnName)
 	{
-		setTurnName(turnName);
+		setTurnName(turnName, true);
+		bounds = new Rect();
 	}
 
-	public void setTurnName(String turnName)
+	public void setTurnName(String turnName, boolean isWhite)
 	{
 		NEEDS_REDRAW = true;
+		this._isWhite = isWhite;
 		this._turnName = turnName + "'s turn";
 	}
 
@@ -31,7 +36,14 @@ public class TopBar
 			c.drawRect(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.TOP_BAR_BOTTOM,
 					GameDrawingPanel.topBarPaint);
 
-			c.drawText(_turnName, 20, 20, GameDrawingPanel.turnNamePaint);
+			GameDrawingPanel.turnNamePaint.getTextBounds(_turnName, 0, _turnName.length(), bounds);
+
+			c.drawCircle(30, GameDrawingPanel.TOP_BAR_BOTTOM / 2, bounds
+					.height() / 2, _isWhite ? GameDrawingPanel.turnNameWhitePaint
+					: GameDrawingPanel.turnNameBlackPaint);
+
+			c.drawText(_turnName, 30 + bounds.height(), GameDrawingPanel.TOP_BAR_BOTTOM / 2 + bounds.height() / 2,
+					GameDrawingPanel.turnNamePaint);
 		}
 	}
 }

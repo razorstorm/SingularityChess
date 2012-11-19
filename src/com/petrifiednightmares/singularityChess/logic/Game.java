@@ -52,8 +52,8 @@ public class Game
 		initializePieces(whitePieces, true);
 		initializePieces(blackPieces, false);
 
-		whiteName = "\u2659 White";
-		blackName = "\u265F Black";
+		whiteName = "White";
+		blackName = "Black";
 
 		this.topBar = new TopBar(whiteName);
 	}
@@ -165,7 +165,7 @@ public class Game
 	private void switchTurns()
 	{
 		isWhiteTurn = !isWhiteTurn;
-		topBar.setTurnName(isWhiteTurn ? whiteName : blackName);
+		topBar.setTurnName(isWhiteTurn ? whiteName : blackName,isWhiteTurn);
 	}
 
 	private boolean checkMoveValidity()

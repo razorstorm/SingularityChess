@@ -33,7 +33,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 			CIRCLE_RADIUS_DIFFERENCE,TOP_BAR_BOTTOM;
 
 	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint,
-			flashPaint, kingThreatenPaint, turnNamePaint,topBarPaint,topBarTexturePaint;
+			flashPaint, kingThreatenPaint, turnNamePaint,topBarPaint,topBarTexturePaint,turnNameWhitePaint,turnNameBlackPaint;
 	private static Bitmap _darkTexture, _lightTexture,_topBarTexture;
 
 	private static Bitmap _drawingBitmap;
@@ -128,8 +128,17 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		
 		turnNamePaint = new Paint();
 		turnNamePaint.setColor(Color.WHITE);
-		turnNamePaint.setShadowLayer(10, 0, 0, Color.BLACK);
-		turnNamePaint.setTextSize(20);
+		turnNamePaint.setShadowLayer(2, 0, 0, Color.BLACK);
+		turnNamePaint.setTextSize(25);
+		turnNamePaint.setAntiAlias(true);
+		
+		turnNameBlackPaint = new Paint();
+		turnNameBlackPaint.setColor(Color.BLACK);
+		turnNameBlackPaint.setAntiAlias(true);
+		
+		turnNameWhitePaint = new Paint();
+		turnNameWhitePaint.setColor(Color.WHITE);
+		turnNameWhitePaint.setAntiAlias(true);
 
 		background = BitmapFactory.decodeResource(getResources(), R.drawable.felt);
 		float scaleWidth = ((float) WIDTH) / background.getWidth();
