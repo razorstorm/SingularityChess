@@ -55,26 +55,6 @@ public class Square
 		this.rank = rank;
 	}
 
-	public void highlight()
-	{
-		_highlighted = true;
-		NEEDS_REDRAW = true;
-	}
-
-	public void unhighlight()
-	{
-		_highlighted = false;
-		_selected = false;
-		NEEDS_REDRAW = true;
-	}
-
-	public void select()
-	{
-		flashCount = 200;
-		_selected = true;
-		NEEDS_REDRAW = true;
-	}
-
 	public void setUpBitMap()
 	{
 
@@ -108,6 +88,16 @@ public class Square
 
 		Square._squareCanvas.restore();
 
+	}
+
+	public void setSides(Square[] sides)
+	{
+		this._sides = sides;
+	}
+
+	public void setCorners(Square[] corners)
+	{
+		this._corners = corners;
 	}
 
 	private void setupShape()
@@ -183,47 +173,6 @@ public class Square
 				GameDrawingPanel.labelPaint);
 	}
 
-	public void onDraw(Canvas c)
-	{
-		if (NEEDS_REDRAW)
-		{
-			NEEDS_REDRAW = false;
-
-			if (Preferences.SHOW_SQUARE_LABELS)
-			{
-				labelSquare(c);
-			}		
-
-			if (_highlighted)
-			{
-				_paint = GameDrawingPanel.highlightPaint;
-				if (_piece != null && _piece.isCapturable() == true)
-				{
-					_paint = GameDrawingPanel.attackPaint;
-				} else if (_piece != null && _piece.isCapturable() == false)
-				{
-					_paint = GameDrawingPanel.kingThreatenPaint;
-				}
-
-				drawSquare(c);
-			}
-			if (_selected)
-			{
-				flashSquare(c);
-			}
-
-			if (_piece != null)
-				_piece.onDraw(c, _shape.getX(), _shape.getY());
-		}
-		
-		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
-		{
-			NEEDS_REDRAW = true;
-			Board.NEEDS_REDRAW = true;
-			_showSquarePref = Preferences.SHOW_SQUARE_LABELS;
-		}
-	}
-
 	private void flashSquare(Canvas c)
 	{
 
@@ -262,6 +211,67 @@ public class Square
 			c.drawRect(0, _heightCenter, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT, _paint);
 
 		c.restore();
+	}
+
+	public void onDraw(Canvas c)
+	{
+		if (NEEDS_REDRAW)
+		{
+			NEEDS_REDRAW = false;
+	
+			if (Preferences.SHOW_SQUARE_LABELS)
+			{
+				labelSquare(c);
+			}		
+	
+			if (_highlighted)
+			{
+				_paint = GameDrawingPanel.highlightPaint;
+				if (_piece != null && _piece.isCapturable() == true)
+				{
+					_paint = GameDrawingPanel.attackPaint;
+				} else if (_piece != null && _piece.isCapturable() == false)
+				{
+					_paint = GameDrawingPanel.kingThreatenPaint;
+				}
+	
+				drawSquare(c);
+			}
+			if (_selected)
+			{
+				flashSquare(c);
+			}
+	
+			if (_piece != null)
+				_piece.onDraw(c, _shape.getX(), _shape.getY());
+		}
+		
+		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
+		{
+			NEEDS_REDRAW = true;
+			Board.NEEDS_REDRAW = true;
+			_showSquarePref = Preferences.SHOW_SQUARE_LABELS;
+		}
+	}
+
+	public void highlight()
+	{
+		_highlighted = true;
+		NEEDS_REDRAW = true;
+	}
+
+	public void unhighlight()
+	{
+		_highlighted = false;
+		_selected = false;
+		NEEDS_REDRAW = true;
+	}
+
+	public void select()
+	{
+		flashCount = 200;
+		_selected = true;
+		NEEDS_REDRAW = true;
 	}
 
 	public void removePiece()
@@ -349,16 +359,6 @@ public class Square
 	public int getRank()
 	{
 		return rank;
-	}
-
-	public void setSides(Square[] sides)
-	{
-		this._sides = sides;
-	}
-
-	public void setCorners(Square[] corners)
-	{
-		this._corners = corners;
 	}
 
 	public boolean hasPiece()

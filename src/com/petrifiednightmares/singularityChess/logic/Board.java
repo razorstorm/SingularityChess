@@ -438,7 +438,6 @@ public class Board
 			Square s = squares.get(key);
 			if (s.containsPoint(x, y))
 			{
-
 				if (_game.canMakeMove(s))
 				{
 					try
@@ -452,8 +451,7 @@ public class Board
 				} else if (s.hasPiece())
 				{
 					_game.select(s.getPiece());
-				}
-				else
+				} else
 				{
 				}
 
