@@ -1,9 +1,3 @@
 bin/*
 gen/*
-.project
-.settings/*
-.settings
-.project
-.classpath
-project.properties
 
