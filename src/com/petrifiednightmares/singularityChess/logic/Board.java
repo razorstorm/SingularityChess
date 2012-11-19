@@ -453,6 +453,10 @@ public class Board
 				{
 					_game.select(s.getPiece());
 				}
+				else
+				{
+					System.out.println("no piece at "+s);
+				}
 
 				break;
 			}
