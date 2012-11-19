@@ -10,6 +10,7 @@ import com.petrifiednightmares.singularityChess.geom.Circle;
 import com.petrifiednightmares.singularityChess.geom.ComplexShape;
 import com.petrifiednightmares.singularityChess.geom.Rectangle;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
+import com.petrifiednightmares.singularityChess.ui.Preferences;
 
 public class Square
 {
@@ -26,7 +27,8 @@ public class Square
 	private ComplexShape _shape;
 	private boolean _highlighted;
 	private boolean _selected;
-	
+	private boolean _showSquarePref;
+
 	double flashCount;
 
 	private static int _heightCenter = GameDrawingPanel.TOP_PADDING + 6
@@ -70,7 +72,7 @@ public class Square
 	{
 		flashCount = 200;
 		_selected = true;
-		NEEDS_REDRAW=true;
+		NEEDS_REDRAW = true;
 	}
 
 	public void setUpBitMap()
@@ -176,11 +178,9 @@ public class Square
 
 	private void labelSquare(Canvas c)
 	{
-
 		float textWidth = GameDrawingPanel.piecePaint.measureText(file + "" + rank);
 		c.drawText(file + "" + rank, _shape.getX() - textWidth / 2, _shape.getY(),
 				GameDrawingPanel.labelPaint);
-
 	}
 
 	public void onDraw(Canvas c)
@@ -188,16 +188,19 @@ public class Square
 		if (NEEDS_REDRAW)
 		{
 			NEEDS_REDRAW = false;
-			labelSquare(c);
+
+			if (Preferences.SHOW_SQUARE_LABELS)
+			{
+				labelSquare(c);
+			}		
 
 			if (_highlighted)
 			{
 				_paint = GameDrawingPanel.highlightPaint;
-				if (_piece != null && _piece.isCapturable()==true)
+				if (_piece != null && _piece.isCapturable() == true)
 				{
 					_paint = GameDrawingPanel.attackPaint;
-				}
-				else if(_piece!=null && _piece.isCapturable() == false)
+				} else if (_piece != null && _piece.isCapturable() == false)
 				{
 					_paint = GameDrawingPanel.kingThreatenPaint;
 				}
@@ -212,32 +215,35 @@ public class Square
 			if (_piece != null)
 				_piece.onDraw(c, _shape.getX(), _shape.getY());
 		}
+		
+		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
+		{
+			NEEDS_REDRAW = true;
+			Board.NEEDS_REDRAW = true;
+			_showSquarePref = Preferences.SHOW_SQUARE_LABELS;
+		}
 	}
 
 	private void flashSquare(Canvas c)
 	{
-		
+
 		_isWhite = ((file - 'a') + 1) % 2 == rank % 2;
 		_paint = GameDrawingPanel.darkPaint;
 		if (_isWhite)
 		{
 			_paint = GameDrawingPanel.lightPaint;
 		}
-		
+
 		drawSquare(c);
-		
-	
-		
-		
+
 		_paint = GameDrawingPanel.flashPaint;
-		_paint.setAlpha((int)(127*Math.sin(flashCount)+127));
-		
+		_paint.setAlpha((int) (127 * Math.sin(flashCount) + 127));
+
 		flashCount += 0.1;
-		
+
 		drawSquare(c);
-		
-		
-		NEEDS_REDRAW=true;
+
+		NEEDS_REDRAW = true;
 	}
 
 	private void drawSquare(Canvas c)

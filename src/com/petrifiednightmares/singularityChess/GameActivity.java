@@ -1,8 +1,11 @@
 package com.petrifiednightmares.singularityChess;
 
+import com.petrifiednightmares.singularityChess.ui.Preferences;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -29,6 +32,22 @@ public class GameActivity extends Activity {
         return true;
     }
     
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.pref_disp_square_labels:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    Preferences.SHOW_SQUARE_LABELS=false;
+                }
+                else {
+                    item.setChecked(true);
+                    Preferences.SHOW_SQUARE_LABELS=true;
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+         }
+    }
     
     public void displayMessage(String message)
     {

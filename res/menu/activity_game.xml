@@ -3,4 +3,9 @@
         android:title="@string/menu_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+     <item android:id="@+id/pref_disp_square_labels"
+        android:title="@string/pref_disp_square_labels"
+        android:orderInCategory="99"
+        android:showAsAction="never"
+        android:checkable="true" />
 </menu>
