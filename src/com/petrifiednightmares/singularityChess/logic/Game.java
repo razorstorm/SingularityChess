@@ -123,6 +123,7 @@ public class Game
 
 			AbstractPiece capturedPiece = selectedPiece.makeMove(target);
 
+			//check if king is in check
 			if (!checkMoveValidity())
 			{
 				unmakeMove(capturedPiece, selectedPiece, target, sourceLocation);

@@ -18,8 +18,8 @@ public class Square
 	private Square[] _sides;
 	private final char file; // rooks are on file a and h
 	private final int rank; // white on 1 black on 8
-	static Bitmap _squareBitMap;
-	private static Canvas _squareCanvas;
+	public static Bitmap squareBitMap;
+	public static Canvas squareCanvas;
 	private boolean _isWhite;
 	private Paint _paint;
 
@@ -31,8 +31,7 @@ public class Square
 
 	double flashCount;
 
-	private static int _heightCenter = GameDrawingPanel.TOP_PADDING + 6
-			* GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE;;
+	public static int heightCenter;
 
 	public boolean NEEDS_REDRAW = true;
 
@@ -45,6 +44,7 @@ public class Square
 	{
 		this.file = file;
 		this.rank = rank;
+		setCenter();
 	}
 
 	public Square(Square[] corners, Square[] sides, char file, int rank)
@@ -53,8 +53,13 @@ public class Square
 		this._sides = sides;
 		this.file = file;
 		this.rank = rank;
+		setCenter();
 	}
 
+	private void setCenter()
+	{
+		heightCenter = GameDrawingPanel.TOP_PADDING + 6 * GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE + GameDrawingPanel.BORDER_WIDTH;
+	}
 	public void setUpBitMap()
 	{
 
@@ -71,22 +76,16 @@ public class Square
 
 		// Create bitmaps if don't exist yet
 
-		if (Square._squareBitMap == null)
-			Square._squareBitMap = Bitmap.createBitmap(GameDrawingPanel.WIDTH,
-					GameDrawingPanel.HEIGHT, Bitmap.Config.ARGB_8888);
-		if (Square._squareCanvas == null)
-			Square._squareCanvas = new Canvas(_squareBitMap);
-
 		// draw onto bitmap
-		Square._squareCanvas.save();
+		Square.squareCanvas.save();
 
-		_shape.clip(Square._squareCanvas);
+		_shape.clip(Square.squareCanvas);
 
-		Square._squareCanvas.drawCircle(GameDrawingPanel.WIDTH / 2, _heightCenter,
+		Square.squareCanvas.drawCircle(GameDrawingPanel.WIDTH / 2, heightCenter,
 				(1 + fileOutwards() + rankOutwards()) * GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE,
 				_paint);
 
-		Square._squareCanvas.restore();
+		Square.squareCanvas.restore();
 
 	}
 
@@ -104,7 +103,7 @@ public class Square
 	{
 		_shape = new ComplexShape();
 
-		Circle outterCircle = new Circle(GameDrawingPanel.WIDTH / 2, _heightCenter,
+		Circle outterCircle = new Circle(GameDrawingPanel.WIDTH / 2, heightCenter,
 				(1 + fileOutwards() + rankOutwards()) * GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE);
 
 		_shape.addInsideShape(outterCircle);
@@ -113,18 +112,20 @@ public class Square
 
 		if (file <= 'd')
 		{
-			borderRect = new Rectangle(GameDrawingPanel.WIDTH / 2 - ('d' - file + 1) * 12
-					* GameDrawingPanel.UNIT, 0, GameDrawingPanel.WIDTH / 2 - ('d' - file) * 12
-					* GameDrawingPanel.UNIT, GameDrawingPanel.HEIGHT);
+			borderRect = new Rectangle(GameDrawingPanel.WIDTH / 2 - ('d' - file + 1)
+					* GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE, 0, GameDrawingPanel.WIDTH / 2
+					- ('d' - file) * GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE,
+					GameDrawingPanel.HEIGHT);
 		} else
 		{
-			borderRect = new Rectangle(GameDrawingPanel.WIDTH / 2 + (file - 'e') * 12
-					* GameDrawingPanel.UNIT, 0, GameDrawingPanel.WIDTH / 2 + (file - 'e' + 1) * 12
-					* GameDrawingPanel.UNIT, GameDrawingPanel.HEIGHT);
+			borderRect = new Rectangle(GameDrawingPanel.WIDTH / 2 + (file - 'e')
+					* GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE, 0, GameDrawingPanel.WIDTH / 2
+					+ (file - 'e' + 1) * GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE,
+					GameDrawingPanel.HEIGHT);
 		}
 		_shape.addInsideShape(borderRect);
 
-		Circle innerCircle = new Circle(GameDrawingPanel.WIDTH / 2, _heightCenter,
+		Circle innerCircle = new Circle(GameDrawingPanel.WIDTH / 2, heightCenter,
 				(fileOutwards() + rankOutwards()) * GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE);
 
 		_shape.addOutsideShape(innerCircle);
@@ -133,12 +134,12 @@ public class Square
 		Rectangle boardSideRect;
 		if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
 		{
-			boardSideRect = new Rectangle(0, 0, GameDrawingPanel.WIDTH, _heightCenter);
+			boardSideRect = new Rectangle(0, 0, GameDrawingPanel.WIDTH, heightCenter);
 			_shape.addInsideShape(boardSideRect);
 		} else if (rank < Board.boardRanks[file - 'a'] / 2 + 1)
 		{
 
-			boardSideRect = new Rectangle(0, _heightCenter, GameDrawingPanel.WIDTH,
+			boardSideRect = new Rectangle(0, heightCenter, GameDrawingPanel.WIDTH,
 					GameDrawingPanel.HEIGHT);
 			_shape.addInsideShape(boardSideRect);
 		}
@@ -202,13 +203,13 @@ public class Square
 		_shape.clip(c);
 
 		if (rank == Board.boardRanks[file - 'a'] / 2 + 1)
-			c.drawCircle(GameDrawingPanel.WIDTH / 2, _heightCenter,
+			c.drawCircle(GameDrawingPanel.WIDTH / 2, heightCenter,
 					(1 + fileOutwards() + rankOutwards())
 							* GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE, _paint);
 		else if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
-			c.drawRect(0, 0, GameDrawingPanel.WIDTH, _heightCenter, _paint);
+			c.drawRect(0, 0, GameDrawingPanel.WIDTH, heightCenter, _paint);
 		else
-			c.drawRect(0, _heightCenter, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT, _paint);
+			c.drawRect(0, heightCenter, GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT, _paint);
 
 		c.restore();
 	}
@@ -218,12 +219,12 @@ public class Square
 		if (NEEDS_REDRAW)
 		{
 			NEEDS_REDRAW = false;
-	
+
 			if (Preferences.SHOW_SQUARE_LABELS)
 			{
 				labelSquare(c);
-			}		
-	
+			}
+
 			if (_highlighted)
 			{
 				_paint = GameDrawingPanel.highlightPaint;
@@ -234,18 +235,18 @@ public class Square
 				{
 					_paint = GameDrawingPanel.kingThreatenPaint;
 				}
-	
+
 				drawSquare(c);
 			}
 			if (_selected)
 			{
 				flashSquare(c);
 			}
-	
+
 			if (_piece != null)
 				_piece.onDraw(c, _shape.getX(), _shape.getY());
 		}
-		
+
 		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
 		{
 			NEEDS_REDRAW = true;

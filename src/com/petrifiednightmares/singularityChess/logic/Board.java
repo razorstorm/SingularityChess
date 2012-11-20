@@ -7,9 +7,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.R;
@@ -107,6 +109,14 @@ public class Board
 
 	private void setupSquaresBitmap()
 	{
+		Square.squareBitMap = Bitmap.createBitmap(GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT,
+				Bitmap.Config.ARGB_8888);
+		Square.squareCanvas = new Canvas(Square.squareBitMap);
+
+		Square.squareCanvas.clipRect(GameDrawingPanel.PADDING, 0, GameDrawingPanel.WIDTH
+				- GameDrawingPanel.PADDING, GameDrawingPanel.HEIGHT);
+		Square.squareCanvas.drawCircle(GameDrawingPanel.WIDTH/2, Square.heightCenter, 6*GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE + GameDrawingPanel.BORDER_WIDTH, GameDrawingPanel.borderPaint);
+
 		// Have to draw from outwards in
 		for (char file = 'a'; file <= 'd'; file++)
 		{
@@ -412,7 +422,7 @@ public class Board
 	{
 		if (NEEDS_REDRAW)
 		{
-			canvas.drawBitmap(Square._squareBitMap, 0, 0, null);
+			canvas.drawBitmap(Square.squareBitMap, 0, 0, null);
 			NEEDS_REDRAW = false;
 		}
 		drawSquares(canvas);
