@@ -447,6 +447,7 @@ public class Board
 
 	public void onClick(int x, int y)
 	{
+		/*
 		// testing purpose only 
 		for(String key: squares.keySet())
 		{
@@ -468,8 +469,8 @@ public class Board
 				break;
 			}
 		}
+		*/
 		
-		/*
 		// cycle through Squares to do collision detection
 		// then figure out what to do depending on what the square's stats are.
 		for (String key : squares.keySet())
@@ -497,8 +498,7 @@ public class Board
 
 				break;
 			}
-		}
-		*/
+		}		
 	}
 
 	void unhighlightAllSquares()

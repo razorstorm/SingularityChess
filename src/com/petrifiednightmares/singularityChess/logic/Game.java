@@ -49,8 +49,8 @@ public class Game
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
-		//initializePieces(whitePieces, true);
-		//initializePieces(blackPieces, false);
+		initializePieces(whitePieces, true);
+		initializePieces(blackPieces, false);
 
 		whiteName = "White";
 		blackName = "Black";
