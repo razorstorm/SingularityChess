@@ -399,5 +399,9 @@ public class Square
 	{
 		return _piece != null;
 	}
-
+	
+	public boolean isHighlighted()
+	{
+		return this._highlighted;
+	}
 }
