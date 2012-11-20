@@ -148,6 +148,8 @@ public class Game
 			System.out.println(actionLog);
 
 			checkPostMoveConditions();
+			
+			SUI.pieceSound.start();
 
 			switchTurns();
 			unselect();

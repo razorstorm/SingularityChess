@@ -40,7 +40,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		Display disp = ((WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
 
-		SUI.setup(disp.getWidth(), disp.getHeight(),getResources());
+		SUI.setup(disp.getWidth(), disp.getHeight(),getResources(),getContext());
 		
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
 		_drawingBitmap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT, conf);
