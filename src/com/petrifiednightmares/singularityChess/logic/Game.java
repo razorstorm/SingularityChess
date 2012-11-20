@@ -109,15 +109,14 @@ public class Game
 
 	public boolean canMakeMove(Square target)
 	{
-		if (selectedPieceMoves != null && 
-			!selectedPieceMoves.contains(target) && target.isHighlighted())
+		if (selectedPieceMoves != null && !selectedPieceMoves.contains(target)
+				&& target.isHighlighted())
 		{
 			selectedPieceMoves.add(target);
 		}
-		
+
 		return selectedPiece != null && selectedPieceMoves != null
-				&& (selectedPieceMoves.contains(target))
-				&& selectedPiece.isWhite() == isWhiteTurn
+				&& (selectedPieceMoves.contains(target)) && selectedPiece.isWhite() == isWhiteTurn
 				&& (!target.hasPiece() || target.getPiece().isCapturable());
 	}
 
@@ -129,7 +128,7 @@ public class Game
 
 			AbstractPiece capturedPiece = selectedPiece.makeMove(target);
 
-			//check if king is in check
+			// check if king is in check
 			if (!checkMoveValidity())
 			{
 				unmakeMove(capturedPiece, selectedPiece, target, sourceLocation);
@@ -172,7 +171,7 @@ public class Game
 	private void switchTurns()
 	{
 		isWhiteTurn = !isWhiteTurn;
-		topBar.setTurnName(isWhiteTurn ? whiteName : blackName,isWhiteTurn);
+		topBar.setTurnName(isWhiteTurn ? whiteName : blackName, isWhiteTurn);
 	}
 
 	private boolean checkMoveValidity()
@@ -208,6 +207,18 @@ public class Game
 			NEEDS_REDRAW = false;
 			// draw background
 			canvas.drawBitmap(GameDrawingPanel.background, 0, 0, null);
+
+			canvas.save();
+			canvas.clipRect(GameDrawingPanel.PADDING, 0, GameDrawingPanel.WIDTH
+					- GameDrawingPanel.PADDING, GameDrawingPanel.HEIGHT);
+			canvas.drawCircle(GameDrawingPanel.WIDTH / 2, Square.heightCenter, 6
+					* GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE + GameDrawingPanel.BORDER_WIDTH,
+					GameDrawingPanel.borderShadowPaint);
+			
+			canvas.drawCircle(GameDrawingPanel.WIDTH / 2, Square.heightCenter, 6
+					* GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE + GameDrawingPanel.BORDER_WIDTH,
+					GameDrawingPanel.borderPaint);
+			canvas.restore();
 		}
 		board.onDraw(canvas);
 		topBar.onDraw(canvas);

@@ -114,10 +114,6 @@ public class Board
 				Bitmap.Config.ARGB_8888);
 		Square.squareCanvas = new Canvas(Square.squareBitMap);
 
-		Square.squareCanvas.clipRect(GameDrawingPanel.PADDING, 0, GameDrawingPanel.WIDTH
-				- GameDrawingPanel.PADDING, GameDrawingPanel.HEIGHT);
-		Square.squareCanvas.drawCircle(GameDrawingPanel.WIDTH/2, Square.heightCenter, 6*GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE + GameDrawingPanel.BORDER_WIDTH, GameDrawingPanel.borderShadowPaint);
-		Square.squareCanvas.drawCircle(GameDrawingPanel.WIDTH/2, Square.heightCenter, 6*GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE + GameDrawingPanel.BORDER_WIDTH, GameDrawingPanel.borderPaint);
 
 		// Have to draw from outwards in
 		for (char file = 'a'; file <= 'd'; file++)

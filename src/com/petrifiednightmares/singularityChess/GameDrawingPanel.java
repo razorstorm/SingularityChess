@@ -126,7 +126,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		piecePaint = new Paint();
 		piecePaint.setAntiAlias(true);
-		piecePaint.setShadowLayer(70, 3, 3, Color.BLACK);
+//		piecePaint.setShadowLayer(70, 3, 3, Color.BLACK);
 
 		labelPaint = new Paint();
 		labelPaint.setColor(Color.RED);
