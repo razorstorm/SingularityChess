@@ -109,9 +109,15 @@ public class Game
 
 	public boolean canMakeMove(Square target)
 	{
-		// need to make sure the king is not in check.
+		if (selectedPieceMoves != null && 
+			!selectedPieceMoves.contains(target) && target.isHighlighted())
+		{
+			selectedPieceMoves.add(target);
+		}
+		
 		return selectedPiece != null && selectedPieceMoves != null
-				&& selectedPieceMoves.contains(target) && selectedPiece.isWhite() == isWhiteTurn
+				&& (selectedPieceMoves.contains(target))
+				&& selectedPiece.isWhite() == isWhiteTurn
 				&& (!target.hasPiece() || target.getPiece().isCapturable());
 	}
 

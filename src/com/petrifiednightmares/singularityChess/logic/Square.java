@@ -20,6 +20,7 @@ public class Square
 	private final int rank; // white on 1 black on 8
 	public static Bitmap squareBitMap;
 	public static Canvas squareCanvas;
+	private Board _board;
 	private boolean _isWhite;
 	private Paint _paint;
 
@@ -40,19 +41,21 @@ public class Square
 		return _shape.containsPoint(x, y);
 	}
 
-	public Square(char file, int rank)
+	public Square(char file, int rank, Board board)
 	{
 		this.file = file;
 		this.rank = rank;
 		setCenter();
+		this._board = board;
 	}
 
-	public Square(Square[] corners, Square[] sides, char file, int rank)
+	public Square(Square[] corners, Square[] sides, char file, int rank, Board board)
 	{
 		this._corners = corners;
 		this._sides = sides;
 		this.file = file;
 		this.rank = rank;
+		this._board = board;
 		setCenter();
 	}
 
@@ -259,6 +262,10 @@ public class Square
 	{
 		_highlighted = true;
 		NEEDS_REDRAW = true;
+		if (this.getTag().compareTo("d12")==0)
+			this._board.getSquares().get("d6").highlight();
+		if (this.getTag().compareTo("e12")==0)
+			this._board.getSquares().get("e6").highlight();
 	}
 
 	public void unhighlight()
@@ -266,6 +273,10 @@ public class Square
 		_highlighted = false;
 		_selected = false;
 		NEEDS_REDRAW = true;
+		if (this.getTag().compareTo("d12")==0)
+			this._board.getSquares().get("d6").unhighlight();
+		if (this.getTag().compareTo("e12")==0)
+			this._board.getSquares().get("e6").unhighlight();
 	}
 
 	public void select()
@@ -279,12 +290,20 @@ public class Square
 	{
 		this._piece = null;
 		NEEDS_REDRAW = true;
+		if (this.getTag().compareTo("d12")==0)
+			this._board.getSquares().get("d6").removePiece();
+		if (this.getTag().compareTo("e12")==0)
+			this._board.getSquares().get("e6").removePiece();
 	}
 
 	public void addPiece(AbstractPiece piece)
 	{
 		this._piece = piece;
 		NEEDS_REDRAW = true;
+		if (this.getTag().compareTo("d12")==0)
+			this._board.getSquares().get("d6").addPiece(piece);
+		if (this.getTag().compareTo("e12")==0)
+			this._board.getSquares().get("e6").addPiece(piece);
 	}
 
 	public AbstractPiece getPiece()
@@ -297,13 +316,21 @@ public class Square
 		for (int i = 0; i < 4; i++)
 		{
 			Square s = _sides[i];
-			if (firstSide.equals(s))
+			if (firstSide.equals(s)
+				|| (this.getTag().compareTo("e12")!=0 && this.getTag().compareTo("e6")!=0 && 
+				    firstSide.getTag().compareTo("d12")==0 && s.getTag().compareTo("d6")==0)
+				|| (this.getTag().compareTo("e12")!=0 && this.getTag().compareTo("e6")!=0 && 
+				    firstSide.getTag().compareTo("d6")==0 && s.getTag().compareTo("d12")==0)
+				|| (this.getTag().compareTo("d12")!=0 && this.getTag().compareTo("d6")!=0 && 
+					firstSide.getTag().compareTo("e12")==0 && s.getTag().compareTo("e6")==0)
+				|| (this.getTag().compareTo("d12")!=0 && this.getTag().compareTo("d6")!=0 && 
+					firstSide.getTag().compareTo("e6")==0 && s.getTag().compareTo("e12")==0)
+				)
 			{
 				return _sides[(i + 2) % 4]; // might be null
 			}
 		}
-		throw new GameException("given side square " + firstSide
-				+ " is not adjacent to this square" + this);
+		throw new GameException("given side square " + firstSide + " is not adjacent to this square" + this);
 	}
 
 	// This is for knights, it gets the elbow shaped ones.
@@ -356,6 +383,14 @@ public class Square
 	{
 		return file;
 	}
+	
+
+	public String getTag()
+	{
+		String s = Character.toString(file);
+		s += Integer.toString(rank);
+		return s;
+	}
 
 	public int getRank()
 	{
@@ -366,5 +401,9 @@ public class Square
 	{
 		return _piece != null;
 	}
-
+	
+	public boolean isHighlighted()
+	{
+		return this._highlighted;
+	}
 }

@@ -17,12 +17,14 @@ import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
+import com.petrifiednightmares.singularityChess.pieces.Rook;
 
 public class Board
 {
 	// hashed by file and rank: "a3" for example.
 	private HashMap<String, Square> squares;
 	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
+	public static final int[] realBoardRanks = new int[] { 5, 7, 9, 12, 12, 9, 7, 5 };
 	private Game _game; // back reference to game
 	private Resources _res;
 	public static boolean NEEDS_REDRAW;
@@ -41,9 +43,9 @@ public class Board
 	{
 		for (char file = 'a'; file <= 'h'; file++)
 		{
-			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
+			for (int rank = 1; rank <= realBoardRanks[file - 'a']; rank++)
 			{
-				squares.put(file + "" + rank, new Square(file, rank));
+				squares.put(file + "" + rank, new Square(file, rank, this));
 			}
 		}
 		linkUpSquares();
@@ -54,7 +56,7 @@ public class Board
 	{
 		for (char file = 'a'; file <= 'h'; file++)
 		{
-			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
+			for (int rank = 1; rank <= realBoardRanks[file - 'a']; rank++)
 			{
 				int cornersId = 0;
 				try
@@ -149,6 +151,20 @@ public class Board
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 
+		if (startSquare.getTag().compareTo("d6")==0) 
+		{
+			piece.makeMove(squares.get("d12"));
+			moves.addAll(this.getSideMovements(piece, limit));
+			piece.makeMove(squares.get("d6"));
+		}
+
+		if (startSquare.getTag().compareTo("e6")==0) 
+		{
+			piece.makeMove(squares.get("e12"));
+			moves.addAll(this.getSideMovements(piece, limit));
+			piece.makeMove(squares.get("e6"));
+		}
+		
 		Square currSquare = startSquare;
 		Square prevSquare = startSquare;
 
@@ -441,10 +457,35 @@ public class Board
 
 	public void onClick(int x, int y)
 	{
+		/*
+		// testing purpose only 
+		for(String key: squares.keySet())
+		{
+			Square s = squares.get(key);
+			s.removePiece();
+		}
+
+		for(String key: squares.keySet())
+		{
+
+			if (key.compareTo("d12")==0 || key.compareTo("e12")==0)	continue;
+			Square s = squares.get(key);
+			if (s.containsPoint(x, y))
+			{
+				this.unhighlightAllSquares();
+				Rook testPiece = new Rook(this._game, s, true);
+				s.addPiece(testPiece);
+				_game.select(s.getPiece());
+				break;
+			}
+		}
+		*/
+		
 		// cycle through Squares to do collision detection
 		// then figure out what to do depending on what the square's stats are.
 		for (String key : squares.keySet())
 		{
+			if (key.compareTo("d12")==0 || key.compareTo("e12")==0)  continue;
 			Square s = squares.get(key);
 			if (s.containsPoint(x, y))
 			{
@@ -467,7 +508,7 @@ public class Board
 
 				break;
 			}
-		}
+		}		
 	}
 
 	void unhighlightAllSquares()
