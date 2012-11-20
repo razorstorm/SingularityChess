@@ -290,20 +290,28 @@ public class Square
 	{
 		this._piece = null;
 		NEEDS_REDRAW = true;
-		if (this.getTag().compareTo("d12")==0)
+		if (this.getTag().compareTo("d12")==0 && this._board.getSquares().get("d6").hasPiece())
 			this._board.getSquares().get("d6").removePiece();
-		if (this.getTag().compareTo("e12")==0)
+		if (this.getTag().compareTo("d6")==0  && this._board.getSquares().get("d12").hasPiece())
+			this._board.getSquares().get("d12").removePiece();
+		if (this.getTag().compareTo("e12")==0  && this._board.getSquares().get("e6").hasPiece())
 			this._board.getSquares().get("e6").removePiece();
+		if (this.getTag().compareTo("e6")==0  && this._board.getSquares().get("e12").hasPiece())
+			this._board.getSquares().get("e12").removePiece();
 	}
 
 	public void addPiece(AbstractPiece piece)
 	{
 		this._piece = piece;
 		NEEDS_REDRAW = true;
-		if (this.getTag().compareTo("d12")==0)
+		if (this.getTag().compareTo("d12")==0 && !this._board.getSquares().get("d6").hasPiece())
 			this._board.getSquares().get("d6").addPiece(piece);
-		if (this.getTag().compareTo("e12")==0)
+		if (this.getTag().compareTo("e12")==0 && !this._board.getSquares().get("e6").hasPiece())
 			this._board.getSquares().get("e6").addPiece(piece);
+		if (this.getTag().compareTo("d6")==0 && !this._board.getSquares().get("d12").hasPiece())
+			this._board.getSquares().get("d12").addPiece(piece);
+		if (this.getTag().compareTo("e6")==0 && !this._board.getSquares().get("e12").hasPiece())
+			this._board.getSquares().get("e12").addPiece(piece);
 	}
 
 	public AbstractPiece getPiece()
