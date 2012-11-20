@@ -199,6 +199,12 @@
         <item>e10</item>
         <item>c8</item>
     </array>
+    <array name="corners_d12">
+        <item>c5</item>
+        <item>e7</item>
+        <item>e6</item>
+        <item>e5</item>
+    </array>
 
     <!-- File e -->
     <array name="corners_e1">
@@ -267,7 +273,12 @@
         <item>0</item>
         <item>0</item>
     </array>
-
+    <array name="corners_e12">
+        <item>d5</item>
+        <item>d6</item>
+        <item>d7</item>
+        <item>f5</item>
+    </array>
     <!-- File f -->
     <array name="corners_f1">
         <item>e2</item>
