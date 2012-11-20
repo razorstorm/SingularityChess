@@ -33,7 +33,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint,
 			flashPaint, kingThreatenPaint, turnNamePaint, topBarPaint, topBarTexturePaint,
-			turnNameWhitePaint, turnNameBlackPaint,borderPaint;
+			turnNameWhitePaint, turnNameBlackPaint,borderPaint,borderShadowPaint;
 	private static Bitmap _darkTexture, _lightTexture, _topBarTexture,_borderTexture;
 
 	private static Bitmap _drawingBitmap;
@@ -55,11 +55,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		HEIGHT = disp.getHeight();
 		MIN_DIMENSION = Math.min(WIDTH, HEIGHT);
 		UNIT = (int) (MIN_DIMENSION / 100.0);
-		PADDING = 5 * UNIT;
+		PADDING = 5* UNIT;
 		PIECE_SIZE = 10 * UNIT;
 		TOP_PADDING = 70; // Derived from: 10 * UNIT;
 		TOP_BAR_BOTTOM = 56; // Derived from: 8 * UNIT;
-		CIRCLE_RADIUS_DIFFERENCE = 10 * UNIT; // 12
+		CIRCLE_RADIUS_DIFFERENCE = 11 * UNIT; // 12
 		BORDER_WIDTH = (WIDTH/2-PADDING) - 4*CIRCLE_RADIUS_DIFFERENCE;
 
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
@@ -100,7 +100,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		borderPaint.setShader(borderShader);
 		borderPaint.setAntiAlias(true);
 		borderPaint.setFilterBitmap(true);
-		borderPaint.setShadowLayer(20, 20, 20, Color.BLACK);
+//		borderPaint.setShadowLayer(20, 20, 20, Color.BLACK);
+		
+		borderShadowPaint = new Paint();
+		borderShadowPaint.setColor(Color.BLACK);
+		borderShadowPaint.setShadowLayer(40, 20, 20, Color.argb(200,0,0,0));
 
 		highlightPaint = new Paint();
 		highlightPaint.setColor(Color.rgb(36, 109, 218));

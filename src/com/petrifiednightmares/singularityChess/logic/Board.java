@@ -17,7 +17,6 @@ import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
-import com.petrifiednightmares.singularityChess.pieces.Rook;
 
 public class Board
 {
@@ -117,6 +116,7 @@ public class Board
 
 		Square.squareCanvas.clipRect(GameDrawingPanel.PADDING, 0, GameDrawingPanel.WIDTH
 				- GameDrawingPanel.PADDING, GameDrawingPanel.HEIGHT);
+		Square.squareCanvas.drawCircle(GameDrawingPanel.WIDTH/2, Square.heightCenter, 6*GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE + GameDrawingPanel.BORDER_WIDTH, GameDrawingPanel.borderShadowPaint);
 		Square.squareCanvas.drawCircle(GameDrawingPanel.WIDTH/2, Square.heightCenter, 6*GameDrawingPanel.CIRCLE_RADIUS_DIFFERENCE + GameDrawingPanel.BORDER_WIDTH, GameDrawingPanel.borderPaint);
 
 		// Have to draw from outwards in
