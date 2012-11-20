@@ -44,6 +44,16 @@ public class GameActivity extends Activity {
                     Preferences.SHOW_SQUARE_LABELS=true;
                 }
                 return true;
+            case R.id.pref_mute:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    Preferences.MUTE=false;
+                }
+                else {
+                    item.setChecked(true);
+                    Preferences.MUTE=true;
+                }
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
          }

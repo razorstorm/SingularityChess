@@ -15,6 +15,7 @@ import com.petrifiednightmares.singularityChess.pieces.Knight;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
 import com.petrifiednightmares.singularityChess.pieces.Queen;
 import com.petrifiednightmares.singularityChess.pieces.Rook;
+import com.petrifiednightmares.singularityChess.ui.Preferences;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 import com.petrifiednightmares.singularityChess.ui.TopBar;
 
@@ -149,8 +150,7 @@ public class Game
 
 			checkPostMoveConditions();
 			
-			SUI.pieceSound.start();
-
+			playPieceSounds();
 			switchTurns();
 			unselect();
 		} else
@@ -169,6 +169,14 @@ public class Game
 			capturedPiece.revive(destinationLocation);
 		actor.setLocation(sourceLocation);
 
+	}
+
+	private void playPieceSounds()
+	{
+		if (!Preferences.MUTE)
+		{
+			SUI.pieceSound.start();
+		}
 	}
 
 	private void switchTurns()
@@ -212,15 +220,12 @@ public class Game
 			canvas.drawBitmap(GameDrawingPanel.background, 0, 0, null);
 
 			canvas.save();
-			canvas.clipRect(SUI.PADDING, 0, SUI.WIDTH
-					- SUI.PADDING, SUI.HEIGHT);
-			canvas.drawCircle(SUI.WIDTH / 2, Square.heightCenter, 6
-					* SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH,
-					SUI.borderShadowPaint);
-			
-			canvas.drawCircle(SUI.WIDTH / 2, Square.heightCenter, 6
-					* SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH,
-					SUI.borderPaint);
+			canvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
+			canvas.drawCircle(SUI.WIDTH / 2, Square.heightCenter, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
+					+ SUI.BORDER_WIDTH, SUI.borderShadowPaint);
+
+			canvas.drawCircle(SUI.WIDTH / 2, Square.heightCenter, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
+					+ SUI.BORDER_WIDTH, SUI.borderPaint);
 			canvas.restore();
 		}
 		board.onDraw(canvas);
