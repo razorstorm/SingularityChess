@@ -5,10 +5,10 @@ import java.util.Set;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
+import com.petrifiednightmares.singularityChess.ui.SUI;
 
 public abstract class AbstractPiece
 {
@@ -52,7 +52,7 @@ public abstract class AbstractPiece
 
 	public void onDraw(Canvas c, int x, int y)
 	{
-		c.drawBitmap(_icon,x-_icon.getWidth()/2,y-_icon.getHeight()/2,GameDrawingPanel.piecePaint);
+		c.drawBitmap(_icon,x-_icon.getWidth()/2,y-_icon.getHeight()/2,SUI.piecePaint);
 	}
 
 	// returns captured pieces

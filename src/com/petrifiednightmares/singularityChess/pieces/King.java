@@ -3,12 +3,12 @@ package com.petrifiednightmares.singularityChess.pieces;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
+import com.petrifiednightmares.singularityChess.ui.SUI;
 import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class King extends AbstractPiece
@@ -17,8 +17,8 @@ public class King extends AbstractPiece
 	{
 		super(game, location, isWhite, isWhite ? "\u2654" : "\u265A", SingularBitmapFactory
 				.buildScaledBitmap(game.getDrawingPanel().getResources(), isWhite ? R.drawable.king
-						: R.drawable.black_king, GameDrawingPanel.PIECE_SIZE,
-						GameDrawingPanel.PIECE_SIZE));
+						: R.drawable.black_king, SUI.PIECE_SIZE,
+						SUI.PIECE_SIZE));
 	}
 
 	public Set<Square> getMoves() throws GameException

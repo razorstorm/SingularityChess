@@ -11,12 +11,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 
-import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
+import com.petrifiednightmares.singularityChess.ui.SUI;
 
 public class Board
 {
@@ -110,7 +110,7 @@ public class Board
 
 	private void setupSquaresBitmap()
 	{
-		Square.squareBitMap = Bitmap.createBitmap(GameDrawingPanel.WIDTH, GameDrawingPanel.HEIGHT,
+		Square.squareBitMap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT,
 				Bitmap.Config.ARGB_8888);
 		Square.squareCanvas = new Canvas(Square.squareBitMap);
 

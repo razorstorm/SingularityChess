@@ -3,8 +3,6 @@ package com.petrifiednightmares.singularityChess.ui;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import com.petrifiednightmares.singularityChess.GameDrawingPanel;
-
 public class TopBar
 {
 	private static boolean NEEDS_REDRAW;
@@ -31,19 +29,19 @@ public class TopBar
 		{
 			NEEDS_REDRAW = false;
 
-			c.drawRect(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.TOP_BAR_BOTTOM,
-					GameDrawingPanel.topBarTexturePaint);
-			c.drawRect(0, 0, GameDrawingPanel.WIDTH, GameDrawingPanel.TOP_BAR_BOTTOM,
-					GameDrawingPanel.topBarPaint);
+			c.drawRect(0, 0, SUI.WIDTH, SUI.TOP_BAR_BOTTOM,
+					SUI.topBarTexturePaint);
+			c.drawRect(0, 0, SUI.WIDTH, SUI.TOP_BAR_BOTTOM,
+					SUI.topBarPaint);
 
-			GameDrawingPanel.turnNamePaint.getTextBounds(_turnName, 0, _turnName.length(), bounds);
+			SUI.turnNamePaint.getTextBounds(_turnName, 0, _turnName.length(), bounds);
 
-			c.drawCircle(30, GameDrawingPanel.TOP_BAR_BOTTOM / 2, bounds
-					.height() / 2, _isWhite ? GameDrawingPanel.turnNameWhitePaint
-					: GameDrawingPanel.turnNameBlackPaint);
+			c.drawCircle(30, SUI.TOP_BAR_BOTTOM / 2, bounds
+					.height() / 2, _isWhite ? SUI.turnNameWhitePaint
+					: SUI.turnNameBlackPaint);
 
-			c.drawText(_turnName, 30 + bounds.height(), GameDrawingPanel.TOP_BAR_BOTTOM / 2 + bounds.height() / 2,
-					GameDrawingPanel.turnNamePaint);
+			c.drawText(_turnName, 30 + bounds.height(), SUI.TOP_BAR_BOTTOM / 2 + bounds.height() / 2,
+					SUI.turnNamePaint);
 		}
 	}
 }

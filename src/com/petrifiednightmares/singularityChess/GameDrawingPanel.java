@@ -3,13 +3,8 @@ package com.petrifiednightmares.singularityChess;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -20,7 +15,7 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 
 import com.petrifiednightmares.singularityChess.logic.Game;
-import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
+import com.petrifiednightmares.singularityChess.ui.SUI;
 
 public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		SurfaceHolder.Callback
@@ -28,13 +23,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	PanelThread _thread;
 	public static Bitmap background;
 
-	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE, TOP_PADDING,
-			CIRCLE_RADIUS_DIFFERENCE, TOP_BAR_BOTTOM, BORDER_WIDTH;
-
-	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint,
-			flashPaint, kingThreatenPaint, turnNamePaint, topBarPaint, topBarTexturePaint,
-			turnNameWhitePaint, turnNameBlackPaint,borderPaint,borderShadowPaint;
-	private static Bitmap _darkTexture, _lightTexture, _topBarTexture,_borderTexture;
+	
 
 	private static Bitmap _drawingBitmap;
 	private static Canvas _drawingCanvas;
@@ -51,109 +40,15 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		Display disp = ((WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
 
-		WIDTH = disp.getWidth();
-		HEIGHT = disp.getHeight();
-		MIN_DIMENSION = Math.min(WIDTH, HEIGHT);
-		UNIT = (int) (MIN_DIMENSION / 100.0);
-		PADDING = 5* UNIT;
-		PIECE_SIZE = 10 * UNIT;
-		TOP_PADDING = 70; // Derived from: 10 * UNIT;
-		TOP_BAR_BOTTOM = 56; // Derived from: 8 * UNIT;
-		CIRCLE_RADIUS_DIFFERENCE = 11 * UNIT; // 12
-		BORDER_WIDTH = (WIDTH/2-PADDING) - 4*CIRCLE_RADIUS_DIFFERENCE;
-
+		SUI.setup(disp.getWidth(), disp.getHeight(),getResources());
+		
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-		_drawingBitmap = Bitmap.createBitmap(WIDTH, HEIGHT, conf);
+		_drawingBitmap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT, conf);
 		_drawingCanvas = new Canvas(_drawingBitmap);
 
-		_darkTexture = BitmapFactory.decodeResource(getResources(), R.drawable.wood_1);
-		BitmapShader darkShader = new BitmapShader(_darkTexture, Shader.TileMode.REPEAT,
-				Shader.TileMode.REPEAT);
-
-		darkPaint = new Paint();
-		darkPaint.setShader(darkShader);
-		darkPaint.setAntiAlias(true);
-		darkPaint.setFilterBitmap(true);
-
-		_lightTexture = BitmapFactory.decodeResource(getResources(), R.drawable.retina_wood_1);
-		BitmapShader lightShader = new BitmapShader(_lightTexture, Shader.TileMode.REPEAT,
-				Shader.TileMode.REPEAT);
-
-		_topBarTexture = SingularBitmapFactory.buildBitmap(getResources(), R.drawable.wild_oliva);
-		BitmapShader topBarShader = new BitmapShader(_topBarTexture, Shader.TileMode.REPEAT,
-				Shader.TileMode.REPEAT);
-
-		topBarTexturePaint = new Paint();
-		topBarTexturePaint.setShader(topBarShader);
-		topBarTexturePaint.setAntiAlias(true);
-		topBarTexturePaint.setFilterBitmap(true);
-
-		lightPaint = new Paint();
-		lightPaint.setShader(lightShader);
-		lightPaint.setAntiAlias(true);
-		lightPaint.setFilterBitmap(true);
-		
-		_borderTexture = BitmapFactory.decodeResource(getResources(), R.drawable.leather);
-		BitmapShader borderShader = new BitmapShader(_borderTexture, Shader.TileMode.REPEAT,
-				Shader.TileMode.REPEAT);
-		borderPaint = new Paint();
-		borderPaint.setShader(borderShader);
-		borderPaint.setAntiAlias(true);
-		borderPaint.setFilterBitmap(true);
-//		borderPaint.setShadowLayer(20, 20, 20, Color.BLACK);
-		
-		borderShadowPaint = new Paint();
-		borderShadowPaint.setColor(Color.BLACK);
-		borderShadowPaint.setShadowLayer(40, 20, 20, Color.argb(200,0,0,0));
-
-		highlightPaint = new Paint();
-		highlightPaint.setColor(Color.rgb(36, 109, 218));
-		highlightPaint.setAlpha(200);
-		highlightPaint.setAntiAlias(true);
-
-		flashPaint = new Paint();
-		flashPaint.setColor(Color.rgb(0, 255, 0));
-		flashPaint.setAlpha(200);
-		flashPaint.setAntiAlias(true);
-
-		attackPaint = new Paint();
-		attackPaint.setColor(Color.rgb(205, 92, 92));
-		attackPaint.setAntiAlias(true);
-
-		kingThreatenPaint = new Paint();
-		kingThreatenPaint.setColor(Color.rgb(255, 127, 0));
-		kingThreatenPaint.setAntiAlias(true);
-
-		piecePaint = new Paint();
-		piecePaint.setAntiAlias(true);
-//		piecePaint.setShadowLayer(70, 3, 3, Color.BLACK);
-
-		labelPaint = new Paint();
-		labelPaint.setColor(Color.RED);
-
-		topBarPaint = new Paint();
-		topBarPaint.setAntiAlias(true);
-		topBarPaint.setShader(new LinearGradient(0, 0, 0, TOP_BAR_BOTTOM, Color.WHITE, Color.rgb(
-				50, 50, 50), Shader.TileMode.MIRROR));
-		topBarPaint.setAlpha(150);
-
-		turnNamePaint = new Paint();
-		turnNamePaint.setColor(Color.WHITE);
-		turnNamePaint.setShadowLayer(2, 0, 0, Color.BLACK);
-		turnNamePaint.setTextSize(25);
-		turnNamePaint.setAntiAlias(true);
-
-		turnNameBlackPaint = new Paint();
-		turnNameBlackPaint.setColor(Color.BLACK);
-		turnNameBlackPaint.setAntiAlias(true);
-
-		turnNameWhitePaint = new Paint();
-		turnNameWhitePaint.setColor(Color.WHITE);
-		turnNameWhitePaint.setAntiAlias(true);
-
 		background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-		float scaleWidth = ((float) WIDTH) / background.getWidth();
-		float scaleHeight = ((float) HEIGHT) / background.getHeight();
+		float scaleWidth = ((float) SUI.WIDTH) / background.getWidth();
+		float scaleHeight = ((float) SUI.HEIGHT) / background.getHeight();
 		Matrix matrix = new Matrix();
 		matrix.postScale(scaleWidth, scaleHeight);
 
