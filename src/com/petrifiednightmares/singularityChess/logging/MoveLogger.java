@@ -23,5 +23,4 @@ public class MoveLogger
 		actions.add(a);
 		return a.toString();
 	}
-
 }

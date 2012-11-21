@@ -2,9 +2,7 @@ package com.petrifiednightmares.singularityChess;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -16,14 +14,13 @@ import android.view.WindowManager;
 
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.ui.SUI;
+import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		SurfaceHolder.Callback
 {
 	PanelThread _thread;
 	public static Bitmap background;
-
-	
 
 	private static Bitmap _drawingBitmap;
 	private static Canvas _drawingCanvas;
@@ -40,20 +37,13 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		Display disp = ((WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
 
-		SUI.setup(disp.getWidth(), disp.getHeight(),getResources(),getContext());
-		
+		SUI.setup(disp.getWidth(), disp.getHeight(), getResources(), getContext());
+
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
 		_drawingBitmap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT, conf);
 		_drawingCanvas = new Canvas(_drawingBitmap);
 
-		background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
-		float scaleWidth = ((float) SUI.WIDTH) / background.getWidth();
-		float scaleHeight = ((float) SUI.HEIGHT) / background.getHeight();
-		Matrix matrix = new Matrix();
-		matrix.postScale(scaleWidth, scaleHeight);
-
-		background = Bitmap.createBitmap(background, 0, 0, background.getWidth(),
-				background.getHeight(), matrix, false);
+		background = SingularBitmapFactory.buildScaledBitmap(getResources(),R.drawable.background,SUI.WIDTH,SUI.HEIGHT);
 
 		game = new Game(this);
 		this.setOnTouchListener(this);
