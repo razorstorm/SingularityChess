@@ -152,8 +152,8 @@ public class SUI
 
 		boardLightingPaint = new Paint();
 		boardLightingPaint.setAntiAlias(true);
-		boardLightingPaint.setShader(new RadialGradient(WIDTH / 2f, (float) HEIGHT_CENTER,
-				4f * CIRCLE_RADIUS_DIFFERENCE, new int[] { Color.rgb(255, 255, 200), Color.argb(255,20,20,0) }, new float[] {
+		boardLightingPaint.setShader(new RadialGradient(WIDTH / 2f+6*UNIT, (float) HEIGHT_CENTER-4*UNIT,
+				5f * CIRCLE_RADIUS_DIFFERENCE, new int[] { Color.rgb(255, 255, 200), Color.argb(255,20,20,0) }, new float[] {
 						0.3f, 0.8f }, Shader.TileMode.MIRROR));
 		boardLightingPaint.setAlpha(80);
 	}
