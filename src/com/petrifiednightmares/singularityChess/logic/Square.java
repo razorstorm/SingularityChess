@@ -32,8 +32,6 @@ public class Square
 
 	double flashCount;
 
-	public static int heightCenter;
-
 	public boolean NEEDS_REDRAW = true;
 
 	public boolean containsPoint(int x, int y)
@@ -45,7 +43,6 @@ public class Square
 	{
 		this.file = file;
 		this.rank = rank;
-		setCenter();
 		this._board = board;
 	}
 
@@ -56,13 +53,8 @@ public class Square
 		this.file = file;
 		this.rank = rank;
 		this._board = board;
-		setCenter();
 	}
 
-	private void setCenter()
-	{
-		heightCenter = SUI.TOP_PADDING + 6 * SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH;
-	}
 	public void setUpBitMap()
 	{
 
@@ -84,7 +76,7 @@ public class Square
 
 		_shape.clip(Square.squareCanvas);
 
-		Square.squareCanvas.drawCircle(SUI.WIDTH / 2, heightCenter,
+		Square.squareCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
 				(1 + fileOutwards() + rankOutwards()) * SUI.CIRCLE_RADIUS_DIFFERENCE,
 				_paint);
 
@@ -106,7 +98,7 @@ public class Square
 	{
 		_shape = new ComplexShape();
 
-		Circle outterCircle = new Circle(SUI.WIDTH / 2, heightCenter,
+		Circle outterCircle = new Circle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
 				(1 + fileOutwards() + rankOutwards()) * SUI.CIRCLE_RADIUS_DIFFERENCE);
 
 		_shape.addInsideShape(outterCircle);
@@ -128,7 +120,7 @@ public class Square
 		}
 		_shape.addInsideShape(borderRect);
 
-		Circle innerCircle = new Circle(SUI.WIDTH / 2, heightCenter,
+		Circle innerCircle = new Circle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
 				(fileOutwards() + rankOutwards()) * SUI.CIRCLE_RADIUS_DIFFERENCE);
 
 		_shape.addOutsideShape(innerCircle);
@@ -137,12 +129,12 @@ public class Square
 		Rectangle boardSideRect;
 		if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
 		{
-			boardSideRect = new Rectangle(0, 0, SUI.WIDTH, heightCenter);
+			boardSideRect = new Rectangle(0, 0, SUI.WIDTH, SUI.HEIGHT_CENTER);
 			_shape.addInsideShape(boardSideRect);
 		} else if (rank < Board.boardRanks[file - 'a'] / 2 + 1)
 		{
 
-			boardSideRect = new Rectangle(0, heightCenter, SUI.WIDTH,
+			boardSideRect = new Rectangle(0, SUI.HEIGHT_CENTER, SUI.WIDTH,
 					SUI.HEIGHT);
 			_shape.addInsideShape(boardSideRect);
 		}
@@ -206,13 +198,13 @@ public class Square
 		_shape.clip(c);
 
 		if (rank == Board.boardRanks[file - 'a'] / 2 + 1)
-			c.drawCircle(SUI.WIDTH / 2, heightCenter,
+			c.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
 					(1 + fileOutwards() + rankOutwards())
 							* SUI.CIRCLE_RADIUS_DIFFERENCE, _paint);
 		else if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
-			c.drawRect(0, 0, SUI.WIDTH, heightCenter, _paint);
+			c.drawRect(0, 0, SUI.WIDTH, SUI.HEIGHT_CENTER, _paint);
 		else
-			c.drawRect(0, heightCenter, SUI.WIDTH, SUI.HEIGHT, _paint);
+			c.drawRect(0, SUI.HEIGHT_CENTER, SUI.WIDTH, SUI.HEIGHT, _paint);
 
 		c.restore();
 	}

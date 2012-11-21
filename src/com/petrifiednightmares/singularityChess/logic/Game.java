@@ -221,10 +221,10 @@ public class Game
 
 			canvas.save();
 			canvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
-			canvas.drawCircle(SUI.WIDTH / 2, Square.heightCenter, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
+			canvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
 					+ SUI.BORDER_WIDTH, SUI.borderShadowPaint);
 
-			canvas.drawCircle(SUI.WIDTH / 2, Square.heightCenter, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
+			canvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
 					+ SUI.BORDER_WIDTH, SUI.borderPaint);
 			canvas.restore();
 		}

@@ -435,6 +435,12 @@ public class Board
 		if (NEEDS_REDRAW)
 		{
 			canvas.drawBitmap(Square.squareBitMap, 0, 0, null);
+			//Draw lighting overlay
+			canvas.save();
+			canvas.clipRect(SUI.WIDTH/2 - 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, 0, SUI.WIDTH/2 + 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
+			canvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
+					, SUI.boardLightingPaint);
+			canvas.restore();
 			NEEDS_REDRAW = false;
 		}
 		drawSquares(canvas);

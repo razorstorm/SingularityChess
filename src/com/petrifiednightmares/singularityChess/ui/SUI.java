@@ -8,6 +8,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.media.MediaPlayer;
 
@@ -18,16 +19,17 @@ public class SUI
 {
 
 	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE, TOP_PADDING,
-			CIRCLE_RADIUS_DIFFERENCE, TOP_BAR_BOTTOM, BORDER_WIDTH;
+			CIRCLE_RADIUS_DIFFERENCE, TOP_BAR_BOTTOM, BORDER_WIDTH, HEIGHT_CENTER, BOTTOM;
 
 	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint,
 			flashPaint, kingThreatenPaint, turnNamePaint, topBarPaint, topBarTexturePaint,
-			turnNameWhitePaint, turnNameBlackPaint, borderPaint, borderShadowPaint;
+			turnNameWhitePaint, turnNameBlackPaint, borderPaint, borderShadowPaint,
+			boardLightingPaint;
 	private static Bitmap _darkTexture, _lightTexture, _topBarTexture, _borderTexture;
 
 	public static MediaPlayer pieceSound;
 
-	public static void setup(int width, int height, Resources r,Context c)
+	public static void setup(int width, int height, Resources r, Context c)
 	{
 		setupMeasurements(width, height);
 
@@ -50,6 +52,13 @@ public class SUI
 		TOP_BAR_BOTTOM = 56; // Derived from: 8 * UNIT;
 		CIRCLE_RADIUS_DIFFERENCE = 11 * UNIT; // 12
 		BORDER_WIDTH = (WIDTH / 2 - PADDING) - 4 * CIRCLE_RADIUS_DIFFERENCE;
+		HEIGHT_CENTER = TOP_PADDING + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH;
+		BOTTOM = HEIGHT_CENTER + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH + 60 + 10; // 60
+																						// from
+																						// shadow,
+																						// 10
+																						// from
+																						// padding
 	}
 
 	private static void setupSimplePaints()
@@ -141,6 +150,12 @@ public class SUI
 				50, 50, 50), Shader.TileMode.MIRROR));
 		topBarPaint.setAlpha(150);
 
+		boardLightingPaint = new Paint();
+		boardLightingPaint.setAntiAlias(true);
+		boardLightingPaint.setShader(new RadialGradient(WIDTH / 2f, (float) HEIGHT_CENTER,
+				4f * CIRCLE_RADIUS_DIFFERENCE, new int[] { Color.rgb(255, 255, 200), Color.argb(255,20,20,0) }, new float[] {
+						0.3f, 0.8f }, Shader.TileMode.MIRROR));
+		boardLightingPaint.setAlpha(80);
 	}
 
 	private static void setupAudio(Context c)
