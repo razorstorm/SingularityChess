@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 
@@ -12,7 +13,8 @@ public class ActionButton
 	private int _top, _left, _width, _height;
 	private String _title;
 	private RectF _rectf;
-	private Paint _horizontalPaint, _verticalPaint;
+	private Rect _textBounds;
+	private Paint _horizontalPaint, _verticalPaint,_textPaint;
 
 	public ActionButton(String title, int top, int left, int width, int height)
 	{
@@ -26,7 +28,7 @@ public class ActionButton
 		this._horizontalPaint.setAntiAlias(true);
 		this._horizontalPaint.setShader(new LinearGradient(_left, _top + _height / 2f, _left
 				+ _width, _top + _height / 2f, new int[] { Color.argb(200,30, 21, 9),
-				Color.argb(150,62,43,18),Color.argb(150,62,43,18), Color.argb(200,30, 21, 9),Color.WHITE },  new float[] { 0f, 0.2f, 0.8f , 1f-1.5f/_width, 1f }, Shader.TileMode.MIRROR));
+				Color.argb(150,62,43,18),Color.argb(150,62,43,18), Color.argb(200,30, 21, 9),Color.argb(20,255,255,255) },  new float[] { 0f, 0.2f, 0.8f , 1f-1.5f/_width, 1f }, Shader.TileMode.MIRROR));
 		this._horizontalPaint.setAlpha(150);
 
 		this._verticalPaint = new Paint();
@@ -36,12 +38,25 @@ public class ActionButton
 				Color.rgb(62,43,18),Color.rgb(62,43,18), Color.rgb(30, 21, 9), Color.WHITE}, new float[] { 0f, 0.25f, 0.75f , 1f-1.5f/_height,1f }, Shader.TileMode.MIRROR));
 		this._verticalPaint.setAlpha(150);
 
+		this._textPaint = new Paint();
+		this._textPaint.setAntiAlias(true);
+		this._textPaint.setColor(Color.WHITE);
+		this._textPaint.setTextSize(20);
+		this._textPaint.setAlpha(120);
+		this._textPaint.setShadowLayer(15, 0, 0, Color.argb(70,255,255,255));
+		
+		
+		_textBounds=new Rect();
+		_textPaint.getTextBounds(_title, 0, _title.length(), _textBounds);
 	}
 
 	public void onDraw(Canvas c)
 	{
 		c.drawRoundRect(_rectf, _height * 0.1f, _height * 0.1f, _verticalPaint);
 		c.drawRoundRect(_rectf, _height * 0.1f, _height * 0.1f, _horizontalPaint);
+		
+		
+		c.drawText(_title, _left + _width/2 - _textBounds.width()/2, _top + _height/2 + _textBounds.height()/2, _textPaint);
 	}
 
 	public boolean onClick(int x, int y)
