@@ -69,7 +69,7 @@ public class SUI
 
 		highlightPaint = new Paint();
 		highlightPaint.setColor(Color.rgb(36, 109, 218));
-		highlightPaint.setAlpha(200);
+		highlightPaint.setAlpha(150);
 		highlightPaint.setAntiAlias(true);
 
 		flashPaint = new Paint();
@@ -79,7 +79,7 @@ public class SUI
 
 		attackPaint = new Paint();
 		attackPaint.setColor(Color.rgb(205, 52, 52));
-		attackPaint.setAlpha(200);
+		attackPaint.setAlpha(150);
 		attackPaint.setAntiAlias(true);
 
 		kingThreatenPaint = new Paint();

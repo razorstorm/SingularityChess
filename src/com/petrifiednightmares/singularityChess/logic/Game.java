@@ -15,6 +15,7 @@ import com.petrifiednightmares.singularityChess.pieces.Knight;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
 import com.petrifiednightmares.singularityChess.pieces.Queen;
 import com.petrifiednightmares.singularityChess.pieces.Rook;
+import com.petrifiednightmares.singularityChess.ui.BottomBar;
 import com.petrifiednightmares.singularityChess.ui.Preferences;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 import com.petrifiednightmares.singularityChess.ui.TopBar;
@@ -39,6 +40,7 @@ public class Game
 	private String whiteName, blackName;
 
 	TopBar topBar;
+	BottomBar bottomBar;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
@@ -58,6 +60,7 @@ public class Game
 		blackName = "Black";
 
 		this.topBar = new TopBar(whiteName);
+		this.bottomBar = new BottomBar();
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
@@ -230,6 +233,7 @@ public class Game
 		}
 		board.onDraw(canvas);
 		topBar.onDraw(canvas);
+		bottomBar.onDraw(canvas);
 	}
 
 	public Board getBoard()
