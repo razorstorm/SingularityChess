@@ -30,7 +30,7 @@ public class Game
 
 	boolean isWhiteTurn;
 
-	AbstractPiece selectedPiece;
+	AbstractPiece selectedPiece,checkingPiece;
 	Set<Square> selectedPieceMoves;
 
 	MoveLogger ml;
@@ -137,6 +137,8 @@ public class Game
 			if (!checkMoveValidity())
 			{
 				unmakeMove(capturedPiece, selectedPiece, target, sourceLocation);
+				if(checkingPiece != null)
+					select(checkingPiece);
 				return false;
 			}
 			String actionLog;
@@ -200,7 +202,7 @@ public class Game
 				{
 					drawingPanel.displayMessage(p + " on square " + p.getLocation()
 							+ " is checking king");
-					select(p);
+					checkingPiece=p;
 					return false;
 				}
 			}
@@ -275,6 +277,7 @@ public class Game
 			selectedPieceMoves = piece.getMoves();
 			board.highlightMoves(selectedPieceMoves);
 			board.select(piece.getLocation());
+			checkingPiece=null;
 		} catch (GameException e)
 		{
 			// TODO Auto-generated catch block
