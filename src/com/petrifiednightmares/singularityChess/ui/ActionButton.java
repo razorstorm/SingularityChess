@@ -13,7 +13,7 @@ public class ActionButton
 	private int _top, _left, _width, _height;
 	private String _title;
 	private RectF _rectf;
-	private Rect _textBounds;
+	private Rect _textBounds,_mHeight;
 	private Paint _horizontalPaint, _verticalPaint,_textPaint;
 
 	public ActionButton(String title, int top, int left, int width, int height)
@@ -48,6 +48,8 @@ public class ActionButton
 		
 		_textBounds=new Rect();
 		_textPaint.getTextBounds(_title, 0, _title.length(), _textBounds);
+		_mHeight = new Rect();
+		_textPaint.getTextBounds("m",0,1,_mHeight);
 	}
 
 	public void onDraw(Canvas c)
@@ -56,7 +58,7 @@ public class ActionButton
 		c.drawRoundRect(_rectf, _height * 0.1f, _height * 0.1f, _horizontalPaint);
 		
 		
-		c.drawText(_title, _left + _width/2 - _textBounds.width()/2, _top + _height/2 + _textBounds.height()/2, _textPaint);
+		c.drawText(_title, _left + _width/2 - _textBounds.width()/2, _top + _height/2 + _mHeight.height()/2, _textPaint);
 	}
 
 	public boolean onClick(int x, int y)
