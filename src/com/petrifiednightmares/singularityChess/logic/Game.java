@@ -233,7 +233,7 @@ public class Game
 		}
 		board.onDraw(canvas);
 		topBar.onDraw(canvas);
-//		bottomBar.onDraw(canvas);
+		bottomBar.onDraw(canvas);
 	}
 
 	public Board getBoard()
