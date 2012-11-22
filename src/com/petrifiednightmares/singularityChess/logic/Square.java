@@ -394,7 +394,7 @@ public class Square
 
 	public int getRank()
 	{
-		return rank;
+		return rank==12?6:rank;
 	}
 
 	public boolean hasPiece()

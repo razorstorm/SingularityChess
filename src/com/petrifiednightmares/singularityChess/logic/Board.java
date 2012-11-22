@@ -1,7 +1,6 @@
 package com.petrifiednightmares.singularityChess.logic;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -110,10 +109,8 @@ public class Board
 
 	private void setupSquaresBitmap()
 	{
-		Square.squareBitMap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT,
-				Bitmap.Config.ARGB_8888);
+		Square.squareBitMap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT, Bitmap.Config.ARGB_8888);
 		Square.squareCanvas = new Canvas(Square.squareBitMap);
-
 
 		// Have to draw from outwards in
 		for (char file = 'a'; file <= 'd'; file++)
@@ -147,20 +144,20 @@ public class Board
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 
-		if (startSquare.getTag().compareTo("d6")==0) 
+		if (startSquare.getTag().compareTo("d6") == 0)
 		{
 			piece.makeMove(squares.get("d12"));
 			moves.addAll(this.getSideMovements(piece, limit));
 			piece.makeMove(squares.get("d6"));
 		}
 
-		if (startSquare.getTag().compareTo("e6")==0) 
+		if (startSquare.getTag().compareTo("e6") == 0)
 		{
 			piece.makeMove(squares.get("e12"));
 			moves.addAll(this.getSideMovements(piece, limit));
 			piece.makeMove(squares.get("e6"));
 		}
-		
+
 		Square currSquare = startSquare;
 		Square prevSquare = startSquare;
 
@@ -351,36 +348,38 @@ public class Board
 	}
 
 	// TODO fix captures
-	public Set<Square> getPawnCaptures(AbstractPiece piece)
+	public Set<Square> getPawnCaptures(AbstractPiece piece) throws GameException
 	{
 		Set<Square> moves = new HashSet<Square>();
 		Square startSquare = piece.getLocation();
 		boolean isWhite = piece.isWhite();
 
-		Square[] corners = startSquare.getCorners();
-		int[] cornerRanks = new int[4];
+		Square[] sides = startSquare.getSides();
+
+		Square next = null;
 		for (int i = 0; i < 4; i++)
 		{
-			if (corners[i] != null)
-				cornerRanks[i] = corners[i].getRank();
-		}
-
-		Arrays.sort(cornerRanks);
-
-		for (int i = 0; i < 4; i++)
-		{
-			Square next = corners[i];
-
-			if (next != null && next.hasPiece())
+			next = sides[i];
+			if (next != null && next.getFile() == startSquare.getFile()
+					&& next.getRank() == startSquare.getRank() + (isWhite ? 1 : -1))
 			{
-				if (next.getRank() == cornerRanks[0] || next.getRank() == cornerRanks[1])
+				break;
+			}
+		}
+		Square[] corners;
+		corners = next.getSides();
+
+		for (int i = 0; i < 2; i++)
+		{
+			next = corners[i];
+
+			if (next != null && next.getFile()!=startSquare.getFile() && next.hasPiece())
+			{
+				AbstractPiece obstructingPiece = next.getPiece();
+				// if the square is capturable
+				if (obstructingPiece.isWhite() != isWhite)
 				{
-					AbstractPiece obstructingPiece = next.getPiece();
-					// if the square is capturable
-					if (obstructingPiece.isWhite() != isWhite)
-					{
-						moves.add(next);
-					}
+					moves.add(next);
 				}
 			}
 		}
@@ -435,11 +434,12 @@ public class Board
 		if (NEEDS_REDRAW)
 		{
 			canvas.drawBitmap(Square.squareBitMap, 0, 0, null);
-			//Draw lighting overlay
+			// Draw lighting overlay
 			canvas.save();
-			canvas.clipRect(SUI.WIDTH/2 - 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, 0, SUI.WIDTH/2 + 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
-			canvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
-					, SUI.boardLightingPaint);
+			canvas.clipRect(SUI.WIDTH / 2 - 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, 0, SUI.WIDTH / 2 + 4
+					* SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
+			canvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE,
+					SUI.boardLightingPaint);
 			canvas.restore();
 			NEEDS_REDRAW = false;
 		}
@@ -460,34 +460,24 @@ public class Board
 	public void onClick(int x, int y)
 	{
 		/*
-		// testing purpose only 
-		for(String key: squares.keySet())
-		{
-			Square s = squares.get(key);
-			s.removePiece();
-		}
+		 * // testing purpose only for(String key: squares.keySet()) { Square s
+		 * = squares.get(key); s.removePiece(); }
+		 * 
+		 * for(String key: squares.keySet()) {
+		 * 
+		 * if (key.compareTo("d12")==0 || key.compareTo("e12")==0) continue;
+		 * Square s = squares.get(key); if (s.containsPoint(x, y)) {
+		 * this.unhighlightAllSquares(); Rook testPiece = new Rook(this._game,
+		 * s, true); s.addPiece(testPiece); _game.select(s.getPiece()); break; }
+		 * }
+		 */
 
-		for(String key: squares.keySet())
-		{
-
-			if (key.compareTo("d12")==0 || key.compareTo("e12")==0)	continue;
-			Square s = squares.get(key);
-			if (s.containsPoint(x, y))
-			{
-				this.unhighlightAllSquares();
-				Rook testPiece = new Rook(this._game, s, true);
-				s.addPiece(testPiece);
-				_game.select(s.getPiece());
-				break;
-			}
-		}
-		*/
-		
 		// cycle through Squares to do collision detection
 		// then figure out what to do depending on what the square's stats are.
 		for (String key : squares.keySet())
 		{
-			if (key.compareTo("d12")==0 || key.compareTo("e12")==0)  continue;
+			if (key.compareTo("d12") == 0 || key.compareTo("e12") == 0)
+				continue;
 			Square s = squares.get(key);
 			if (s.containsPoint(x, y))
 			{
@@ -510,7 +500,7 @@ public class Board
 
 				break;
 			}
-		}		
+		}
 	}
 
 	void unhighlightAllSquares()
