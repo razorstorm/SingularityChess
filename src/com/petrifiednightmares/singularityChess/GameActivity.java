@@ -1,6 +1,5 @@
 package com.petrifiednightmares.singularityChess;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,12 +8,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.petrifiednightmares.singularityChess.ui.Preferences;
-import com.petrifiednightmares.singularityChess.ui.SUI;
 
 public class GameActivity extends Activity implements OnClickListener
 {
