@@ -169,26 +169,45 @@ public class Square
 				SUI.labelPaint);
 	}
 
-	private void flashSquare(Canvas c)
+	public void onDraw(Canvas c)
 	{
-
-		_isWhite = ((file - 'a') + 1) % 2 == rank % 2;
-		_paint = SUI.darkPaint;
-		if (_isWhite)
+		if (NEEDS_REDRAW)
 		{
-			_paint = SUI.lightPaint;
+			NEEDS_REDRAW = false;
+	
+			if (Preferences.SHOW_SQUARE_LABELS)
+			{
+				labelSquare(c);
+			}
+	
+			if (_highlighted)
+			{
+				_paint = _board.getGame().isTurn()?SUI.highlightPaint:SUI.highlightPaint2;
+				if (_piece != null && _piece.isCapturable() == true)
+				{
+					_paint = _board.getGame().isTurn()?SUI.attackPaint:SUI.attackPaint2;
+				} else if (_piece != null && _piece.isCapturable() == false)
+				{
+					_paint = _board.getGame().isTurn()?SUI.kingThreatenPaint:SUI.kingThreatenPaint2;
+				}
+	
+				drawSquare(c);
+			}
+			if (_selected)
+			{
+				flashSquare(c);
+			}
+	
+			if (_piece != null)
+				_piece.onDraw(c, _shape.getX(), _shape.getY());
 		}
-
-		drawSquare(c);
-
-		_paint = SUI.flashPaint;
-		_paint.setAlpha((int) (127 * Math.sin(flashCount) + 127));
-
-		flashCount += 0.1;
-
-		drawSquare(c);
-
-		NEEDS_REDRAW = true;
+	
+		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
+		{
+			NEEDS_REDRAW = true;
+			Board.NEEDS_REDRAW = true;
+			_showSquarePref = Preferences.SHOW_SQUARE_LABELS;
+		}
 	}
 
 	private void drawSquare(Canvas c)
@@ -209,45 +228,26 @@ public class Square
 		c.restore();
 	}
 
-	public void onDraw(Canvas c)
+	private void flashSquare(Canvas c)
 	{
-		if (NEEDS_REDRAW)
+	
+		_isWhite = ((file - 'a') + 1) % 2 == rank % 2;
+		_paint = SUI.darkPaint;
+		if (_isWhite)
 		{
-			NEEDS_REDRAW = false;
-
-			if (Preferences.SHOW_SQUARE_LABELS)
-			{
-				labelSquare(c);
-			}
-
-			if (_highlighted)
-			{
-				_paint = SUI.highlightPaint;
-				if (_piece != null && _piece.isCapturable() == true)
-				{
-					_paint = SUI.attackPaint;
-				} else if (_piece != null && _piece.isCapturable() == false)
-				{
-					_paint = SUI.kingThreatenPaint;
-				}
-
-				drawSquare(c);
-			}
-			if (_selected)
-			{
-				flashSquare(c);
-			}
-
-			if (_piece != null)
-				_piece.onDraw(c, _shape.getX(), _shape.getY());
+			_paint = SUI.lightPaint;
 		}
-
-		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
-		{
-			NEEDS_REDRAW = true;
-			Board.NEEDS_REDRAW = true;
-			_showSquarePref = Preferences.SHOW_SQUARE_LABELS;
-		}
+	
+		drawSquare(c);
+	
+		_paint = _board.getGame().isTurn()?SUI.flashPaint:SUI.flashPaint2;
+		_paint.setAlpha((int) (127 * Math.sin(flashCount) + 127));
+	
+		flashCount += 0.1;
+	
+		drawSquare(c);
+	
+		NEEDS_REDRAW = true;
 	}
 
 	public void highlight()

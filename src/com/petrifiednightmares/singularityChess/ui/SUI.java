@@ -10,6 +10,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 
 import com.petrifiednightmares.singularityChess.R;
@@ -21,10 +22,10 @@ public class SUI
 	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE, TOP_PADDING,
 			CIRCLE_RADIUS_DIFFERENCE, TOP_BAR_BOTTOM, BORDER_WIDTH, HEIGHT_CENTER, BOTTOM;
 
-	public static Paint darkPaint, lightPaint, highlightPaint, attackPaint, piecePaint, labelPaint,
-			flashPaint, kingThreatenPaint, turnNamePaint, topBarPaint, topBarTexturePaint,
-			turnNameWhitePaint, turnNameBlackPaint, borderPaint, borderShadowPaint,
-			boardLightingPaint;
+	public static Paint darkPaint, lightPaint, highlightPaint, highlightPaint2, attackPaint,
+			attackPaint2, piecePaint, labelPaint, flashPaint, flashPaint2, kingThreatenPaint,
+			kingThreatenPaint2, turnNamePaint, topBarPaint, topBarTexturePaint, turnNameWhitePaint,
+			turnNameBlackPaint, borderPaint, borderShadowPaint, boardLightingPaint;
 	private static Bitmap _darkTexture, _lightTexture, _topBarTexture, _borderTexture;
 
 	public static MediaPlayer pieceSound;
@@ -53,12 +54,9 @@ public class SUI
 		CIRCLE_RADIUS_DIFFERENCE = 11 * UNIT; // 12
 		BORDER_WIDTH = (WIDTH / 2 - PADDING) - 4 * CIRCLE_RADIUS_DIFFERENCE;
 		HEIGHT_CENTER = TOP_PADDING + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH;
-		BOTTOM = HEIGHT_CENTER + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH + 60 + 10; // 60
-																						// from
-																						// shadow,
-																						// 10
-																						// from
-																						// padding
+
+		// 60 from shadow, 10 from padding
+		BOTTOM = HEIGHT_CENTER + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH + 60 + 10;
 	}
 
 	private static void setupSimplePaints()
@@ -72,25 +70,48 @@ public class SUI
 		highlightPaint.setAlpha(150);
 		highlightPaint.setAntiAlias(true);
 
+		highlightPaint2 = new Paint(highlightPaint);
+		highlightPaint2.setColor(Color.rgb(148, 156, 171));
+		highlightPaint2.setAlpha(150);
+		highlightPaint2.setAntiAlias(true);
+
 		flashPaint = new Paint();
 		flashPaint.setColor(Color.rgb(0, 255, 0));
 		flashPaint.setAlpha(200);
 		flashPaint.setAntiAlias(true);
+
+		flashPaint2 = new Paint();
+		flashPaint2.setColor(Color.rgb(101, 154, 101));
+		flashPaint2.setAlpha(200);
+		flashPaint2.setAntiAlias(true);
 
 		attackPaint = new Paint();
 		attackPaint.setColor(Color.rgb(205, 52, 52));
 		attackPaint.setAlpha(150);
 		attackPaint.setAntiAlias(true);
 
+		attackPaint2 = new Paint(attackPaint);
+		attackPaint2.setColor(Color.rgb(143, 112, 112));
+		attackPaint2.setAlpha(150);
+		attackPaint2.setAntiAlias(true);
+
 		kingThreatenPaint = new Paint();
 		kingThreatenPaint.setColor(Color.rgb(255, 127, 0));
 		kingThreatenPaint.setAntiAlias(true);
+
+		kingThreatenPaint2 = new Paint();
+		kingThreatenPaint2.setColor(Color.rgb(255, 127, 0));
+		kingThreatenPaint2.setAntiAlias(true);
+		kingThreatenPaint2.setAlpha(80);
 
 		piecePaint = new Paint();
 		piecePaint.setAntiAlias(true);
 
 		labelPaint = new Paint();
-		labelPaint.setColor(Color.RED);
+		labelPaint.setColor(Color.rgb(0, 0, 0));
+		labelPaint.setTextSize(15);
+		labelPaint.setTypeface(Typeface.create("courier new", Typeface.NORMAL));
+		labelPaint.setAntiAlias(true);
 
 		turnNamePaint = new Paint();
 		turnNamePaint.setColor(Color.WHITE);
@@ -152,9 +173,10 @@ public class SUI
 
 		boardLightingPaint = new Paint();
 		boardLightingPaint.setAntiAlias(true);
-		boardLightingPaint.setShader(new RadialGradient(WIDTH / 2f+6*UNIT, (float) HEIGHT_CENTER-4*UNIT,
-				5f * CIRCLE_RADIUS_DIFFERENCE, new int[] { Color.rgb(255, 255, 200), Color.argb(255,20,20,0) }, new float[] {
-						0.3f, 0.8f }, Shader.TileMode.MIRROR));
+		boardLightingPaint.setShader(new RadialGradient(WIDTH / 2f + 6 * UNIT,
+				(float) HEIGHT_CENTER - 4 * UNIT, 5f * CIRCLE_RADIUS_DIFFERENCE, new int[] {
+						Color.rgb(255, 255, 200), Color.argb(255, 20, 20, 0) }, new float[] { 0.3f,
+						0.8f }, Shader.TileMode.MIRROR));
 		boardLightingPaint.setAlpha(80);
 	}
 

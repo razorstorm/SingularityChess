@@ -152,7 +152,7 @@ public class Game
 			System.out.println(actionLog);
 
 			checkPostMoveConditions();
-			
+
 			playPieceSounds();
 			switchTurns();
 			unselect();
@@ -200,6 +200,7 @@ public class Game
 				{
 					drawingPanel.displayMessage(p + " on square " + p.getLocation()
 							+ " is checking king");
+					select(p);
 					return false;
 				}
 			}
@@ -212,6 +213,14 @@ public class Game
 	{
 		// check to see if theres a check, a checkmate, or a pawn can get
 		// promoted.
+	}
+
+	public boolean isTurn()
+	{
+		if (selectedPiece != null)
+			return isWhiteTurn == selectedPiece.isWhite();
+		else
+			return false;
 	}
 
 	public void onDraw(Canvas canvas)

@@ -529,4 +529,9 @@ public class Board
 	{
 		return squares;
 	}
+	
+	public Game getGame()
+	{
+		return _game;
+	}
 }
