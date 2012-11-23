@@ -1,6 +1,7 @@
 package com.petrifiednightmares.singularityChess.ui;
 
 import android.graphics.Canvas;
+import android.view.HapticFeedbackConstants;
 
 import com.petrifiednightmares.singularityChess.GameActivity;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
@@ -55,6 +56,7 @@ public class BottomBar
 					System.out.println("asdf");
 					// expand menu
 					((GameActivity) _gdp.getContext()).openOptionsMenu();
+					_gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 					break;
 				}
 			}

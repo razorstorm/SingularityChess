@@ -50,6 +50,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		game = new Game(this);
 		this.setOnTouchListener(this);
+		
 	}
 
 	public void setGameActivity(GameActivity g)
