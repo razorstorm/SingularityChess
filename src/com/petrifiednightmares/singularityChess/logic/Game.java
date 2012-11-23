@@ -36,6 +36,7 @@ public class Game
 	MoveLogger ml;
 
 	public static boolean NEEDS_REDRAW;
+	private static boolean PROMPT_WAITING;
 
 	private String whiteName, blackName;
 
@@ -60,7 +61,7 @@ public class Game
 		blackName = "Black";
 
 		this.topBar = new TopBar(whiteName);
-		this.bottomBar = new BottomBar();
+		this.bottomBar = new BottomBar(drawingPanel);
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
@@ -127,6 +128,9 @@ public class Game
 
 	public boolean makeMove(Square target) throws InvalidMoveException
 	{
+		if(PROMPT_WAITING)
+			return false;
+		
 		if (selectedPiece != null && selectedPieceMoves.contains(target))
 		{
 			Square sourceLocation = selectedPiece.getLocation();
@@ -215,6 +219,14 @@ public class Game
 	{
 		// check to see if theres a check, a checkmate, or a pawn can get
 		// promoted.
+		
+		if(selectedPiece instanceof Pawn)
+		{
+			if(Board.isEndOfFile(selectedPiece.getLocation()))
+			{
+				//can be promoted
+			}
+		}
 	}
 
 	public boolean isTurn()
@@ -266,6 +278,7 @@ public class Game
 	public void onClick(int x, int y)
 	{
 		board.onClick(x, y);
+		bottomBar.onClick(x, y);
 	}
 
 	public void select(AbstractPiece piece)

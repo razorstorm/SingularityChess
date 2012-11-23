@@ -26,17 +26,20 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	private static Canvas _drawingCanvas;
 
 	GameActivity gameActivity;
+	
+	private Context _context;
 
 	Game game;
 
 	public GameDrawingPanel(Context context, AttributeSet aSet)
 	{
 		super(context, aSet);
+		this._context=context;
 		getHolder().addCallback(this);
 
 		Display disp = ((WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
-
+		
 		SUI.setup(disp.getWidth(), disp.getHeight(), getResources(), getContext());
 
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
@@ -109,6 +112,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	public void displayMessage(String message)
 	{
 		gameActivity.displayMessage(message);
+	}
+
+	public Context get_context()
+	{
+		return _context;
 	}
 
 }

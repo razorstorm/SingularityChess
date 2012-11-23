@@ -2,29 +2,63 @@ package com.petrifiednightmares.singularityChess.ui;
 
 import android.graphics.Canvas;
 
+import com.petrifiednightmares.singularityChess.GameActivity;
+import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+
 public class BottomBar
 {
 	private static boolean NEEDS_REDRAW;
 	ActionButton[] buttons;
-	private int _barWidth, _space,_buttonWidth;
-	
-	public BottomBar()
+	private int _barWidth, _space, _buttonWidth, _top, _height, _thinButtonWidth;
+
+	private GameDrawingPanel _gdp;
+
+	public BottomBar(GameDrawingPanel gdp)
 	{
-		_barWidth = SUI.WIDTH - SUI.PADDING*2;
-		_space = _barWidth/3;
+		this._gdp = gdp;
+
+		_barWidth = SUI.WIDTH - SUI.PADDING * 2;
 		_buttonWidth = SUI.UNIT * 25;
-		
-		NEEDS_REDRAW=true;
-		buttons = new ActionButton[3];
-		buttons[0] = new ActionButton("Show Moves", SUI.HEIGHT - SUI.PADDING - SUI.UNIT * 10, SUI.PADDING+_space*0 + (_space-_buttonWidth)/2,
-				_buttonWidth, SUI.UNIT * 10);
-		
-		buttons[1] = new ActionButton("Show Captures", SUI.HEIGHT - SUI.PADDING - SUI.UNIT * 10, SUI.PADDING+_space*1 + (_space-_buttonWidth)/2,
-				_buttonWidth, SUI.UNIT * 10);
-		
-		buttons[2] = new ActionButton("Surrender", SUI.HEIGHT - SUI.PADDING - SUI.UNIT * 10, SUI.PADDING+_space*2 + (_space-_buttonWidth)/2,
-				_buttonWidth, SUI.UNIT * 10);
-		
+		_thinButtonWidth = SUI.UNIT * 8;
+		_height = SUI.UNIT * 10;
+		_top = SUI.HEIGHT - SUI.PADDING - _height;
+
+		_space = (_barWidth - 3 * _buttonWidth - _thinButtonWidth) / 6;
+
+		NEEDS_REDRAW = true;
+		buttons = new ActionButton[4];
+		buttons[0] = new ActionButton("Show Moves", _top, SUI.PADDING, _buttonWidth, _height);
+
+		buttons[1] = new ActionButton("Show Captures", _top, SUI.PADDING + _space * 2
+				+ _buttonWidth, _buttonWidth, _height);
+
+		buttons[2] = new ActionButton("Surrender", _top, SUI.PADDING + _space * 4 + _buttonWidth
+				* 2, _buttonWidth, _height);
+
+		buttons[3] = new ActionButton("⋮ ", _top, SUI.PADDING + _space * 6 + _buttonWidth * 3,
+				_thinButtonWidth, _height); // TODO find icon from that thing we
+											// used for rails to find a
+											// paragraph icon
+
+	}
+
+	public void onClick(int x, int y)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			ActionButton b = buttons[i];
+			if (b.onClick(x, y))
+			{
+				switch (i)
+				{
+				case 3:
+					System.out.println("asdf");
+					// expand menu
+					((GameActivity) _gdp.getContext()).openOptionsMenu();
+					break;
+				}
+			}
+		}
 	}
 
 	public void onDraw(Canvas c)
@@ -32,8 +66,8 @@ public class BottomBar
 		if (NEEDS_REDRAW)
 		{
 			NEEDS_REDRAW = false;
-			
-			for(ActionButton b: buttons)
+
+			for (ActionButton b : buttons)
 			{
 				b.onDraw(c);
 			}

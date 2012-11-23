@@ -373,7 +373,7 @@ public class Board
 		{
 			next = corners[i];
 
-			if (next != null && next.getFile()!=startSquare.getFile() && next.hasPiece())
+			if (next != null && next.getFile() != startSquare.getFile() && next.hasPiece())
 			{
 				AbstractPiece obstructingPiece = next.getPiece();
 				// if the square is capturable
@@ -529,9 +529,19 @@ public class Board
 	{
 		return squares;
 	}
-	
+
 	public Game getGame()
 	{
 		return _game;
+	}
+
+	public static boolean isEndOfFile(Square location)
+	{
+		if (location.getRank() == 1)
+			return true;
+		else if (location.getRank() == boardRanks[location.getFile()])
+			return true;
+		else
+			return false;
 	}
 }
