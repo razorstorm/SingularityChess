@@ -8,24 +8,24 @@ import android.graphics.Region;
 public class Circle extends AbstractShape
 {
 
-	int _centerX,_centerY;
-	int _radius;
+	int centerX,centerY;
+	int radius;
 	Path path;
 	
 	public Circle(int centerX, int centerY, int radius)
 	{
-		this._centerX=centerX;
-		this._centerY=centerY;
-		this._radius=radius;
+		this.centerX=centerX;
+		this.centerY=centerY;
+		this.radius=radius;
 		
 		path = new Path();
-		path.addCircle(_centerX,_centerY,_radius,Direction.CW);
+		path.addCircle(centerX,centerY,radius,Direction.CW);
 	}
 
 	@Override
 	public boolean containsPoint(int x, int y)
 	{
-		return distance(x,y,_centerX,_centerY)<=_radius;
+		return distance(x,y,centerX,centerY)<=radius;
 	}
 	
 	private int distance(int x1,int y1,int x2, int y2)

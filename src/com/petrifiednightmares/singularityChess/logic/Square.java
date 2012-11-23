@@ -3,11 +3,11 @@ package com.petrifiednightmares.singularityChess.logic;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.geom.Circle;
 import com.petrifiednightmares.singularityChess.geom.ComplexShape;
-import com.petrifiednightmares.singularityChess.geom.Rectangle;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.ui.Preferences;
 import com.petrifiednightmares.singularityChess.ui.SUI;
@@ -69,18 +69,7 @@ public class Square
 
 		setupShape();
 
-		// Create bitmaps if don't exist yet
-
-		// draw onto bitmap
-		Square.squareCanvas.save();
-
-		_shape.clip(Square.squareCanvas);
-
-		Square.squareCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
-				(1 + fileOutwards() + rankOutwards()) * SUI.CIRCLE_RADIUS_DIFFERENCE,
-				_paint);
-
-		Square.squareCanvas.restore();
+		_shape.onDraw(Square.squareCanvas, _paint);
 
 	}
 
@@ -101,43 +90,40 @@ public class Square
 		Circle outterCircle = new Circle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
 				(1 + fileOutwards() + rankOutwards()) * SUI.CIRCLE_RADIUS_DIFFERENCE);
 
-		_shape.addInsideShape(outterCircle);
+		_shape.setOutterCircle(outterCircle);
 
-		Rectangle borderRect;
+		Rect borderRect;
 
+		//determine left or right side of board
 		if (file <= 'd')
 		{
-			borderRect = new Rectangle(SUI.WIDTH / 2 - ('d' - file + 1)
-					* SUI.CIRCLE_RADIUS_DIFFERENCE, 0, SUI.WIDTH / 2
-					- ('d' - file) * SUI.CIRCLE_RADIUS_DIFFERENCE,
-					SUI.HEIGHT);
+			borderRect = new Rect(SUI.WIDTH / 2 - ('d' - file + 1) * SUI.CIRCLE_RADIUS_DIFFERENCE,
+					0, SUI.WIDTH / 2 - ('d' - file) * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
+			_shape.setRight(false);
 		} else
 		{
-			borderRect = new Rectangle(SUI.WIDTH / 2 + (file - 'e')
-					* SUI.CIRCLE_RADIUS_DIFFERENCE, 0, SUI.WIDTH / 2
-					+ (file - 'e' + 1) * SUI.CIRCLE_RADIUS_DIFFERENCE,
-					SUI.HEIGHT);
+			borderRect = new Rect(SUI.WIDTH / 2 + (file - 'e') * SUI.CIRCLE_RADIUS_DIFFERENCE, 0,
+					SUI.WIDTH / 2 + (file - 'e' + 1) * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
+			_shape.setRight(true);
 		}
-		_shape.addInsideShape(borderRect);
+		_shape.setBoundingRect(borderRect);
 
+		//build inner circle
 		Circle innerCircle = new Circle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
 				(fileOutwards() + rankOutwards()) * SUI.CIRCLE_RADIUS_DIFFERENCE);
 
-		_shape.addOutsideShape(innerCircle);
+		_shape.setInnerCircle(innerCircle);
 
 		// Determines which side of the board the square is on
-		Rectangle boardSideRect;
 		if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
 		{
-			boardSideRect = new Rectangle(0, 0, SUI.WIDTH, SUI.HEIGHT_CENTER);
-			_shape.addInsideShape(boardSideRect);
+			_shape.setTop(1);
 		} else if (rank < Board.boardRanks[file - 'a'] / 2 + 1)
 		{
-
-			boardSideRect = new Rectangle(0, SUI.HEIGHT_CENTER, SUI.WIDTH,
-					SUI.HEIGHT);
-			_shape.addInsideShape(boardSideRect);
+			_shape.setTop(0);
 		}
+
+		_shape.setupPath();
 
 	}
 
@@ -165,8 +151,7 @@ public class Square
 	private void labelSquare(Canvas c)
 	{
 		float textWidth = SUI.piecePaint.measureText(file + "" + rank);
-		c.drawText(file + "" + rank, _shape.getX() - textWidth / 2, _shape.getY(),
-				SUI.labelPaint);
+		c.drawText(file + "" + rank, _shape.getX() - textWidth / 2, _shape.getY(), SUI.labelPaint);
 	}
 
 	public void onDraw(Canvas c)
@@ -174,34 +159,35 @@ public class Square
 		if (NEEDS_REDRAW)
 		{
 			NEEDS_REDRAW = false;
-	
+
 			if (Preferences.SHOW_SQUARE_LABELS)
 			{
 				labelSquare(c);
 			}
-	
+
 			if (_highlighted)
 			{
-				_paint = _board.getGame().isTurn()?SUI.highlightPaint:SUI.highlightPaint2;
+				_paint = _board.getGame().isTurn() ? SUI.highlightPaint : SUI.highlightPaint2;
 				if (_piece != null && _piece.isCapturable() == true)
 				{
-					_paint = _board.getGame().isTurn()?SUI.attackPaint:SUI.attackPaint2;
+					_paint = _board.getGame().isTurn() ? SUI.attackPaint : SUI.attackPaint2;
 				} else if (_piece != null && _piece.isCapturable() == false)
 				{
-					_paint = _board.getGame().isTurn()?SUI.kingThreatenPaint:SUI.kingThreatenPaint2;
+					_paint = _board.getGame().isTurn() ? SUI.kingThreatenPaint
+							: SUI.kingThreatenPaint2;
 				}
-	
+
 				drawSquare(c);
 			}
 			if (_selected)
 			{
 				flashSquare(c);
 			}
-	
+
 			if (_piece != null)
 				_piece.onDraw(c, _shape.getX(), _shape.getY());
 		}
-	
+
 		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
 		{
 			NEEDS_REDRAW = true;
@@ -214,39 +200,30 @@ public class Square
 	{
 		c.save();
 
-		_shape.clip(c);
-
-		if (rank == Board.boardRanks[file - 'a'] / 2 + 1)
-			c.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
-					(1 + fileOutwards() + rankOutwards())
-							* SUI.CIRCLE_RADIUS_DIFFERENCE, _paint);
-		else if (rank > Board.boardRanks[file - 'a'] / 2 + 1)
-			c.drawRect(0, 0, SUI.WIDTH, SUI.HEIGHT_CENTER, _paint);
-		else
-			c.drawRect(0, SUI.HEIGHT_CENTER, SUI.WIDTH, SUI.HEIGHT, _paint);
+		_shape.onDraw(c, _paint);
 
 		c.restore();
 	}
 
 	private void flashSquare(Canvas c)
 	{
-	
+
 		_isWhite = ((file - 'a') + 1) % 2 == rank % 2;
 		_paint = SUI.darkPaint;
 		if (_isWhite)
 		{
 			_paint = SUI.lightPaint;
 		}
-	
+
 		drawSquare(c);
-	
-		_paint = _board.getGame().isTurn()?SUI.flashPaint:SUI.flashPaint2;
+
+		_paint = _board.getGame().isTurn() ? SUI.flashPaint : SUI.flashPaint2;
 		_paint.setAlpha((int) (127 * Math.sin(flashCount) + 127));
-	
+
 		flashCount += 0.1;
-	
+
 		drawSquare(c);
-	
+
 		NEEDS_REDRAW = true;
 	}
 
@@ -254,9 +231,9 @@ public class Square
 	{
 		_highlighted = true;
 		NEEDS_REDRAW = true;
-		if (this.getTag().compareTo("d12")==0)
+		if (this.getTag().compareTo("d12") == 0)
 			this._board.getSquares().get("d6").highlight();
-		if (this.getTag().compareTo("e12")==0)
+		if (this.getTag().compareTo("e12") == 0)
 			this._board.getSquares().get("e6").highlight();
 	}
 
@@ -265,9 +242,9 @@ public class Square
 		_highlighted = false;
 		_selected = false;
 		NEEDS_REDRAW = true;
-		if (this.getTag().compareTo("d12")==0)
+		if (this.getTag().compareTo("d12") == 0)
 			this._board.getSquares().get("d6").unhighlight();
-		if (this.getTag().compareTo("e12")==0)
+		if (this.getTag().compareTo("e12") == 0)
 			this._board.getSquares().get("e6").unhighlight();
 	}
 
@@ -282,13 +259,13 @@ public class Square
 	{
 		this._piece = null;
 		NEEDS_REDRAW = true;
-		if (this.getTag().compareTo("d12")==0 && this._board.getSquares().get("d6").hasPiece())
+		if (this.getTag().compareTo("d12") == 0 && this._board.getSquares().get("d6").hasPiece())
 			this._board.getSquares().get("d6").removePiece();
-		if (this.getTag().compareTo("d6")==0  && this._board.getSquares().get("d12").hasPiece())
+		if (this.getTag().compareTo("d6") == 0 && this._board.getSquares().get("d12").hasPiece())
 			this._board.getSquares().get("d12").removePiece();
-		if (this.getTag().compareTo("e12")==0  && this._board.getSquares().get("e6").hasPiece())
+		if (this.getTag().compareTo("e12") == 0 && this._board.getSquares().get("e6").hasPiece())
 			this._board.getSquares().get("e6").removePiece();
-		if (this.getTag().compareTo("e6")==0  && this._board.getSquares().get("e12").hasPiece())
+		if (this.getTag().compareTo("e6") == 0 && this._board.getSquares().get("e12").hasPiece())
 			this._board.getSquares().get("e12").removePiece();
 	}
 
@@ -296,13 +273,13 @@ public class Square
 	{
 		this._piece = piece;
 		NEEDS_REDRAW = true;
-		if (this.getTag().compareTo("d12")==0 && !this._board.getSquares().get("d6").hasPiece())
+		if (this.getTag().compareTo("d12") == 0 && !this._board.getSquares().get("d6").hasPiece())
 			this._board.getSquares().get("d6").addPiece(piece);
-		if (this.getTag().compareTo("e12")==0 && !this._board.getSquares().get("e6").hasPiece())
+		if (this.getTag().compareTo("e12") == 0 && !this._board.getSquares().get("e6").hasPiece())
 			this._board.getSquares().get("e6").addPiece(piece);
-		if (this.getTag().compareTo("d6")==0 && !this._board.getSquares().get("d12").hasPiece())
+		if (this.getTag().compareTo("d6") == 0 && !this._board.getSquares().get("d12").hasPiece())
 			this._board.getSquares().get("d12").addPiece(piece);
-		if (this.getTag().compareTo("e6")==0 && !this._board.getSquares().get("e12").hasPiece())
+		if (this.getTag().compareTo("e6") == 0 && !this._board.getSquares().get("e12").hasPiece())
 			this._board.getSquares().get("e12").addPiece(piece);
 	}
 
@@ -317,20 +294,24 @@ public class Square
 		{
 			Square s = _sides[i];
 			if (firstSide.equals(s)
-				|| (this.getTag().compareTo("e12")!=0 && this.getTag().compareTo("e6")!=0 && 
-				    firstSide.getTag().compareTo("d12")==0 && s.getTag().compareTo("d6")==0)
-				|| (this.getTag().compareTo("e12")!=0 && this.getTag().compareTo("e6")!=0 && 
-				    firstSide.getTag().compareTo("d6")==0 && s.getTag().compareTo("d12")==0)
-				|| (this.getTag().compareTo("d12")!=0 && this.getTag().compareTo("d6")!=0 && 
-					firstSide.getTag().compareTo("e12")==0 && s.getTag().compareTo("e6")==0)
-				|| (this.getTag().compareTo("d12")!=0 && this.getTag().compareTo("d6")!=0 && 
-					firstSide.getTag().compareTo("e6")==0 && s.getTag().compareTo("e12")==0)
-				)
+					|| (this.getTag().compareTo("e12") != 0 && this.getTag().compareTo("e6") != 0
+							&& firstSide.getTag().compareTo("d12") == 0 && s.getTag().compareTo(
+							"d6") == 0)
+					|| (this.getTag().compareTo("e12") != 0 && this.getTag().compareTo("e6") != 0
+							&& firstSide.getTag().compareTo("d6") == 0 && s.getTag().compareTo(
+							"d12") == 0)
+					|| (this.getTag().compareTo("d12") != 0 && this.getTag().compareTo("d6") != 0
+							&& firstSide.getTag().compareTo("e12") == 0 && s.getTag().compareTo(
+							"e6") == 0)
+					|| (this.getTag().compareTo("d12") != 0 && this.getTag().compareTo("d6") != 0
+							&& firstSide.getTag().compareTo("e6") == 0 && s.getTag().compareTo(
+							"e12") == 0))
 			{
 				return _sides[(i + 2) % 4]; // might be null
 			}
 		}
-		throw new GameException("given side square " + firstSide + " is not adjacent to this square" + this);
+		throw new GameException("given side square " + firstSide
+				+ " is not adjacent to this square" + this);
 	}
 
 	// This is for knights, it gets the elbow shaped ones.
@@ -383,7 +364,6 @@ public class Square
 	{
 		return file;
 	}
-	
 
 	public String getTag()
 	{
@@ -394,14 +374,14 @@ public class Square
 
 	public int getRank()
 	{
-		return rank==12?6:rank;
+		return rank == 12 ? 6 : rank;
 	}
 
 	public boolean hasPiece()
 	{
 		return _piece != null;
 	}
-	
+
 	public boolean isHighlighted()
 	{
 		return this._highlighted;

@@ -62,7 +62,8 @@ public class SUI
 	private static void setupSimplePaints()
 	{
 		borderShadowPaint = new Paint();
-		borderShadowPaint.setColor(Color.BLACK);
+		borderShadowPaint.setColor(Color.TRANSPARENT);
+		borderShadowPaint.setAntiAlias(true);
 		borderShadowPaint.setShadowLayer(40, 20, 20, Color.argb(200, 0, 0, 0));
 
 		highlightPaint = new Paint();
