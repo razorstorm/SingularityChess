@@ -2,7 +2,10 @@ package com.petrifiednightmares.singularityChess.logic;
 
 import java.util.Set;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Path;
+import android.graphics.RectF;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
@@ -30,7 +33,7 @@ public class Game
 
 	boolean isWhiteTurn;
 
-	AbstractPiece selectedPiece,checkingPiece;
+	AbstractPiece selectedPiece, checkingPiece;
 	Set<Square> selectedPieceMoves;
 
 	MoveLogger ml;
@@ -42,6 +45,9 @@ public class Game
 
 	TopBar topBar;
 	BottomBar bottomBar;
+
+	private Bitmap _borderBitmap;
+	private Canvas _borderCanvas;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
@@ -62,6 +68,8 @@ public class Game
 
 		this.topBar = new TopBar(whiteName);
 		this.bottomBar = new BottomBar(drawingPanel);
+
+		setupBorder();
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
@@ -128,9 +136,9 @@ public class Game
 
 	public boolean makeMove(Square target) throws InvalidMoveException
 	{
-		if(PROMPT_WAITING)
+		if (PROMPT_WAITING)
 			return false;
-		
+
 		if (selectedPiece != null && selectedPieceMoves.contains(target))
 		{
 			Square sourceLocation = selectedPiece.getLocation();
@@ -141,7 +149,7 @@ public class Game
 			if (!checkMoveValidity())
 			{
 				unmakeMove(capturedPiece, selectedPiece, target, sourceLocation);
-				if(checkingPiece != null)
+				if (checkingPiece != null)
 					select(checkingPiece);
 				return false;
 			}
@@ -206,7 +214,7 @@ public class Game
 				{
 					drawingPanel.displayMessage(p + " on square " + p.getLocation()
 							+ " is checking king");
-					checkingPiece=p;
+					checkingPiece = p;
 					return false;
 				}
 			}
@@ -219,12 +227,12 @@ public class Game
 	{
 		// check to see if theres a check, a checkmate, or a pawn can get
 		// promoted.
-		
-		if(selectedPiece instanceof Pawn)
+
+		if (selectedPiece instanceof Pawn)
 		{
-			if(Board.isEndOfFile(selectedPiece.getLocation()))
+			if (Board.isEndOfFile(selectedPiece.getLocation()))
 			{
-				//can be promoted
+				// can be promoted
 			}
 		}
 	}
@@ -237,6 +245,47 @@ public class Game
 			return false;
 	}
 
+	private void setupBorderShadow()
+	{
+		int h = SUI.WIDTH / 2;
+		int x = SUI.WIDTH / 2 - 4 * SUI.CIRCLE_RADIUS_DIFFERENCE - SUI.BORDER_WIDTH;
+		int k = SUI.HEIGHT_CENTER;
+		int r = 6 * SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH;
+		RectF circle = new RectF(h - r, k - r, h + r, k + r);
+
+		Path p = new Path();
+		p.moveTo(x, (float) (k + Math.sqrt(-(h * h) + 2 * h * x + r * r - (x * x))));
+		p.lineTo(x, (float) (k - Math.sqrt(-(h * h) + 2 * h * x + r * r - (x * x))));
+
+		float angle = (float) Math.toDegrees(Math.atan(Math.sqrt(-(h * h) + 2 * h * x + r * r - (x * x))
+				/ (h-x)));
+
+		p.arcTo(circle, 180+angle, (180-angle*2));
+		
+		x=SUI.WIDTH / 2 + 4 * SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH;
+		
+		p.lineTo(x, (float) (k + Math.sqrt(-(h * h) + 2 * h * x + r * r - (x * x))));
+
+		p.arcTo(circle, angle, (180-angle*2));
+		
+		_borderCanvas.drawPath(p, SUI.borderShadowPaint);
+	}
+
+	private void setupBorder()
+	{
+		_borderBitmap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT, Bitmap.Config.ARGB_8888);
+		_borderCanvas = new Canvas(_borderBitmap);
+
+		setupBorderShadow();
+
+
+		_borderCanvas.save();
+		_borderCanvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
+		_borderCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
+				+ SUI.BORDER_WIDTH, SUI.borderPaint);
+		_borderCanvas.restore();
+	}
+
 	public void onDraw(Canvas canvas)
 	{
 		if (NEEDS_REDRAW)
@@ -244,15 +293,7 @@ public class Game
 			NEEDS_REDRAW = false;
 			// draw background
 			canvas.drawBitmap(GameDrawingPanel.background, 0, 0, null);
-
-			canvas.save();
-			canvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
-			canvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
-					+ SUI.BORDER_WIDTH, SUI.borderShadowPaint);
-
-			canvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
-					+ SUI.BORDER_WIDTH, SUI.borderPaint);
-			canvas.restore();
+			canvas.drawBitmap(_borderBitmap, 0, 0, null);
 		}
 		board.onDraw(canvas);
 		topBar.onDraw(canvas);
@@ -290,7 +331,7 @@ public class Game
 			selectedPieceMoves = piece.getMoves();
 			board.highlightMoves(selectedPieceMoves);
 			board.select(piece.getLocation());
-			checkingPiece=null;
+			checkingPiece = null;
 		} catch (GameException e)
 		{
 			// TODO Auto-generated catch block

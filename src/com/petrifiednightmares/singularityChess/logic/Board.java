@@ -539,7 +539,7 @@ public class Board
 	{
 		if (location.getRank() == 1)
 			return true;
-		else if (location.getRank() == boardRanks[location.getFile()])
+		else if (location.getRank() == boardRanks[location.getFile()-'a'])
 			return true;
 		else
 			return false;
