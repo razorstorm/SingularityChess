@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
        
-        this.singlePlayerButton = (Button) findViewById(R.id.single_player);
+        this.singlePlayerButton = (Button) findViewById(R.id.vs_human);
 		this.singlePlayerButton.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)

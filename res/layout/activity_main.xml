@@ -13,11 +13,19 @@
             android:text="@string/multi_player" />
 
         <Button
-            android:id="@+id/single_player"
+            android:id="@+id/vs_human"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/vs_computer"
+            android:layout_alignParentLeft="true"
+            android:text="@string/vs_human" />
+        
+          <Button
+            android:id="@+id/vs_computer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/multi_player"
             android:layout_alignParentLeft="true"
-            android:text="@string/single_player" />
+            android:text="@string/vs_computer" />
  
 </RelativeLayout>
