@@ -5,10 +5,11 @@ import android.view.HapticFeedbackConstants;
 
 import com.petrifiednightmares.singularityChess.GameActivity;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.logic.Game;
 
 public class BottomBar
 {
-	private static boolean NEEDS_REDRAW;
+	public static boolean NEEDS_REDRAW;
 	ActionButton[] buttons;
 	private int _barWidth, _space, _buttonWidth, _top, _height, _thinButtonWidth;
 
@@ -52,8 +53,12 @@ public class BottomBar
 			{
 				switch (i)
 				{
+				case 0:
+					_gdp.game.movesDialog.display();
+					Game.PROMPT_WAITING = true;
+					Game.PROMPT = _gdp.game.movesDialog;
+					break;
 				case 3:
-					System.out.println("asdf");
 					// expand menu
 					((GameActivity) _gdp.getContext()).openOptionsMenu();
 					_gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);

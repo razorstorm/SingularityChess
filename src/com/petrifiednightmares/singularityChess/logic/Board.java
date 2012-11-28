@@ -488,7 +488,6 @@ public class Board
 						_game.makeMove(s);
 					} catch (InvalidMoveException e)
 					{
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				} else if (s.hasPiece())
@@ -499,6 +498,17 @@ public class Board
 				}
 
 				break;
+			}
+		}
+	}
+	
+	public void redrawAll()
+	{
+		for (char file = 'a'; file <= 'h'; file++)
+		{
+			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
+			{
+				squares.get(file+""+rank).NEEDS_REDRAW=true;
 			}
 		}
 	}

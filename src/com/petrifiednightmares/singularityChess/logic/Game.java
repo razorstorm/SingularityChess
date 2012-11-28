@@ -19,6 +19,8 @@ import com.petrifiednightmares.singularityChess.pieces.Pawn;
 import com.petrifiednightmares.singularityChess.pieces.Queen;
 import com.petrifiednightmares.singularityChess.pieces.Rook;
 import com.petrifiednightmares.singularityChess.ui.BottomBar;
+import com.petrifiednightmares.singularityChess.ui.HoverDialog;
+import com.petrifiednightmares.singularityChess.ui.MovesLogDialog;
 import com.petrifiednightmares.singularityChess.ui.Preferences;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 import com.petrifiednightmares.singularityChess.ui.TopBar;
@@ -38,21 +40,25 @@ public class Game
 
 	MoveLogger ml;
 
-	public static boolean NEEDS_REDRAW;
-	private static boolean PROMPT_WAITING;
+	public static boolean NEEDS_REDRAW, REDRAW_ALL;
+	public static boolean PROMPT_WAITING;
+	public static HoverDialog PROMPT;
 
 	private String whiteName, blackName;
 
 	TopBar topBar;
 	BottomBar bottomBar;
+	public HoverDialog movesDialog, capturesDialog, surrenderDialog, promotionDialog;
 
 	private Bitmap _borderBitmap;
 	private Canvas _borderCanvas;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
-
+		REDRAW_ALL = false;
 		NEEDS_REDRAW = true;
+		PROMPT_WAITING = false;
+		PROMPT = null;
 		this.drawingPanel = drawingPanel;
 		board = new Board(drawingPanel.getResources(), this);
 		ml = new MoveLogger();
@@ -68,6 +74,7 @@ public class Game
 
 		this.topBar = new TopBar(whiteName);
 		this.bottomBar = new BottomBar(drawingPanel);
+		movesDialog = new MovesLogDialog();
 
 		setupBorder();
 	}
@@ -257,17 +264,18 @@ public class Game
 		p.moveTo(x, (float) (k + Math.sqrt(-(h * h) + 2 * h * x + r * r - (x * x))));
 		p.lineTo(x, (float) (k - Math.sqrt(-(h * h) + 2 * h * x + r * r - (x * x))));
 
-		float angle = (float) Math.toDegrees(Math.atan(Math.sqrt(-(h * h) + 2 * h * x + r * r - (x * x))
-				/ (h-x)));
+		float angle = (float) Math.toDegrees(Math.atan(Math.sqrt(-(h * h) + 2 * h * x + r * r
+				- (x * x))
+				/ (h - x)));
 
-		p.arcTo(circle, 180+angle, (180-angle*2));
-		
-		x=SUI.WIDTH / 2 + 4 * SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH;
-		
+		p.arcTo(circle, 180 + angle, (180 - angle * 2));
+
+		x = SUI.WIDTH / 2 + 4 * SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH;
+
 		p.lineTo(x, (float) (k + Math.sqrt(-(h * h) + 2 * h * x + r * r - (x * x))));
 
-		p.arcTo(circle, angle, (180-angle*2));
-		
+		p.arcTo(circle, angle, (180 - angle * 2));
+
 		_borderCanvas.drawPath(p, SUI.borderShadowPaint);
 	}
 
@@ -278,7 +286,6 @@ public class Game
 
 		setupBorderShadow();
 
-
 		_borderCanvas.save();
 		_borderCanvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
 		_borderCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE
@@ -288,6 +295,11 @@ public class Game
 
 	public void onDraw(Canvas canvas)
 	{
+		if (REDRAW_ALL)
+		{
+			REDRAW_ALL = false;
+			redrawAll();
+		}
 		if (NEEDS_REDRAW)
 		{
 			NEEDS_REDRAW = false;
@@ -298,6 +310,17 @@ public class Game
 		board.onDraw(canvas);
 		topBar.onDraw(canvas);
 		bottomBar.onDraw(canvas);
+		movesDialog.onDraw(canvas);
+	}
+
+	private void redrawAll()
+	{
+		NEEDS_REDRAW = true;
+		Board.NEEDS_REDRAW = true;
+		BottomBar.NEEDS_REDRAW = true;
+		board.redrawAll();
+		movesDialog.NEEDS_REDRAW = true;
+		topBar.NEEDS_REDRAW = true;
 	}
 
 	public Board getBoard()
@@ -318,8 +341,20 @@ public class Game
 
 	public void onClick(int x, int y)
 	{
-		board.onClick(x, y);
-		bottomBar.onClick(x, y);
+		if (PROMPT_WAITING)
+		{
+			if (PROMPT != null)
+			{
+				PROMPT.onClick(x, y);
+			} else
+			{
+				PROMPT_WAITING = false;
+			}
+		} else
+		{
+			board.onClick(x, y);
+			bottomBar.onClick(x, y);
+		}
 	}
 
 	public void select(AbstractPiece piece)

@@ -5,7 +5,7 @@ import android.graphics.Rect;
 
 public class TopBar
 {
-	private static boolean NEEDS_REDRAW;
+	public static boolean NEEDS_REDRAW;
 	private String _turnName;
 	Rect bounds;
 	private boolean _isWhite;

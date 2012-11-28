@@ -29,7 +29,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	
 	private Context _context;
 
-	Game game;
+	public Game game;
 
 	public GameDrawingPanel(Context context, AttributeSet aSet)
 	{
