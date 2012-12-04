@@ -191,7 +191,7 @@ public class Square
 		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
 		{
 			NEEDS_REDRAW = true;
-			Board.NEEDS_REDRAW = true;
+			_board.NEEDS_REDRAW = true;
 			_showSquarePref = Preferences.SHOW_SQUARE_LABELS;
 		}
 	}

@@ -1,0 +1,61 @@
+package com.petrifiednightmares.singularityChess.ui;
+
+import android.graphics.Canvas;
+
+import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+
+public class GameUI
+{
+	TopBar topBar;
+	BottomBar bottomBar;
+	public HoverDialog movesDialog, capturesDialog, surrenderDialog, promotionDialog;
+	public boolean PROMPT_WAITING;
+	public HoverDialog PROMPT;
+
+	public GameUI(GameDrawingPanel drawingPanel, String whiteName)
+	{
+
+		PROMPT = null;
+		this.topBar = new TopBar(whiteName);
+		this.bottomBar = new BottomBar(this,drawingPanel);
+		movesDialog = new MovesLogDialog();
+
+		PROMPT_WAITING = false;
+	}
+
+	public void setTurnName(String turnName, boolean isWhite)
+	{
+		topBar.setTurnName(turnName, isWhite);
+	}
+
+	public void onDraw(Canvas canvas)
+	{
+		topBar.onDraw(canvas);
+		bottomBar.onDraw(canvas);
+		movesDialog.onDraw(canvas);
+	}
+
+	public void onClick(int x, int y)
+	{
+		bottomBar.onClick(x, y);
+
+		if (PROMPT != null)
+		{
+			if(!PROMPT.onClick(x, y))
+			{
+				PROMPT_WAITING = false;
+				PROMPT = null;
+			}
+		} else
+		{
+			PROMPT_WAITING = false;
+		}
+	}
+
+	public void redrawAll()
+	{
+		bottomBar.NEEDS_REDRAW = true;
+		movesDialog.NEEDS_REDRAW = true;
+		topBar.NEEDS_REDRAW = true;		
+	}
+}

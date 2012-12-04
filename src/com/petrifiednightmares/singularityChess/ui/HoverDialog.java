@@ -84,8 +84,6 @@ public class HoverDialog
 	{
 		_rectf.top = SUI.HEIGHT + SUI.UNIT * 10;
 		NEEDS_REDRAW = true;
-		Game.PROMPT_WAITING = false;
-		Game.PROMPT = null;
 		Game.REDRAW_ALL = true;
 	}
 

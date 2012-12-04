@@ -25,7 +25,7 @@ public class Board
 	public static final int[] realBoardRanks = new int[] { 5, 7, 9, 12, 12, 9, 7, 5 };
 	private Game _game; // back reference to game
 	private Resources _res;
-	public static boolean NEEDS_REDRAW;
+	public boolean NEEDS_REDRAW;
 
 	public Board(Resources res, Game game)
 	{
@@ -501,14 +501,15 @@ public class Board
 			}
 		}
 	}
-	
+
 	public void redrawAll()
 	{
+		NEEDS_REDRAW = true;
 		for (char file = 'a'; file <= 'h'; file++)
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
 			{
-				squares.get(file+""+rank).NEEDS_REDRAW=true;
+				squares.get(file + "" + rank).NEEDS_REDRAW = true;
 			}
 		}
 	}
@@ -549,7 +550,7 @@ public class Board
 	{
 		if (location.getRank() == 1)
 			return true;
-		else if (location.getRank() == boardRanks[location.getFile()-'a'])
+		else if (location.getRank() == boardRanks[location.getFile() - 'a'])
 			return true;
 		else
 			return false;
