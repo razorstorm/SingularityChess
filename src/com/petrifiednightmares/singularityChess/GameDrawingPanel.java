@@ -14,7 +14,6 @@ import android.view.WindowManager;
 
 import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
-import com.petrifiednightmares.singularityChess.ui.GameDrawable;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
@@ -58,7 +57,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		game = new Game(this, gui);
 
-		board = new Board(getResources(), game);
+		board = new Board(this,game);
 		game.setBoard(board);
 
 		this.setOnTouchListener(this);
@@ -79,6 +78,13 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		gui.onDraw(_drawingCanvas);
 
 		canvas.drawBitmap(_drawingBitmap, 0, 0, null);
+	}
+
+	public void redrawAll()
+	{
+		game.redraw();
+		board.redraw();
+		gui.redraw();
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)

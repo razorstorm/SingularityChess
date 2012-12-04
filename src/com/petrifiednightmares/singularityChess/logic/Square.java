@@ -40,6 +40,7 @@ public class Square extends GameDrawable
 
 	public Square(char file, int rank, Board board)
 	{
+		super(null);
 		this.file = file;
 		this.rank = rank;
 		this._board = board;
@@ -47,6 +48,7 @@ public class Square extends GameDrawable
 
 	public Square(Square[] corners, Square[] sides, char file, int rank, Board board)
 	{
+		super(null);
 		this._corners = corners;
 		this._sides = sides;
 		this.file = file;
@@ -190,7 +192,7 @@ public class Square extends GameDrawable
 		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
 		{
 			NEEDS_REDRAW = true;
-			_board.NEEDS_REDRAW = true;
+			_board.redraw();
 			_showSquarePref = Preferences.SHOW_SQUARE_LABELS;
 		}
 	}
@@ -384,5 +386,11 @@ public class Square extends GameDrawable
 	public boolean isHighlighted()
 	{
 		return this._highlighted;
+	}
+
+	@Override
+	public void redraw()
+	{
+		NEEDS_REDRAW=true;
 	}
 }

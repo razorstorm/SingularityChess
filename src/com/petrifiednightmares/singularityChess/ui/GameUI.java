@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 
-public class GameUI
+public class GameUI extends GameDrawable
 {
 	TopBar topBar;
 	BottomBar bottomBar;
@@ -14,11 +14,11 @@ public class GameUI
 
 	public GameUI(GameDrawingPanel drawingPanel)
 	{
-
+		super(drawingPanel);
 		PROMPT = null;
 		this.topBar = new TopBar();
 		this.bottomBar = new BottomBar(this,drawingPanel);
-		movesDialog = new MovesLogDialog();
+		movesDialog = new MovesLogDialog(gdp);
 
 		PROMPT_WAITING = false;
 	}
@@ -35,7 +35,7 @@ public class GameUI
 		movesDialog.onDraw(canvas);
 	}
 
-	public void onClick(int x, int y)
+	public boolean onClick(int x, int y)
 	{
 		bottomBar.onClick(x, y);
 
@@ -50,9 +50,12 @@ public class GameUI
 		{
 			PROMPT_WAITING = false;
 		}
+		
+		return false; //doesnt matter
 	}
 
-	public void redrawAll()
+	@Override
+	public void redraw()
 	{
 		bottomBar.NEEDS_REDRAW = true;
 		movesDialog.NEEDS_REDRAW = true;

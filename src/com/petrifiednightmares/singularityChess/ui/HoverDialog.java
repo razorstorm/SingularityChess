@@ -8,9 +8,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 
-import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 
-public class HoverDialog
+public class HoverDialog extends GameDrawable
 {
 	protected int _top, _left, _width, _height;
 	protected String _title;
@@ -19,8 +19,9 @@ public class HoverDialog
 	protected Paint _horizontalPaint, _verticalPaint, _textPaint;
 	public boolean NEEDS_REDRAW;
 
-	public HoverDialog(String title, int top, int left, int width, int height)
+	public HoverDialog(GameDrawingPanel gdp, String title, int top, int left, int width, int height)
 	{
+		super(gdp);
 		this._top = top;
 		this._left = left;
 		this._width = width;
@@ -56,7 +57,6 @@ public class HoverDialog
 		_mHeight = new Rect();
 		_textPaint.getTextBounds("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 0, 1,
 				_mHeight);
-		NEEDS_REDRAW = true;
 	}
 
 	public void onDraw(Canvas c)
@@ -77,14 +77,14 @@ public class HoverDialog
 	public synchronized void display()
 	{
 		_rectf.top = _top;
-		NEEDS_REDRAW = true;
+		redraw();
 	}
 
 	public synchronized void hide()
 	{
 		_rectf.top = SUI.HEIGHT + SUI.UNIT * 10;
-		NEEDS_REDRAW = true;
-		Game.REDRAW_ALL = true;
+		redraw();
+		gdp.redrawAll();
 	}
 
 	public boolean onClick(int x, int y)
@@ -95,5 +95,11 @@ public class HoverDialog
 			hide();
 		}
 		return click;
+	}
+
+	@Override
+	public void redraw()
+	{
+		NEEDS_REDRAW=true;
 	}
 }

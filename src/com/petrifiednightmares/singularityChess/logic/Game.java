@@ -25,7 +25,6 @@ import com.petrifiednightmares.singularityChess.ui.SUI;
 
 public class Game extends GameDrawable
 {
-	GameDrawingPanel drawingPanel;
 
 	AbstractPiece[] whitePieces;
 	AbstractPiece[] blackPieces;
@@ -40,8 +39,6 @@ public class Game extends GameDrawable
 	private GameUI _gui;
 	MoveLogger ml;
 
-	public static boolean NEEDS_REDRAW, REDRAW_ALL;
-
 	private String whiteName, blackName;
 
 	private Bitmap _borderBitmap;
@@ -49,10 +46,8 @@ public class Game extends GameDrawable
 
 	public Game(GameDrawingPanel drawingPanel, GameUI gui)
 	{
-		REDRAW_ALL = false;
-		NEEDS_REDRAW = true;
+		super(drawingPanel);
 
-		this.drawingPanel = drawingPanel;
 
 		ml = new MoveLogger();
 
@@ -215,7 +210,7 @@ public class Game extends GameDrawable
 			{
 				if (p.checkingKing())
 				{
-					drawingPanel.displayMessage(p + " on square " + p.getLocation()
+					gdp.displayMessage(p + " on square " + p.getLocation()
 							+ " is checking king");
 					checkingPiece = p;
 					return false;
@@ -309,11 +304,6 @@ public class Game extends GameDrawable
 
 	public void onDraw(Canvas canvas)
 	{
-		if (REDRAW_ALL)
-		{
-			REDRAW_ALL = false;
-			redrawAll();
-		}
 		if (NEEDS_REDRAW)
 		{
 			NEEDS_REDRAW = false;
@@ -321,15 +311,13 @@ public class Game extends GameDrawable
 			canvas.drawBitmap(GameDrawingPanel.background, 0, 0, null);
 			canvas.drawBitmap(_borderBitmap, 0, 0, null);
 		}
-		_gui.onDraw(canvas);
+	}
+	
+	public void redraw()
+	{
+		NEEDS_REDRAW=true;
 	}
 
-	private void redrawAll()
-	{
-		NEEDS_REDRAW = true;
-		board.redrawAll();
-		_gui.redrawAll();
-	}
 
 	public Board getBoard()
 	{
@@ -338,7 +326,7 @@ public class Game extends GameDrawable
 
 	public GameDrawingPanel getDrawingPanel()
 	{
-		return drawingPanel;
+		return gdp;
 	}
 
 	// **********************************Saving and restoring

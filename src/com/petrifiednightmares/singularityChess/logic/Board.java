@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.R;
@@ -26,12 +27,11 @@ public class Board extends GameDrawable
 	public static final int[] realBoardRanks = new int[] { 5, 7, 9, 12, 12, 9, 7, 5 };
 	private Game _game; // back reference to game
 	private Resources _res;
-	public boolean NEEDS_REDRAW;
 
-	public Board(Resources res, Game game)
+	public Board(GameDrawingPanel gdp, Game game)
 	{
-		NEEDS_REDRAW = true;
-		this._res = res;
+		super(gdp);
+		this._res = gdp.getResources();
 		this._game = game;
 		squares = new HashMap<String, Square>();
 		initializeSquares();
@@ -434,6 +434,7 @@ public class Board extends GameDrawable
 	{
 		if (NEEDS_REDRAW)
 		{
+			//draw the squares
 			canvas.drawBitmap(Square.squareBitMap, 0, 0, null);
 			// Draw lighting overlay
 			canvas.save();
@@ -444,6 +445,7 @@ public class Board extends GameDrawable
 			canvas.restore();
 			NEEDS_REDRAW = false;
 		}
+		//draw special overlays on the squares
 		drawSquares(canvas);
 	}
 
@@ -506,17 +508,17 @@ public class Board extends GameDrawable
 		return false;
 	}
 
-	public void redrawAll()
-	{
-		NEEDS_REDRAW = true;
-		for (char file = 'a'; file <= 'h'; file++)
-		{
-			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
-			{
-				squares.get(file + "" + rank).NEEDS_REDRAW = true;
-			}
-		}
-	}
+//	public void redrawAll()
+//	{
+//		NEEDS_REDRAW = true;
+//		for (char file = 'a'; file <= 'h'; file++)
+//		{
+//			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
+//			{
+//				squares.get(file + "" + rank).redraw() = true;
+//			}
+//		}
+//	}
 
 	void unhighlightAllSquares()
 	{
@@ -558,5 +560,11 @@ public class Board extends GameDrawable
 			return true;
 		else
 			return false;
+	}
+
+	@Override
+	public void redraw()
+	{
+		NEEDS_REDRAW=true;
 	}
 }
