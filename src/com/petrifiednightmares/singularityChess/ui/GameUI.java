@@ -12,11 +12,11 @@ public class GameUI
 	public boolean PROMPT_WAITING;
 	public HoverDialog PROMPT;
 
-	public GameUI(GameDrawingPanel drawingPanel, String whiteName)
+	public GameUI(GameDrawingPanel drawingPanel)
 	{
 
 		PROMPT = null;
-		this.topBar = new TopBar(whiteName);
+		this.topBar = new TopBar();
 		this.bottomBar = new BottomBar(this,drawingPanel);
 		movesDialog = new MovesLogDialog();
 

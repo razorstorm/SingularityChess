@@ -18,24 +18,26 @@ import com.petrifiednightmares.singularityChess.pieces.Knight;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
 import com.petrifiednightmares.singularityChess.pieces.Queen;
 import com.petrifiednightmares.singularityChess.pieces.Rook;
+import com.petrifiednightmares.singularityChess.ui.GameDrawable;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
 import com.petrifiednightmares.singularityChess.ui.Preferences;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 
-public class Game
+public class Game extends GameDrawable
 {
 	GameDrawingPanel drawingPanel;
-	Board board;
 
 	AbstractPiece[] whitePieces;
 	AbstractPiece[] blackPieces;
 
 	boolean isWhiteTurn;
+	
+	Board _board;
 
 	AbstractPiece selectedPiece, checkingPiece;
 	Set<Square> selectedPieceMoves;
 
-	GameUI gui;
+	private GameUI _gui;
 	MoveLogger ml;
 
 	public static boolean NEEDS_REDRAW, REDRAW_ALL;
@@ -45,13 +47,13 @@ public class Game
 	private Bitmap _borderBitmap;
 	private Canvas _borderCanvas;
 
-	public Game(GameDrawingPanel drawingPanel)
+	public Game(GameDrawingPanel drawingPanel, GameUI gui)
 	{
 		REDRAW_ALL = false;
 		NEEDS_REDRAW = true;
 
 		this.drawingPanel = drawingPanel;
-		board = new Board(drawingPanel.getResources(), this);
+
 		ml = new MoveLogger();
 
 		isWhiteTurn = true;
@@ -63,8 +65,14 @@ public class Game
 		whiteName = "White";
 		blackName = "Black";
 
-		gui = new GameUI(drawingPanel, whiteName);
+		this._gui = gui;
+		gui.setTurnName(whiteName, isWhiteTurn);
 		setupBorder();
+	}
+
+	public void setBoard(Board board)
+	{
+		this._board = board;
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
@@ -131,7 +139,7 @@ public class Game
 
 	public boolean makeMove(Square target) throws InvalidMoveException
 	{
-		if (gui.PROMPT_WAITING)
+		if (_gui.PROMPT_WAITING)
 			return false;
 
 		if (selectedPiece != null && selectedPieceMoves.contains(target))
@@ -194,7 +202,7 @@ public class Game
 	private void switchTurns()
 	{
 		isWhiteTurn = !isWhiteTurn;
-		gui.setTurnName(isWhiteTurn ? whiteName : blackName, isWhiteTurn);
+		_gui.setTurnName(isWhiteTurn ? whiteName : blackName, isWhiteTurn);
 	}
 
 	private boolean checkMoveValidity()
@@ -313,20 +321,19 @@ public class Game
 			canvas.drawBitmap(GameDrawingPanel.background, 0, 0, null);
 			canvas.drawBitmap(_borderBitmap, 0, 0, null);
 		}
-		board.onDraw(canvas);
-		gui.onDraw(canvas);
+		_gui.onDraw(canvas);
 	}
 
 	private void redrawAll()
 	{
 		NEEDS_REDRAW = true;
 		board.redrawAll();
-		gui.redrawAll();
+		_gui.redrawAll();
 	}
 
 	public Board getBoard()
 	{
-		return board;
+		return _board;
 	}
 
 	public GameDrawingPanel getDrawingPanel()
@@ -340,24 +347,20 @@ public class Game
 	// *********************************UI related
 	// shits***********************************/
 
-	public void onClick(int x, int y)
+	public boolean onClick(int x, int y)
 	{
-		if (!gui.PROMPT_WAITING)
-		{
-			board.onClick(x, y);
-		}
-		gui.onClick(x,y);
+		return false;
 	}
 
 	public void select(AbstractPiece piece)
 	{
 		try
 		{
-			board.unhighlightAllSquares();
+			_board.unhighlightAllSquares();
 			selectedPiece = piece;
 			selectedPieceMoves = piece.getMoves();
-			board.highlightMoves(selectedPieceMoves);
-			board.select(piece.getLocation());
+			_board.highlightMoves(selectedPieceMoves);
+			_board.select(piece.getLocation());
 			checkingPiece = null;
 		} catch (GameException e)
 		{
@@ -368,7 +371,7 @@ public class Game
 
 	public void unselect()
 	{
-		board.unhighlightAllSquares();
+		_board.unhighlightAllSquares();
 		selectedPiece = null;
 		selectedPieceMoves = null;
 	}

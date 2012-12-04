@@ -15,9 +15,10 @@ import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
+import com.petrifiednightmares.singularityChess.ui.GameDrawable;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 
-public class Board
+public class Board extends GameDrawable
 {
 	// hashed by file and rank: "a3" for example.
 	private HashMap<String, Square> squares;
@@ -457,7 +458,7 @@ public class Board
 		}
 	}
 
-	public void onClick(int x, int y)
+	public boolean onClick(int x, int y)
 	{
 		/*
 		 * // testing purpose only for(String key: squares.keySet()) { Square s
@@ -479,7 +480,7 @@ public class Board
 			if (key.compareTo("d12") == 0 || key.compareTo("e12") == 0)
 				continue;
 			Square s = squares.get(key);
-			if (s.containsPoint(x, y))
+			if (s.onClick(x, y))
 			{
 				if (_game.canMakeMove(s))
 				{
@@ -497,9 +498,12 @@ public class Board
 				{
 				}
 
-				break;
+				return true;
 			}
 		}
+		//if didn't hit anything
+		_game.unselect();
+		return false;
 	}
 
 	public void redrawAll()

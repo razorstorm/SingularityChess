@@ -12,7 +12,10 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 
+import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.ui.GameDrawable;
+import com.petrifiednightmares.singularityChess.ui.GameUI;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
@@ -26,31 +29,40 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	private static Canvas _drawingCanvas;
 
 	GameActivity gameActivity;
-	
+
 	private Context _context;
 
 	public Game game;
+	public Board board;
+	public GameUI gui;
 
 	public GameDrawingPanel(Context context, AttributeSet aSet)
 	{
 		super(context, aSet);
-		this._context=context;
+		this._context = context;
 		getHolder().addCallback(this);
 
 		Display disp = ((WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
-		
+
 		SUI.setup(disp.getWidth(), disp.getHeight(), getResources(), getContext());
 
 		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
 		_drawingBitmap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT, conf);
 		_drawingCanvas = new Canvas(_drawingBitmap);
 
-		background = SingularBitmapFactory.buildScaledBitmap(getResources(),R.drawable.background,SUI.WIDTH,SUI.HEIGHT);
+		background = SingularBitmapFactory.buildScaledBitmap(getResources(), R.drawable.background,
+				SUI.WIDTH, SUI.HEIGHT);
 
-		game = new Game(this);
+		gui = new GameUI(this);
+
+		game = new Game(this, gui);
+
+		board = new Board(getResources(), game);
+		game.setBoard(board);
+
 		this.setOnTouchListener(this);
-		
+
 	}
 
 	public void setGameActivity(GameActivity g)
@@ -62,8 +74,9 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	public void onDraw(Canvas canvas)
 	{
 		// do drawing stuff here.
-		// canvas.drawBitmap(_bitmap, 0, 0, _paint);
 		game.onDraw(_drawingCanvas);
+		board.onDraw(_drawingCanvas);
+		gui.onDraw(_drawingCanvas);
 
 		canvas.drawBitmap(_drawingBitmap, 0, 0, null);
 	}
@@ -104,7 +117,12 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	{
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
-			game.onClick((int) event.getX(), (int) event.getY());
+			if (!gui.PROMPT_WAITING)
+			{
+				board.onClick((int) event.getX(), (int) event.getY());
+				game.onClick((int) event.getX(), (int) event.getY());
+			}
+			gui.onClick((int) event.getX(), (int) event.getY());
 		}
 
 		return true;

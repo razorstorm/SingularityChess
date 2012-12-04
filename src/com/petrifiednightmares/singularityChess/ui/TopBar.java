@@ -10,9 +10,8 @@ public class TopBar
 	Rect bounds;
 	private boolean _isWhite;
 
-	public TopBar(String turnName)
+	public TopBar()
 	{
-		setTurnName(turnName, true);
 		bounds = new Rect();
 	}
 

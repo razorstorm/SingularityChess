@@ -9,10 +9,11 @@ import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.geom.Circle;
 import com.petrifiednightmares.singularityChess.geom.ComplexShape;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
+import com.petrifiednightmares.singularityChess.ui.GameDrawable;
 import com.petrifiednightmares.singularityChess.ui.Preferences;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 
-public class Square
+public class Square extends GameDrawable
 {
 	private Square[] _corners;
 	private Square[] _sides;
@@ -32,9 +33,7 @@ public class Square
 
 	double flashCount;
 
-	public boolean NEEDS_REDRAW = true;
-
-	public boolean containsPoint(int x, int y)
+	public boolean onClick(int x, int y)
 	{
 		return _shape.containsPoint(x, y);
 	}
