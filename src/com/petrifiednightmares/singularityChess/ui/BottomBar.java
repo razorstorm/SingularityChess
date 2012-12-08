@@ -41,8 +41,8 @@ public class BottomBar
 				* 2, _buttonWidth, _height);
 
 		buttons[3] = new ActionButton(SingularBitmapFactory.buildScaledBitmap(_gdp.getResources(),
-				R.drawable.menu, (int)(_thinButtonWidth * 0.6), (int)(_height * 0.5)), _top, SUI.PADDING + _space
-				* 6 + _buttonWidth * 3, _thinButtonWidth, _height);
+				R.drawable.menu, (int) (_thinButtonWidth * 0.6), (int) (_height * 0.5)), _top,
+				SUI.PADDING + _space * 6 + _buttonWidth * 3, _thinButtonWidth, _height);
 
 	}
 
@@ -60,6 +60,11 @@ public class BottomBar
 					_gui.movesDialog.display();
 					_gui.PROMPT_WAITING = true;
 					_gui.PROMPT = _gui.movesDialog;
+					break;
+				case 1:
+					_gui.promotionDialog.display();
+					_gui.PROMPT_WAITING = true;
+					_gui.PROMPT = _gui.promotionDialog;
 					break;
 				case 3:
 					// expand menu

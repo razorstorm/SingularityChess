@@ -29,8 +29,8 @@ public class Game extends GameDrawable
 	AbstractPiece[] whitePieces;
 	AbstractPiece[] blackPieces;
 
-	boolean isWhiteTurn;
-	
+	private boolean isWhiteTurn;
+
 	Board _board;
 
 	AbstractPiece selectedPiece, checkingPiece;
@@ -44,22 +44,19 @@ public class Game extends GameDrawable
 	private Bitmap _borderBitmap;
 	private Canvas _borderCanvas;
 
-	public Game(GameDrawingPanel drawingPanel, GameUI gui)
+	public Game(GameDrawingPanel drawingPanel)
 	{
 		super(drawingPanel);
-
 
 		ml = new MoveLogger();
 
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
-		
+
 		whiteName = "White";
 		blackName = "Black";
 
-		this._gui = gui;
-		gui.setTurnName(whiteName, isWhiteTurn);
 		setupBorder();
 	}
 
@@ -68,6 +65,12 @@ public class Game extends GameDrawable
 		this._board = board;
 		initializePieces(whitePieces, true);
 		initializePieces(blackPieces, false);
+	}
+
+	public void setGameUI(GameUI gui)
+	{
+		this._gui = gui;
+		gui.setTurnName(whiteName, isWhiteTurn);
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
@@ -99,7 +102,7 @@ public class Game extends GameDrawable
 			return null;
 
 		// if piece belongs to current player
-		if (p.isWhite() == isWhiteTurn)
+		if (p.isWhite() == isWhiteTurn())
 		{
 			// select the piece
 			selectedPiece = p;
@@ -128,7 +131,8 @@ public class Game extends GameDrawable
 		}
 
 		return selectedPiece != null && selectedPieceMoves != null
-				&& (selectedPieceMoves.contains(target)) && selectedPiece.isWhite() == isWhiteTurn
+				&& (selectedPieceMoves.contains(target))
+				&& selectedPiece.isWhite() == isWhiteTurn()
 				&& (!target.hasPiece() || target.getPiece().isCapturable());
 	}
 
@@ -197,21 +201,20 @@ public class Game extends GameDrawable
 	private void switchTurns()
 	{
 		isWhiteTurn = !isWhiteTurn;
-		_gui.setTurnName(isWhiteTurn ? whiteName : blackName, isWhiteTurn);
+		_gui.setTurnName(isWhiteTurn() ? whiteName : blackName, isWhiteTurn());
 	}
 
 	private boolean checkMoveValidity()
 	{
 		// Make sure king not in check
-		AbstractPiece[] enemyPieces = isWhiteTurn ? blackPieces : whitePieces;
+		AbstractPiece[] enemyPieces = isWhiteTurn() ? blackPieces : whitePieces;
 		for (AbstractPiece p : enemyPieces)
 		{
 			if (p.isAlive())
 			{
 				if (p.checkingKing())
 				{
-					gdp.displayMessage(p + " on square " + p.getLocation()
-							+ " is checking king");
+					gdp.displayMessage(p + " on square " + p.getLocation() + " is checking king");
 					checkingPiece = p;
 					return false;
 				}
@@ -238,7 +241,7 @@ public class Game extends GameDrawable
 	public boolean isTurn()
 	{
 		if (selectedPiece != null)
-			return isWhiteTurn == selectedPiece.isWhite();
+			return isWhiteTurn() == selectedPiece.isWhite();
 		else
 			return false;
 	}
@@ -312,12 +315,11 @@ public class Game extends GameDrawable
 			canvas.drawBitmap(_borderBitmap, 0, 0, null);
 		}
 	}
-	
+
 	public void redraw()
 	{
-		NEEDS_REDRAW=true;
+		NEEDS_REDRAW = true;
 	}
-
 
 	public Board getBoard()
 	{
@@ -362,6 +364,11 @@ public class Game extends GameDrawable
 		_board.unhighlightAllSquares();
 		selectedPiece = null;
 		selectedPieceMoves = null;
+	}
+
+	public boolean isWhiteTurn()
+	{
+		return isWhiteTurn;
 	}
 
 }

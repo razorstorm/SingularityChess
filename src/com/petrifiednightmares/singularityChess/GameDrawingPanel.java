@@ -53,11 +53,12 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		background = SingularBitmapFactory.buildScaledBitmap(getResources(), R.drawable.background,
 				SUI.WIDTH, SUI.HEIGHT);
 
-		gui = new GameUI(this);
+		game = new Game(this);
 
-		game = new Game(this, gui);
+		gui = new GameUI(this,game);
 
 		board = new Board(this,game);
+		game.setGameUI(gui);
 		game.setBoard(board);
 
 		this.setOnTouchListener(this);

@@ -27,7 +27,7 @@ public class SingularBitmapFactory
 	public static Bitmap buildScaledBitmap(Resources r, int id, int newWidth, int newHeight)
 	{
 		Bitmap b = bitmaps.get(id, null);
-		if (b != null)
+		if (b != null && b.getWidth() == newWidth && b.getHeight() == newHeight)
 		{
 			return b;
 		} else
