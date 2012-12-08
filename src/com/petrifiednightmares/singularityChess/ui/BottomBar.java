@@ -5,6 +5,8 @@ import android.view.HapticFeedbackConstants;
 
 import com.petrifiednightmares.singularityChess.GameActivity;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.R;
+import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class BottomBar
 {
@@ -38,10 +40,9 @@ public class BottomBar
 		buttons[2] = new ActionButton("Surrender", _top, SUI.PADDING + _space * 4 + _buttonWidth
 				* 2, _buttonWidth, _height);
 
-		buttons[3] = new ActionButton("⋮ ", _top, SUI.PADDING + _space * 6 + _buttonWidth * 3,
-				_thinButtonWidth, _height); // TODO find icon from that thing we
-											// used for rails to find a
-											// paragraph icon
+		buttons[3] = new ActionButton(SingularBitmapFactory.buildScaledBitmap(_gdp.getResources(),
+				R.drawable.menu, (int)(_thinButtonWidth * 0.6), (int)(_height * 0.5)), _top, SUI.PADDING + _space
+				* 6 + _buttonWidth * 3, _thinButtonWidth, _height);
 
 	}
 
