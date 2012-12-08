@@ -54,9 +54,7 @@ public class Game extends GameDrawable
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
-		initializePieces(whitePieces, true);
-		initializePieces(blackPieces, false);
-
+		
 		whiteName = "White";
 		blackName = "Black";
 
@@ -68,6 +66,8 @@ public class Game extends GameDrawable
 	public void setBoard(Board board)
 	{
 		this._board = board;
+		initializePieces(whitePieces, true);
+		initializePieces(blackPieces, false);
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)

@@ -37,7 +37,6 @@ public class GameUI extends GameDrawable
 
 	public boolean onClick(int x, int y)
 	{
-		bottomBar.onClick(x, y);
 
 		if (PROMPT != null)
 		{
@@ -49,7 +48,10 @@ public class GameUI extends GameDrawable
 		} else
 		{
 			PROMPT_WAITING = false;
+			bottomBar.onClick(x, y);
 		}
+		
+		
 		
 		return false; //doesnt matter
 	}

@@ -17,7 +17,6 @@ public class HoverDialog extends GameDrawable
 	protected RectF _rectf;
 	protected Rect _textBounds, _mHeight;
 	protected Paint _horizontalPaint, _verticalPaint, _textPaint;
-	public boolean NEEDS_REDRAW;
 
 	public HoverDialog(GameDrawingPanel gdp, String title, int top, int left, int width, int height)
 	{

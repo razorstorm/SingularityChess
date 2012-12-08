@@ -508,17 +508,6 @@ public class Board extends GameDrawable
 		return false;
 	}
 
-//	public void redrawAll()
-//	{
-//		NEEDS_REDRAW = true;
-//		for (char file = 'a'; file <= 'h'; file++)
-//		{
-//			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
-//			{
-//				squares.get(file + "" + rank).redraw() = true;
-//			}
-//		}
-//	}
 
 	void unhighlightAllSquares()
 	{
@@ -566,5 +555,12 @@ public class Board extends GameDrawable
 	public void redraw()
 	{
 		NEEDS_REDRAW=true;
+		for (char file = 'a'; file <= 'h'; file++)
+		{
+			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
+			{
+				squares.get(file + "" + rank).redraw();
+			}
+		}
 	}
 }
