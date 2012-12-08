@@ -498,13 +498,14 @@ public class Board extends GameDrawable
 					_game.select(s.getPiece());
 				} else
 				{
+					//if didn't hit anything
+					_game.unselect();
 				}
 
 				return true;
 			}
 		}
-		//if didn't hit anything
-		_game.unselect();
+
 		return false;
 	}
 
