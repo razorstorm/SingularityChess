@@ -25,7 +25,7 @@ public class SUI
 	public static Paint darkPaint, lightPaint, highlightPaint, highlightPaint2, attackPaint,
 			attackPaint2, piecePaint, labelPaint, flashPaint, flashPaint2, kingThreatenPaint,
 			kingThreatenPaint2, turnNamePaint, topBarPaint, topBarTexturePaint, turnNameWhitePaint,
-			turnNameBlackPaint, borderPaint, borderShadowPaint, boardLightingPaint;
+			turnNameBlackPaint, borderPaint, borderShadowPaint, boardLightingPaint, gameLightingPaint;
 	private static Bitmap _darkTexture, _lightTexture, _topBarTexture, _borderTexture;
 
 	public static MediaPlayer pieceSound;
@@ -179,6 +179,14 @@ public class SUI
 						Color.rgb(255, 255, 200), Color.argb(255, 20, 20, 0) }, new float[] { 0.3f,
 						0.8f }, Shader.TileMode.MIRROR));
 		boardLightingPaint.setAlpha(80);
+		
+		gameLightingPaint = new Paint();
+		gameLightingPaint.setAntiAlias(true);
+		gameLightingPaint.setShader(new RadialGradient(WIDTH / 2f + 6 * UNIT,
+				(float) HEIGHT_CENTER - 4 * UNIT, HEIGHT/2, new int[] {
+						Color.rgb(255, 255, 200), Color.argb(255, 20, 20, 0) }, new float[] { 0.2f,
+						0.5f }, Shader.TileMode.MIRROR));
+		gameLightingPaint.setAlpha(80);
 	}
 
 	private static void setupAudio(Context c)

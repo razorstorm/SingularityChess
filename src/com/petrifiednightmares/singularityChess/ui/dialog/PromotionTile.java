@@ -12,7 +12,6 @@ import android.graphics.Shader;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.ui.GameDrawable;
-import com.petrifiednightmares.singularityChess.ui.SUI;
 import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class PromotionTile extends GameDrawable
@@ -24,6 +23,7 @@ public class PromotionTile extends GameDrawable
 	private Rect _textBounds, _mHeight;
 	private Paint _iconPaint;
 	private Bitmap _icon;
+	private boolean _shown;
 
 	private static Paint _backgroundPaint;
 	private static Bitmap _backgroundTexture;
@@ -32,13 +32,14 @@ public class PromotionTile extends GameDrawable
 			int width, int height)
 	{
 		super(gdp);
+		this._shown = false;
 		this._icon = icon;
 		this._top = top;
 		this._left = left;
 		this._width = width;
 		this._title = title;
 		this._height = height;
-		this._rectf = new RectF(_left, SUI.HEIGHT + SUI.UNIT * 10, _left + _width, _top + _height);
+		this._rectf = new RectF(_left, top, _left + _width, _top + _height);
 
 		PromotionTile._backgroundTexture = SingularBitmapFactory.buildBitmap(gdp.getResources(),
 				R.drawable.tile_wood);
@@ -47,15 +48,15 @@ public class PromotionTile extends GameDrawable
 		PromotionTile._backgroundPaint.setAntiAlias(true);
 		PromotionTile._backgroundPaint.setShader(new BitmapShader(PromotionTile._backgroundTexture,
 				Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
+		PromotionTile._backgroundPaint.setShadowLayer(15, 10, 10, Color.argb(200, 255, 255, 255));
 
 		// this._backgroundPaint.
 
 		this._iconPaint = new Paint();
 		this._iconPaint.setAntiAlias(true);
 		this._iconPaint.setColor(Color.WHITE);
-		this._iconPaint.setTextSize(20);
-		this._iconPaint.setAlpha(120);
-		this._iconPaint.setShadowLayer(15, 0, 0, Color.argb(70, 255, 255, 255));
+		this._iconPaint.setTextSize(30);
+		this._iconPaint.setShadowLayer(10, 0, 0, Color.argb(255, 0, 0, 0));
 
 		_textBounds = new Rect();
 		_iconPaint.getTextBounds(_title, 0, _title.length(), _textBounds);
@@ -69,12 +70,17 @@ public class PromotionTile extends GameDrawable
 		if (NEEDS_REDRAW)
 		{
 			NEEDS_REDRAW = false;
-			c.drawRect(_rectf, PromotionTile._backgroundPaint);
-			c.drawBitmap(_icon, _left + _width / 2 - _icon.getWidth() / 2, _rectf.top
-					+ (int) (_height * 0.8) / 2 - _icon.getHeight() / 2, _iconPaint);
+			if (_shown)
+			{
 
-			c.drawText(_title, _left + _width / 2 - _textBounds.width() / 2, (int) (_rectf.top + _height
-					* 0.8 + (_height * 0.2) / 2 + _mHeight.height() / 2), _iconPaint);
+				c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f,
+						PromotionTile._backgroundPaint);
+				c.drawBitmap(_icon, _left + _width / 2 - _icon.getWidth() / 2, _rectf.top
+						+ (int) (_height * 0.7) / 2 - _icon.getHeight() / 2, _iconPaint);
+
+				c.drawText(_title, _left + _width / 2 - _textBounds.width() / 2, (int) (_rectf.top
+						+ _height * 0.7 + (_height * 0.3) / 2 + _mHeight.height() / 2), _iconPaint);
+			}
 		}
 	}
 
@@ -85,9 +91,14 @@ public class PromotionTile extends GameDrawable
 		return false;
 	}
 
-	public void setTop(int i)
+	public void show()
 	{
-		_rectf.top = i;
+		_shown = true;
+	}
+
+	public void hide()
+	{
+		_shown = false;
 	}
 
 	@Override

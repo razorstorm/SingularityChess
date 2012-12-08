@@ -17,17 +17,18 @@ public class HoverDialog extends GameDrawable
 	protected RectF _rectf;
 	protected Rect _textBounds, _mHeight;
 	protected Paint _backgroundPaint, _textPaint;
+	protected boolean _shown;
 
 	public HoverDialog(GameDrawingPanel gdp, String title, int top, int left, int width, int height)
 	{
 		super(gdp);
+		this._shown = false;
 		this._top = top;
 		this._left = left;
 		this._width = width;
 		this._height = height;
 		this._title = title;
-		this._rectf = new RectF(_left, SUI.HEIGHT + SUI.UNIT * 10, _left + _width, _top + _height);
-
+		this._rectf = new RectF(_left, _top, _left + _width, _top + _height);
 
 		this._backgroundPaint = new Paint();
 		this._backgroundPaint.setAntiAlias(true);
@@ -54,24 +55,29 @@ public class HoverDialog extends GameDrawable
 		if (NEEDS_REDRAW)
 		{
 			NEEDS_REDRAW = false;
-			c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, _backgroundPaint);
+			if (_shown)
+			{
+				c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, _backgroundPaint);
 
-			c.drawText(_title, _rectf.left + SUI.UNIT * 5, _rectf.top + SUI.UNIT * 8, _textPaint);
+				c.drawText(_title, _rectf.left + SUI.UNIT * 5, _rectf.top + SUI.UNIT * 8,
+						_textPaint);
 
-			c.drawRect(_rectf.left, _rectf.top + _mHeight.height() + SUI.UNIT * 10, _left + _width,
-					_rectf.top + _mHeight.height() + SUI.UNIT * 10 + 1, _backgroundPaint);
+				c.drawRect(_rectf.left, _rectf.top + _mHeight.height() + SUI.UNIT * 10, _left
+						+ _width, _rectf.top + _mHeight.height() + SUI.UNIT * 10 + 1,
+						_backgroundPaint);
+			}
 		}
 	}
 
 	public synchronized void display()
 	{
-		_rectf.top = _top;
+		_shown = true;
 		redraw();
 	}
 
 	public synchronized void hide()
 	{
-		_rectf.top = SUI.HEIGHT + SUI.UNIT * 10;
+		_shown = false;
 		redraw();
 		gdp.redrawAll();
 	}
@@ -89,6 +95,6 @@ public class HoverDialog extends GameDrawable
 	@Override
 	public void redraw()
 	{
-		NEEDS_REDRAW=true;
+		NEEDS_REDRAW = true;
 	}
 }
