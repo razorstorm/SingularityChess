@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -19,14 +20,14 @@ public class PromotionTile extends GameDrawable
 
 	private int _top, _left, _width, _height;
 	private String _title;
-	private RectF _rectf;
+	private RectF _rectf, _smallerRectf;
 	private Rect _textBounds, _mHeight;
 	private Paint _iconPaint;
 	private Bitmap _icon;
 	private boolean _shown;
 
-	private static Paint _backgroundPaint;
-	private static Bitmap _backgroundTexture;
+	private Paint _backgroundPaint, _buttonShadingPaint;
+	private Bitmap _backgroundTexture;
 
 	public PromotionTile(GameDrawingPanel gdp, String title, Bitmap icon, int top, int left,
 			int width, int height)
@@ -40,15 +41,23 @@ public class PromotionTile extends GameDrawable
 		this._title = title;
 		this._height = height;
 		this._rectf = new RectF(_left, top, _left + _width, _top + _height);
+		this._smallerRectf = new RectF(_left + 1, _top, _left + _width - 1,
+				_top + _height);
 
-		PromotionTile._backgroundTexture = SingularBitmapFactory.buildBitmap(gdp.getResources(),
-				R.drawable.tile_wood);
+		_backgroundTexture = SingularBitmapFactory.buildBitmap(gdp.getResources(),
+				R.drawable.woodbutton);
 
-		PromotionTile._backgroundPaint = new Paint();
-		PromotionTile._backgroundPaint.setAntiAlias(true);
-		PromotionTile._backgroundPaint.setShader(new BitmapShader(PromotionTile._backgroundTexture,
-				Shader.TileMode.REPEAT, Shader.TileMode.REPEAT));
-		PromotionTile._backgroundPaint.setShadowLayer(15, 10, 10, Color.argb(200, 255, 255, 255));
+		_backgroundPaint = new Paint();
+		_backgroundPaint.setAntiAlias(true);
+		_backgroundPaint.setShader(new BitmapShader(_backgroundTexture, Shader.TileMode.REPEAT,
+				Shader.TileMode.REPEAT));
+		_backgroundPaint.setShadowLayer(15, 10, 10, Color.argb(200, 255, 255, 255));
+
+		_buttonShadingPaint = new Paint();
+		_buttonShadingPaint.setAntiAlias(true);
+		_buttonShadingPaint.setShader(new LinearGradient(0, top, 0, top + height, new int[] {Color.argb(0,
+				255, 255, 255), Color.rgb(50, 50, 0), Color.argb(50, 50, 50, 0)}, null, Shader.TileMode.MIRROR));
+		_buttonShadingPaint.setAlpha(100);
 
 		// this._backgroundPaint.
 
@@ -73,13 +82,15 @@ public class PromotionTile extends GameDrawable
 			if (_shown)
 			{
 
-				c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f,
-						PromotionTile._backgroundPaint);
+				c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f, _backgroundPaint);
+
 				c.drawBitmap(_icon, _left + _width / 2 - _icon.getWidth() / 2, _rectf.top
 						+ (int) (_height * 0.7) / 2 - _icon.getHeight() / 2, _iconPaint);
 
 				c.drawText(_title, _left + _width / 2 - _textBounds.width() / 2, (int) (_rectf.top
 						+ _height * 0.7 + (_height * 0.3) / 2 + _mHeight.height() / 2), _iconPaint);
+
+				c.drawRoundRect(_smallerRectf, _width * 0.05f, _width * 0.05f, _buttonShadingPaint);
 			}
 		}
 	}

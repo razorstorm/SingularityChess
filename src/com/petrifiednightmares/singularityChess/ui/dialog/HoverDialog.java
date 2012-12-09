@@ -62,9 +62,9 @@ public class HoverDialog extends GameDrawable
 				c.drawText(_title, _rectf.left + SUI.UNIT * 5, _rectf.top + SUI.UNIT * 8,
 						_textPaint);
 
-				c.drawRect(_rectf.left, _rectf.top + _mHeight.height() + SUI.UNIT * 10, _left
-						+ _width, _rectf.top + _mHeight.height() + SUI.UNIT * 10 + 1,
-						_backgroundPaint);
+				c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
+						+ SUI.UNIT * 10, (int) (_left + _width - _width * 0.1), _rectf.top
+						+ _mHeight.height() + SUI.UNIT * 10 + 1, _backgroundPaint);
 			}
 		}
 	}

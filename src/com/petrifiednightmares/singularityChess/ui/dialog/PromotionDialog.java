@@ -2,10 +2,6 @@ package com.petrifiednightmares.singularityChess.ui.dialog;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.R;
@@ -17,7 +13,6 @@ public class PromotionDialog extends HoverDialog
 {
 	Game _game;
 	PromotionTile queenTile, knightTile;
-	private Bitmap _bgTexture;
 
 	public PromotionDialog(GameDrawingPanel gdp, Game game)
 	{
@@ -26,18 +21,11 @@ public class PromotionDialog extends HoverDialog
 
 		this._game = game;
 
-		int tileWidth = (int) (_width * 0.4);
+		int tileWidth = (int) (_width * 0.35);
 		int tileTopMargin = (_height - tileWidth) / 2;
 		int tileLeftMargin = (_width / 2 - tileWidth) / 2;
 		int _tileTop = _top + tileTopMargin;
 
-		_backgroundPaint = new Paint();
-		_backgroundPaint.setAntiAlias(true);
-		_backgroundPaint.setColor(Color.WHITE);
-		_backgroundPaint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-
-		_bgTexture = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
-				R.drawable.wood_board, _width, _height);
 
 		Bitmap queenBitmap = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
 				game.isWhiteTurn() ? R.drawable.queen : R.drawable.black_queen,
@@ -83,19 +71,18 @@ public class PromotionDialog extends HoverDialog
 			{
 				c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, _backgroundPaint);
 
-				c.drawBitmap(_bgTexture, _rectf.left, _rectf.top, _backgroundPaint);
-				// c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f,
-				// SUI.gameLightingPaint);
-
 				queenTile.onDraw(c);
 				knightTile.onDraw(c);
+				
+				c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, SUI.gameLightingPaint);
 
 				c.drawText(_title, _rectf.left + SUI.UNIT * 5, _rectf.top + SUI.UNIT * 8,
 						_textPaint);
 
-				c.drawRect(_rectf.left, _rectf.top + _mHeight.height() + SUI.UNIT * 10, _left
-						+ _width, _rectf.top + _mHeight.height() + SUI.UNIT * 10 + 1,
-						_backgroundPaint);
+
+				c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
+						+ SUI.UNIT * 10, (int) (_left + _width - _width * 0.1), _rectf.top
+						+ _mHeight.height() + SUI.UNIT * 10 + 1, _backgroundPaint);
 			}
 		}
 	}

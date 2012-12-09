@@ -186,7 +186,7 @@ public class SUI
 				(float) HEIGHT_CENTER - 4 * UNIT, HEIGHT/2, new int[] {
 						Color.rgb(255, 255, 200), Color.argb(255, 20, 20, 0) }, new float[] { 0.2f,
 						0.5f }, Shader.TileMode.MIRROR));
-		gameLightingPaint.setAlpha(80);
+		gameLightingPaint.setAlpha(40);
 	}
 
 	private static void setupAudio(Context c)
