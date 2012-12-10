@@ -26,6 +26,7 @@ public class SUI
 			attackPaint2, piecePaint, labelPaint, flashPaint, flashPaint2, kingThreatenPaint,
 			kingThreatenPaint2, turnNamePaint, topBarPaint, topBarTexturePaint, turnNameWhitePaint,
 			turnNameBlackPaint, borderPaint, borderShadowPaint, boardLightingPaint, gameLightingPaint;
+	public static Paint whitePaint;
 	private static Bitmap _darkTexture, _lightTexture, _topBarTexture, _borderTexture;
 
 	public static MediaPlayer pieceSound;
@@ -35,6 +36,7 @@ public class SUI
 		setupMeasurements(width, height);
 
 		setupSimplePaints();
+		setupColorPaints();
 
 		setupTexturedPaints(r);
 
@@ -57,6 +59,13 @@ public class SUI
 
 		// 60 from shadow, 10 from padding
 		BOTTOM = HEIGHT_CENTER + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH + 60 + 10;
+	}
+	
+	private static void setupColorPaints()
+	{
+		whitePaint = new Paint();
+		whitePaint.setColor(Color.WHITE);
+		whitePaint.setAntiAlias(true);
 	}
 
 	private static void setupSimplePaints()

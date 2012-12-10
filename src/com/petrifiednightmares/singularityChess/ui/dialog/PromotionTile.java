@@ -1,7 +1,6 @@
 package com.petrifiednightmares.singularityChess.ui.dialog;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -11,23 +10,20 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
-import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.ui.GameDrawable;
-import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class PromotionTile extends GameDrawable
 {
 
 	private int _top, _left, _width, _height;
 	private String _title;
-	private RectF _rectf, _smallerRectf;
+	private RectF _rectf;
 	private Rect _textBounds, _mHeight;
 	private Paint _iconPaint;
 	private Bitmap _icon;
 	private boolean _shown;
 
-	private Paint _backgroundPaint, _buttonShadingPaint;
-	private Bitmap _backgroundTexture;
+	private Paint _horizontalPaint, _verticalPaint;
 
 	public PromotionTile(GameDrawingPanel gdp, String title, Bitmap icon, int top, int left,
 			int width, int height)
@@ -41,25 +37,27 @@ public class PromotionTile extends GameDrawable
 		this._title = title;
 		this._height = height;
 		this._rectf = new RectF(_left, top, _left + _width, _top + _height);
-		this._smallerRectf = new RectF(_left + 1, _top, _left + _width - 1,
-				_top + _height);
 
-		_backgroundTexture = SingularBitmapFactory.buildBitmap(gdp.getResources(),
-				R.drawable.woodbutton);
+		int darkColor = Color.argb(200, 24, 17, 7);
+		int lightColor = Color.argb(100, 62, 43, 18);
+		int darkColor2 = Color.rgb( 19, 14, 6);
+		int lightColor2 = Color.argb(150, 62, 43, 18);
 
-		_backgroundPaint = new Paint();
-		_backgroundPaint.setAntiAlias(true);
-		_backgroundPaint.setShader(new BitmapShader(_backgroundTexture, Shader.TileMode.REPEAT,
-				Shader.TileMode.REPEAT));
-		_backgroundPaint.setShadowLayer(15, 10, 10, Color.argb(200, 255, 255, 255));
+		this._horizontalPaint = new Paint();
+		this._horizontalPaint.setAntiAlias(true);
+		this._horizontalPaint.setShader(new LinearGradient(_left, _top + _height / 2f, _left
+				+ _width, _top + _height / 2f, new int[] { darkColor, lightColor, lightColor,
+				darkColor, Color.argb(20, 255, 255, 255) }, new float[] { 0f, 0.2f, 0.8f,
+				1f - 1.5f / _width, 1f }, Shader.TileMode.MIRROR));
+		this._horizontalPaint.setAlpha(150);
 
-		_buttonShadingPaint = new Paint();
-		_buttonShadingPaint.setAntiAlias(true);
-		_buttonShadingPaint.setShader(new LinearGradient(0, top, 0, top + height, new int[] {Color.argb(0,
-				255, 255, 255), Color.rgb(50, 50, 0), Color.argb(50, 50, 50, 0)}, null, Shader.TileMode.MIRROR));
-		_buttonShadingPaint.setAlpha(100);
-
-		// this._backgroundPaint.
+		this._verticalPaint = new Paint();
+		this._verticalPaint.setAntiAlias(true);
+		this._verticalPaint.setShader(new LinearGradient(_left + _width / 2f, _top, _left + _width
+				/ 2f, _top + _height, new int[] { darkColor2, lightColor2, lightColor2, darkColor2,
+				Color.WHITE }, new float[] { 0f, 0.25f, 0.75f, 1f - 1.5f / _height, 1f },
+				Shader.TileMode.MIRROR));
+		this._verticalPaint.setAlpha(150);
 
 		this._iconPaint = new Paint();
 		this._iconPaint.setAntiAlias(true);
@@ -82,7 +80,8 @@ public class PromotionTile extends GameDrawable
 			if (_shown)
 			{
 
-				c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f, _backgroundPaint);
+				c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f, _verticalPaint);
+				c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f, _horizontalPaint);
 
 				c.drawBitmap(_icon, _left + _width / 2 - _icon.getWidth() / 2, _rectf.top
 						+ (int) (_height * 0.7) / 2 - _icon.getHeight() / 2, _iconPaint);
@@ -90,7 +89,6 @@ public class PromotionTile extends GameDrawable
 				c.drawText(_title, _left + _width / 2 - _textBounds.width() / 2, (int) (_rectf.top
 						+ _height * 0.7 + (_height * 0.3) / 2 + _mHeight.height() / 2), _iconPaint);
 
-				c.drawRoundRect(_smallerRectf, _width * 0.05f, _width * 0.05f, _buttonShadingPaint);
 			}
 		}
 	}

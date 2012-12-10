@@ -16,16 +16,16 @@ public class PromotionDialog extends HoverDialog
 
 	public PromotionDialog(GameDrawingPanel gdp, Game game)
 	{
-		super(gdp, "Promotion", (SUI.HEIGHT / 100) * 20, (SUI.WIDTH / 100) * 10, SUI.WIDTH - 2
-				* ((SUI.WIDTH / 100) * 10), SUI.HEIGHT - 2 * (SUI.HEIGHT / 100) * 20);
+		super(gdp, "Promotion", (SUI.HEIGHT / 100) * 30, (SUI.WIDTH / 100) * 10, SUI.WIDTH - 2
+				* ((SUI.WIDTH / 100) * 10), SUI.HEIGHT - 2 * (SUI.HEIGHT / 100) * 30);
 
 		this._game = game;
 
 		int tileWidth = (int) (_width * 0.35);
 		int tileTopMargin = (_height - tileWidth) / 2;
-		int tileLeftMargin = (_width / 2 - tileWidth) / 2;
+		int tileMargin = (_width - tileWidth * 2) / 6;
+		int tileLeftMargin = tileMargin * 2;
 		int _tileTop = _top + tileTopMargin;
-
 
 		Bitmap queenBitmap = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
 				game.isWhiteTurn() ? R.drawable.queen : R.drawable.black_queen,
@@ -38,7 +38,7 @@ public class PromotionDialog extends HoverDialog
 		queenTile = new PromotionTile(gdp, "Queen", queenBitmap, _tileTop, _left + tileLeftMargin,
 				tileWidth, tileWidth);
 		knightTile = new PromotionTile(gdp, "Knight", knightBitmap, _tileTop, _left + _width / 2
-				+ tileLeftMargin, tileWidth, tileWidth);
+				+ tileMargin, tileWidth, tileWidth);
 	}
 
 	public synchronized void display()
@@ -64,27 +64,9 @@ public class PromotionDialog extends HoverDialog
 
 	public void onDraw(Canvas c)
 	{
-		if (NEEDS_REDRAW)
-		{
-			NEEDS_REDRAW = false;
-			if (_shown)
-			{
-				c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, _backgroundPaint);
-
-				queenTile.onDraw(c);
-				knightTile.onDraw(c);
-				
-				c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, SUI.gameLightingPaint);
-
-				c.drawText(_title, _rectf.left + SUI.UNIT * 5, _rectf.top + SUI.UNIT * 8,
-						_textPaint);
-
-
-				c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
-						+ SUI.UNIT * 10, (int) (_left + _width - _width * 0.1), _rectf.top
-						+ _mHeight.height() + SUI.UNIT * 10 + 1, _backgroundPaint);
-			}
-		}
+		super.onDraw(c);
+		queenTile.onDraw(c);
+		knightTile.onDraw(c);
 	}
 
 	public boolean onClick(int x, int y)
