@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ public class MovesLogDialog extends HoverDialog
 	TextView _text;
 	RectF _movesViewRect;
 
-	Paint _horizontalPaint, _verticalPaint;
+	Paint _horizontalPaint, _verticalPaint,_dimWhite;
 
 	public MovesLogDialog(GameDrawingPanel gdp, GameUI gui, ScrollView movesView, MoveLogger ml)
 	{
@@ -35,6 +36,7 @@ public class MovesLogDialog extends HoverDialog
 		this._movesView = movesView;
 		_movesView.bringToFront();
 		_text = (TextView) (_movesView.getChildAt(0));
+		
 
 		int viewHeight = (int) ((_height - _headerBottom) * 0.9);
 		int viewWidth = (int) (_width * 0.9);
@@ -45,6 +47,10 @@ public class MovesLogDialog extends HoverDialog
 		_movesView.getLayoutParams().width = viewWidth;
 		((RelativeLayout.LayoutParams) movesView.getLayoutParams()).leftMargin = viewLeft;
 		((RelativeLayout.LayoutParams) movesView.getLayoutParams()).topMargin = viewTop;
+		
+		
+		((FrameLayout.LayoutParams) _text.getLayoutParams()).topMargin = (int)(viewHeight*0.05);
+		((FrameLayout.LayoutParams) _text.getLayoutParams()).leftMargin = (int)(viewWidth*0.08);
 
 		_movesViewRect = new RectF(viewLeft, viewTop, viewLeft + viewWidth, viewTop + viewHeight);
 
@@ -59,8 +65,8 @@ public class MovesLogDialog extends HoverDialog
 		this._horizontalPaint.setAntiAlias(true);
 		this._horizontalPaint.setShader(new LinearGradient(viewLeft, viewTop + viewHeight / 2f,
 				viewLeft + viewWidth, viewTop + viewHeight / 2f, new int[] {
-						Color.argb(200, 30, 21, 9), Color.argb(150, 62, 43, 18),
-						Color.argb(150, 62, 43, 18), Color.argb(200, 30, 21, 9) }, new float[] { 0f, 0.2f, 0.8f,
+						Color.rgb( 30, 21, 9), Color.rgb( 62, 43, 18),
+						Color.rgb( 62, 43, 18), Color.rgb( 30, 21, 9) }, new float[] { 0f, 0.1f, 0.9f,
 						1f}, Shader.TileMode.MIRROR));
 		this._horizontalPaint.setAlpha(150);
 
@@ -69,9 +75,17 @@ public class MovesLogDialog extends HoverDialog
 		this._verticalPaint.setShader(new LinearGradient(viewLeft + viewWidth / 2f, viewTop,
 				viewLeft + viewWidth / 2f, viewTop + viewHeight, new int[] { Color.rgb(30, 21, 9),
 						Color.rgb(62, 43, 18), Color.rgb(62, 43, 18), Color.rgb(30, 21, 9),
-						Color.WHITE }, new float[] { 0f, 0.25f, 0.75f, 1f - 2.5f / viewHeight, 1f },
+						Color.WHITE }, new float[] { 0f, 0.1f, 0.9f, 1f - 2f / viewHeight, 1f },
 				Shader.TileMode.MIRROR));
-		this._verticalPaint.setAlpha(150);
+		this._verticalPaint.setAlpha(100);
+		
+		_text.setTextSize(15);
+		_text.setTextColor(Color.WHITE);
+		
+		_dimWhite = new Paint();
+		_dimWhite.setAntiAlias(true);
+		_dimWhite.setColor(Color.WHITE);
+		_dimWhite.setAlpha(60);
 	}
 
 	public void onDraw(Canvas c)
@@ -79,15 +93,17 @@ public class MovesLogDialog extends HoverDialog
 		if (NEEDS_REDRAW)
 		{
 			super.onDraw(c);
-//			if (_shown)
-//			{
-//				c.drawRoundRect(_movesViewRect,
-//						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
-//						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _horizontalPaint);
-//				c.drawRoundRect(_movesViewRect,
-//						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
-//						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _verticalPaint);
-//			}
+			if (_shown)
+			{
+				c.drawRoundRect(_movesViewRect,
+						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
+						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _horizontalPaint);
+				c.drawRoundRect(_movesViewRect,
+						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
+						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _verticalPaint);
+				
+				c.drawRect(_movesViewRect.left + (_movesViewRect.bottom - _movesViewRect.top) * 0.02f , _movesViewRect.bottom  , _movesViewRect.right -  (_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _movesViewRect.bottom+1, _dimWhite);
+			}
 		}
 	}
 
