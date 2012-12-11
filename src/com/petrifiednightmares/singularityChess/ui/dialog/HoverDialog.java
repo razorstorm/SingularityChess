@@ -45,7 +45,7 @@ public class HoverDialog extends GameDrawable
 		this._backgroundPaint.setShadowLayer(20, 50, 50, Color.argb(100, 0, 0, 0));
 
 		this._background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
-				R.drawable.wood_strip, _width, _height);
+				R.drawable.wood_strip_small, _width, _height);
 
 		this._textPaint = new Paint();
 		this._textPaint.setAntiAlias(true);
