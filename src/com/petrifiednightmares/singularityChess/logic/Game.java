@@ -1,5 +1,6 @@
 package com.petrifiednightmares.singularityChess.logic;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import android.graphics.Bitmap;
@@ -43,7 +44,6 @@ public class Game extends GameDrawable
 
 	private Bitmap _borderBitmap;
 	private Canvas _borderCanvas;
-
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
@@ -257,15 +257,31 @@ public class Game extends GameDrawable
 		_gui.openPromotionDialog();
 	}
 
-	public void promotePiece(AbstractPiece.PieceType pieceType) throws GameException
+	//replace the piece in our array so the old one gets thrown away.
+	private void replacePiece(AbstractPiece oldPiece, AbstractPiece newPiece)
+	{
+		if(newPiece.isWhite())
+		{
+			int index = Arrays.asList(whitePieces).indexOf(selectedPiece);
+			whitePieces[index]=newPiece;
+		}
+		else
+		{
+			int index = Arrays.asList(blackPieces).indexOf(selectedPiece);
+			blackPieces[index]=newPiece;
+		}
+	}
+
+	public void promotePiece(AbstractPiece.PieceType pieceType)
 	{
 		if (selectedPiece instanceof Pawn)
 		{
-//			selectedPiece.promote(pieceType);
+			AbstractPiece newPiece = ((Pawn) (selectedPiece)).promote(pieceType);
+			replacePiece(selectedPiece, newPiece);
 			finishMove();
 		} else
 		{
-			throw new GameException(selectedPiece + " at location: " + selectedPiece.getLocation()
+			gdp.displayMessage(selectedPiece + " at location: " + selectedPiece.getLocation()
 					+ " is not a pawn yet was attempted to be promoted");
 		}
 	}

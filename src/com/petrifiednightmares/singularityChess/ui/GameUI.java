@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.ui.dialog.HoverDialog;
 import com.petrifiednightmares.singularityChess.ui.dialog.MovesLogDialog;
 import com.petrifiednightmares.singularityChess.ui.dialog.PromotionDialog;
@@ -78,5 +79,10 @@ public class GameUI extends GameDrawable
 		promotionDialog.display();
 		PROMPT = promotionDialog;
 		PROMPT_WAITING = true;
+	}
+
+	public void promote(AbstractPiece.PieceType pieceType)
+	{
+		_game.promotePiece(pieceType);
 	}
 }

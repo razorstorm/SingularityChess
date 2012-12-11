@@ -20,8 +20,7 @@ public class Pawn extends AbstractPiece
 	{
 		super(game, location, isWhite, isWhite ? "\u2659" : "\u265F", SingularBitmapFactory
 				.buildScaledBitmap(game.getDrawingPanel().getResources(), isWhite ? R.drawable.pawn
-						: R.drawable.black_pawn, SUI.PIECE_SIZE,
-						SUI.PIECE_SIZE));
+						: R.drawable.black_pawn, SUI.PIECE_SIZE, SUI.PIECE_SIZE));
 	}
 
 	public Set<Square> getMoves() throws GameException
@@ -68,6 +67,25 @@ public class Pawn extends AbstractPiece
 		}
 
 		return pawns;
+	}
+
+	public AbstractPiece promote(AbstractPiece.PieceType pieceType)
+	{
+		AbstractPiece newPiece;
+		switch (pieceType)
+		{
+		case Knight:
+			newPiece = new Knight(game, getLocation(), isWhite);
+			break;
+		case Queen:
+			newPiece = new Queen(game, getLocation(), isWhite);
+			break;
+		default:
+			newPiece = new Queen(game, getLocation(), isWhite);//just default to queen if they try to be clever
+			break;
+		}
+		getLocation().addPiece(newPiece);
+		return newPiece;
 	}
 
 	public String toString()
