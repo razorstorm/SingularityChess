@@ -44,10 +44,10 @@ public class Game extends GameDrawable
 	private Bitmap _borderBitmap;
 	private Canvas _borderCanvas;
 
+
 	public Game(GameDrawingPanel drawingPanel)
 	{
 		super(drawingPanel);
-
 		ml = new MoveLogger();
 
 		isWhiteTurn = true;
@@ -167,17 +167,26 @@ public class Game extends GameDrawable
 			// TODO, display actionLog
 			System.out.println(actionLog);
 
-			checkPostMoveConditions();
-
-			playPieceSounds();
-			switchTurns();
-			unselect();
+			if (checkPostMoveConditions())
+			{
+				finishMove();
+			}
 		} else
 		{
 			throw new InvalidMoveException(
 					"Invalid Move: Either piece not selected or illegal move");
 		}
 		return true;
+	}
+
+	private void finishMove()
+	{
+		if (!_gui.PROMPT_WAITING)
+		{
+			playPieceSounds();
+			switchTurns();
+			unselect();
+		}
 	}
 
 	private void unmakeMove(AbstractPiece capturedPiece, AbstractPiece actor,
@@ -224,7 +233,7 @@ public class Game extends GameDrawable
 		return true;
 	}
 
-	private void checkPostMoveConditions()
+	private boolean checkPostMoveConditions()
 	{
 		// check to see if theres a check, a checkmate, or a pawn can get
 		// promoted.
@@ -234,7 +243,30 @@ public class Game extends GameDrawable
 			if (Board.isEndOfFile(selectedPiece.getLocation()))
 			{
 				// can be promoted
+				promptPromotion(selectedPiece);
+				return false;
 			}
+		}
+
+		return true;
+	}
+
+	private void promptPromotion(AbstractPiece piece)
+	{
+		select(piece);
+		_gui.openPromotionDialog();
+	}
+
+	public void promotePiece(AbstractPiece.PieceType pieceType) throws GameException
+	{
+		if (selectedPiece instanceof Pawn)
+		{
+//			selectedPiece.promote(pieceType);
+			finishMove();
+		} else
+		{
+			throw new GameException(selectedPiece + " at location: " + selectedPiece.getLocation()
+					+ " is not a pawn yet was attempted to be promoted");
 		}
 	}
 
@@ -344,26 +376,32 @@ public class Game extends GameDrawable
 
 	public void select(AbstractPiece piece)
 	{
-		try
+		if (!_gui.PROMPT_WAITING)
 		{
-			_board.unhighlightAllSquares();
-			selectedPiece = piece;
-			selectedPieceMoves = piece.getMoves();
-			_board.highlightMoves(selectedPieceMoves);
-			_board.select(piece.getLocation());
-			checkingPiece = null;
-		} catch (GameException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try
+			{
+				_board.unhighlightAllSquares();
+				selectedPiece = piece;
+				selectedPieceMoves = piece.getMoves();
+				_board.highlightMoves(selectedPieceMoves);
+				_board.select(piece.getLocation());
+				checkingPiece = null;
+			} catch (GameException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public void unselect()
 	{
-		_board.unhighlightAllSquares();
-		selectedPiece = null;
-		selectedPieceMoves = null;
+		if (!_gui.PROMPT_WAITING)
+		{
+			_board.unhighlightAllSquares();
+			selectedPiece = null;
+			selectedPieceMoves = null;
+		}
 	}
 
 	public boolean isWhiteTurn()

@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.ui.GameDrawable;
+import com.petrifiednightmares.singularityChess.ui.GameUI;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
@@ -19,13 +20,16 @@ public class HoverDialog extends GameDrawable
 	protected String _title;
 	protected RectF _rectf;
 	protected Rect _textBounds, _mHeight;
-	protected Paint _backgroundPaint, _textPaint,_dimDark,_dimWhite;
+	protected Paint _backgroundPaint, _textPaint, _dimDark, _dimWhite;
 	protected boolean _shown;
 	protected Bitmap _background;
+	protected GameUI _gui;
 
-	public HoverDialog(GameDrawingPanel gdp, String title, int top, int left, int width, int height)
+	public HoverDialog(GameDrawingPanel gdp, GameUI gui, String title, int top, int left,
+			int width, int height)
 	{
 		super(gdp);
+		this._gui = gui;
 		this._shown = false;
 		this._top = top;
 		this._left = left;
@@ -39,7 +43,7 @@ public class HoverDialog extends GameDrawable
 		this._backgroundPaint.setColor(Color.rgb(62, 43, 18));
 		this._backgroundPaint.setAlpha(200);
 		this._backgroundPaint.setShadowLayer(20, 50, 50, Color.argb(100, 0, 0, 0));
-		
+
 		this._background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
 				R.drawable.wood_strip, _width, _height);
 
@@ -49,7 +53,7 @@ public class HoverDialog extends GameDrawable
 		this._textPaint.setTextSize(40);
 		this._textPaint.setAlpha(255);
 		this._textPaint.setShadowLayer(15, 0, 0, Color.argb(70, 255, 255, 255));
-		
+
 		this._dimDark = new Paint();
 		this._dimDark.setColor(Color.rgb(19, 14, 6));
 		this._dimDark.setAntiAlias(true);
@@ -79,14 +83,13 @@ public class HoverDialog extends GameDrawable
 
 				c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, SUI.gameLightingPaint);
 
-
 				c.drawText(_title, _rectf.left + SUI.UNIT * 5, _rectf.top + SUI.UNIT * 8,
 						_textPaint);
 
 				c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
 						+ SUI.UNIT * 10, (int) (_left + _width - _width * 0.1), _rectf.top
 						+ _mHeight.height() + SUI.UNIT * 10 + 1, _dimDark);
-				
+
 				c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
 						+ SUI.UNIT * 10 + 1, (int) (_left + _width - _width * 0.1), _rectf.top
 						+ _mHeight.height() + SUI.UNIT * 10 + 2, _dimWhite);
@@ -113,6 +116,7 @@ public class HoverDialog extends GameDrawable
 		if (!click)
 		{
 			hide();
+			_gui.closePrompt();
 		}
 		return click;
 	}

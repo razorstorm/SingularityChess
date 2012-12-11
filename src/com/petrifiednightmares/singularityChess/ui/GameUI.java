@@ -24,9 +24,9 @@ public class GameUI extends GameDrawable
 		PROMPT = null;
 		this.topBar = new TopBar();
 		this.bottomBar = new BottomBar(this, drawingPanel);
-		movesDialog = new MovesLogDialog(gdp);
+		movesDialog = new MovesLogDialog(gdp, this);
 
-		promotionDialog = new PromotionDialog(gdp, _game);
+		promotionDialog = new PromotionDialog(gdp, _game, this);
 
 		PROMPT_WAITING = false;
 	}
@@ -46,14 +46,10 @@ public class GameUI extends GameDrawable
 
 	public boolean onClick(int x, int y)
 	{
-
 		if (PROMPT != null)
 		{
-			if (!PROMPT.onClick(x, y))
-			{
-				PROMPT_WAITING = false;
-				PROMPT = null;
-			}
+			PROMPT_WAITING = true;
+			PROMPT.onClick(x, y);
 		} else
 		{
 			PROMPT_WAITING = false;
@@ -63,11 +59,24 @@ public class GameUI extends GameDrawable
 		return false; // doesnt matter
 	}
 
+	public void closePrompt()
+	{
+		PROMPT = null;
+		PROMPT_WAITING = false;
+	}
+
 	@Override
 	public void redraw()
 	{
 		bottomBar.NEEDS_REDRAW = true;
 		movesDialog.NEEDS_REDRAW = true;
 		topBar.NEEDS_REDRAW = true;
+	}
+
+	public void openPromotionDialog()
+	{
+		promotionDialog.display();
+		PROMPT = promotionDialog;
+		PROMPT_WAITING = true;
 	}
 }

@@ -140,7 +140,8 @@ public class SUI
 
 	private static void setupTexturedPaints(Resources r)
 	{
-		_darkTexture = BitmapFactory.decodeResource(r, R.drawable.wood_pattern);
+//		wood_pattern
+		_darkTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.wood_pattern);
 		BitmapShader darkShader = new BitmapShader(_darkTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 
@@ -149,7 +150,7 @@ public class SUI
 		darkPaint.setAntiAlias(true);
 		darkPaint.setFilterBitmap(true);
 
-		_lightTexture = BitmapFactory.decodeResource(r, R.drawable.retina_wood_1);
+		_lightTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.retina_wood_1);
 		BitmapShader lightShader = new BitmapShader(_lightTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 
@@ -167,7 +168,7 @@ public class SUI
 		lightPaint.setAntiAlias(true);
 		lightPaint.setFilterBitmap(true);
 
-		_borderTexture = BitmapFactory.decodeResource(r, R.drawable.leather);
+		_borderTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.leather);
 		BitmapShader borderShader = new BitmapShader(_borderTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 		borderPaint = new Paint();

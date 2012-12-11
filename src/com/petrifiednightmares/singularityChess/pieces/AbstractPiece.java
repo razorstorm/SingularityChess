@@ -21,6 +21,10 @@ public abstract class AbstractPiece
 	private boolean _isSelected;
 	
 	private Bitmap _icon;
+	
+	public static enum PieceType{
+		Bishop, King, Knight, Pawn, Queen, Rook
+	}
 
 	public AbstractPiece(Game game, Square location, boolean isWhite, String label, Bitmap icon)
 	{

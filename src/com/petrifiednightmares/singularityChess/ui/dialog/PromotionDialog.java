@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.ui.GameUI;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
@@ -14,9 +15,9 @@ public class PromotionDialog extends HoverDialog
 	Game _game;
 	PromotionTile queenTile, knightTile;
 
-	public PromotionDialog(GameDrawingPanel gdp, Game game)
+	public PromotionDialog(GameDrawingPanel gdp, Game game, GameUI gui)
 	{
-		super(gdp, "Promotion", (SUI.HEIGHT / 100) * 30, (SUI.WIDTH / 100) * 10, SUI.WIDTH - 2
+		super(gdp,gui, "Promotion", (SUI.HEIGHT / 100) * 30, (SUI.WIDTH / 100) * 10, SUI.WIDTH - 2
 				* ((SUI.WIDTH / 100) * 10), SUI.HEIGHT - 2 * (SUI.HEIGHT / 100) * 30);
 
 		this._game = game;
@@ -73,7 +74,7 @@ public class PromotionDialog extends HoverDialog
 	{
 		if (super.onClick(x, y))
 		{
-
+			_gui.closePrompt();
 			return true;
 		}
 		return false;
