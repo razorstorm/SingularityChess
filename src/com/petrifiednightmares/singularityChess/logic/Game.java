@@ -183,7 +183,6 @@ public class Game extends GameDrawable
 	{
 		if (!_gui.PROMPT_WAITING)
 		{
-			System.out.println("asdf"); 
 			playPieceSounds();
 			switchTurns();
 			unselect();

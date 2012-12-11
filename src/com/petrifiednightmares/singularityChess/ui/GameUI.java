@@ -18,6 +18,11 @@ public class GameUI extends GameDrawable
 	public HoverDialog PROMPT;
 	private Game _game;
 
+	private static final long WAITING_THRESHOLD = 500; // wait half a second
+														// before making prompts
+														// clickable
+	private long promptTime;
+
 	public GameUI(GameDrawingPanel drawingPanel, Game game)
 	{
 		super(drawingPanel);
@@ -50,7 +55,8 @@ public class GameUI extends GameDrawable
 		if (PROMPT != null)
 		{
 			PROMPT_WAITING = true;
-			PROMPT.onClick(x, y);
+			if (System.currentTimeMillis() > promptTime + WAITING_THRESHOLD)
+				PROMPT.onClick(x, y);
 		} else
 		{
 			PROMPT_WAITING = false;
@@ -64,8 +70,7 @@ public class GameUI extends GameDrawable
 	{
 		PROMPT = null;
 		PROMPT_WAITING = false;
-		
-		System.out.println("Prompt waiting is now "+PROMPT_WAITING);
+		gdp.redrawAll();
 	}
 
 	@Override
@@ -76,8 +81,14 @@ public class GameUI extends GameDrawable
 		topBar.NEEDS_REDRAW = true;
 	}
 
+	private void openInteractiveDialog()
+	{
+		promptTime = System.currentTimeMillis();
+	}
+
 	public void openPromotionDialog()
 	{
+		openInteractiveDialog();
 		promotionDialog.display();
 		PROMPT = promotionDialog;
 		PROMPT_WAITING = true;
