@@ -1,8 +1,10 @@
 package com.petrifiednightmares.singularityChess.ui;
 
 import android.graphics.Canvas;
+import android.widget.ScrollView;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.logging.MoveLogger;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.ui.dialog.HoverDialog;
@@ -17,24 +19,28 @@ public class GameUI extends GameDrawable
 	public boolean PROMPT_WAITING;
 	public HoverDialog PROMPT;
 	private Game _game;
+	private MoveLogger _ml;
+
 
 	private static final long WAITING_THRESHOLD = 500; // wait half a second
 														// before making prompts
 														// clickable
 	private long promptTime;
 
-	public GameUI(GameDrawingPanel drawingPanel, Game game)
+	public GameUI(GameDrawingPanel drawingPanel, Game game, ScrollView movesView)
 	{
 		super(drawingPanel);
 		this._game = game;
 		PROMPT = null;
 		this.topBar = new TopBar();
 		this.bottomBar = new BottomBar(this, drawingPanel);
-		movesDialog = new MovesLogDialog(gdp, this);
+		_ml = new MoveLogger();
+		movesDialog = new MovesLogDialog(gdp, this, movesView,_ml);
 
 		promotionDialog = new PromotionDialog(gdp, _game, this);
 
 		PROMPT_WAITING = false;
+
 	}
 
 	public void setTurnName(String turnName, boolean isWhite)
@@ -89,7 +95,7 @@ public class GameUI extends GameDrawable
 	public void openPromotionDialog(boolean isWhite)
 	{
 		openInteractiveDialog();
-		((PromotionDialog)promotionDialog).display(isWhite);
+		((PromotionDialog) promotionDialog).display(isWhite);
 		PROMPT = promotionDialog;
 		PROMPT_WAITING = true;
 	}
@@ -97,5 +103,10 @@ public class GameUI extends GameDrawable
 	public void promote(AbstractPiece.PieceType pieceType)
 	{
 		_game.promotePiece(pieceType);
+	}
+
+	public MoveLogger getMoveLogger()
+	{
+		return _ml;
 	}
 }

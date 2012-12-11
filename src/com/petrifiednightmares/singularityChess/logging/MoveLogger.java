@@ -7,12 +7,12 @@ import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 
 public class MoveLogger
 {
-	LinkedList<Action> actions = new LinkedList<Action>();
+	private LinkedList<Action> _actions = new LinkedList<Action>();
 
 	public String addMove(AbstractPiece actor, Square source, Square destination)
 	{
 		Action a = new Action(actor, source, destination);
-		actions.add(a);
+		_actions.add(a);
 		return a.toString();
 	}
 
@@ -20,7 +20,24 @@ public class MoveLogger
 			AbstractPiece prisoner)
 	{
 		Action a = new Action(actor, source, destination, prisoner);
-		actions.add(a);
+		_actions.add(a);
 		return a.toString();
+	}
+	
+	public LinkedList<Action> getMoves()
+	{
+		return _actions;
+	}
+	
+	public String returnLineSeparatedMoves()
+	{
+		int i =1;
+		StringBuilder sb= new StringBuilder(); 
+		for(Action a:_actions)
+		{
+			sb.append(i+": "+a.toString()+"\n");
+			i++;
+		}
+		return sb.toString();
 	}
 }

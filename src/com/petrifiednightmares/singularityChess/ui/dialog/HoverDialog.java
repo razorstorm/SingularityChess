@@ -16,7 +16,7 @@ import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class HoverDialog extends GameDrawable
 {
-	protected int _top, _left, _width, _height;
+	protected int _top, _left, _width, _height, _header, _headerBottom;
 	protected String _title;
 	protected RectF _rectf;
 	protected Rect _textBounds, _mHeight;
@@ -69,6 +69,9 @@ public class HoverDialog extends GameDrawable
 		_mHeight = new Rect();
 		_textPaint.getTextBounds("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 0, 1,
 				_mHeight);
+
+		_header = SUI.UNIT * 10;
+		_headerBottom = _header + SUI.UNIT;
 	}
 
 	public void onDraw(Canvas c)
@@ -88,11 +91,11 @@ public class HoverDialog extends GameDrawable
 
 				c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
 						+ SUI.UNIT * 10, (int) (_left + _width - _width * 0.1), _rectf.top
-						+ _mHeight.height() + SUI.UNIT * 10 + 1, _dimDark);
+						+ _mHeight.height() + _header + 1, _dimDark);
 
 				c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
 						+ SUI.UNIT * 10 + 1, (int) (_left + _width - _width * 0.1), _rectf.top
-						+ _mHeight.height() + SUI.UNIT * 10 + 2, _dimWhite);
+						+ _mHeight.height() + _header + 2, _dimWhite);
 			}
 		}
 	}

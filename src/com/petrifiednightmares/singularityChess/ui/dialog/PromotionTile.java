@@ -3,14 +3,13 @@ package com.petrifiednightmares.singularityChess.ui.dialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Shader;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.ui.GameDrawable;
+import com.petrifiednightmares.singularityChess.ui.SUI;
 
 public class PromotionTile extends GameDrawable
 {
@@ -42,26 +41,11 @@ public class PromotionTile extends GameDrawable
 		this._height = height;
 		this._rectf = new RectF(_left, top, _left + _width, _top + _height);
 
-		int darkColor = Color.argb(200, 24, 17, 7);
-		int lightColor = Color.argb(100, 62, 43, 18);
-		int darkColor2 = Color.rgb(19, 14, 6);
-		int lightColor2 = Color.argb(150, 62, 43, 18);
+	
+		_horizontalPaint = SUI.getHorizontalPaint(_left, _top, _height, _width);
+		_verticalPaint = SUI.getVerticalPaint(_left, _top, _height, _width);
 
-		this._horizontalPaint = new Paint();
-		this._horizontalPaint.setAntiAlias(true);
-		this._horizontalPaint.setShader(new LinearGradient(_left, _top + _height / 2f, _left
-				+ _width, _top + _height / 2f, new int[] { darkColor, lightColor, lightColor,
-				darkColor, Color.argb(20, 255, 255, 255) }, new float[] { 0f, 0.2f, 0.8f,
-				1f - 1.5f / _width, 1f }, Shader.TileMode.MIRROR));
-		this._horizontalPaint.setAlpha(150);
 
-		this._verticalPaint = new Paint();
-		this._verticalPaint.setAntiAlias(true);
-		this._verticalPaint.setShader(new LinearGradient(_left + _width / 2f, _top, _left + _width
-				/ 2f, _top + _height, new int[] { darkColor2, lightColor2, lightColor2, darkColor2,
-				Color.WHITE }, new float[] { 0f, 0.25f, 0.75f, 1f - 1.5f / _height, 1f },
-				Shader.TileMode.MIRROR));
-		this._verticalPaint.setAlpha(150);
 
 		this._iconPaint = new Paint();
 		this._iconPaint.setAntiAlias(true);

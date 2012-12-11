@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.petrifiednightmares.singularityChess.ui.Preferences;
@@ -27,9 +28,11 @@ public class GameActivity extends Activity implements OnClickListener
 
 		GameDrawingPanel gdp = (GameDrawingPanel) findViewById(R.id.canvas);
 
-		gdp.setGameActivity(this);
-	}
+		ScrollView movesView = (ScrollView) findViewById(R.id.movesView);
 
+		gdp.initialize(this, movesView);
+
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)

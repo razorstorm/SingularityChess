@@ -10,7 +10,6 @@ import android.graphics.RectF;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
-import com.petrifiednightmares.singularityChess.logging.MoveLogger;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Bishop;
 import com.petrifiednightmares.singularityChess.pieces.King;
@@ -37,7 +36,6 @@ public class Game extends GameDrawable
 	Set<Square> selectedPieceMoves;
 
 	private GameUI _gui;
-	MoveLogger ml;
 
 	private String whiteName, blackName;
 
@@ -47,7 +45,7 @@ public class Game extends GameDrawable
 	public Game(GameDrawingPanel drawingPanel)
 	{
 		super(drawingPanel);
-		ml = new MoveLogger();
+	
 
 		isWhiteTurn = true;
 		whitePieces = new AbstractPiece[16];
@@ -158,10 +156,10 @@ public class Game extends GameDrawable
 			// log to movelogger
 			if (capturedPiece == null)
 			{
-				actionLog = ml.addMove(selectedPiece, sourceLocation, target);
+				actionLog = _gui.getMoveLogger().addMove(selectedPiece, sourceLocation, target);
 			} else
 			{
-				actionLog = ml.addMove(selectedPiece, sourceLocation, target, capturedPiece);
+				actionLog = _gui.getMoveLogger().addMove(selectedPiece, sourceLocation, target, capturedPiece);
 			}
 			// TODO, display actionLog
 			System.out.println(actionLog);

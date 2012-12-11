@@ -11,6 +11,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.widget.ScrollView;
 
 import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
@@ -35,6 +36,8 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	public Board board;
 	public GameUI gui;
 
+	ScrollView movesView;
+
 	public GameDrawingPanel(Context context, AttributeSet aSet)
 	{
 		super(context, aSet);
@@ -53,21 +56,21 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		background = SingularBitmapFactory.buildScaledBitmap(getResources(), R.drawable.background,
 				SUI.WIDTH, SUI.HEIGHT);
 
-		game = new Game(this);
-
-		gui = new GameUI(this, game);
-
-		board = new Board(this, game);
-		game.setGameUI(gui);
-		game.setBoard(board);
-
 		this.setOnTouchListener(this);
 
 	}
 
-	public void setGameActivity(GameActivity g)
+	public void initialize(GameActivity g, ScrollView movesView)
 	{
 		this.gameActivity = g;
+		this.movesView = movesView;
+		game = new Game(this);
+
+		gui = new GameUI(this, game, movesView);
+
+		board = new Board(this, game);
+		game.setGameUI(gui);
+		game.setBoard(board);
 	}
 
 	@Override

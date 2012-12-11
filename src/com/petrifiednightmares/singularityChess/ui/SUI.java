@@ -24,7 +24,8 @@ public class SUI
 	public static Paint darkPaint, lightPaint, highlightPaint, highlightPaint2, attackPaint,
 			attackPaint2, piecePaint, labelPaint, flashPaint, flashPaint2, kingThreatenPaint,
 			kingThreatenPaint2, turnNamePaint, topBarPaint, topBarTexturePaint, turnNameWhitePaint,
-			turnNameBlackPaint, borderPaint, borderShadowPaint, boardLightingPaint, gameLightingPaint;
+			turnNameBlackPaint, borderPaint, borderShadowPaint, boardLightingPaint,
+			gameLightingPaint;
 	public static Paint whitePaint;
 	private static Bitmap _darkTexture, _lightTexture, _topBarTexture, _borderTexture;
 
@@ -59,12 +60,46 @@ public class SUI
 		// 60 from shadow, 10 from padding
 		BOTTOM = HEIGHT_CENTER + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH + 60 + 10;
 	}
-	
+
 	private static void setupColorPaints()
 	{
 		whitePaint = new Paint();
 		whitePaint.setColor(Color.WHITE);
 		whitePaint.setAntiAlias(true);
+	}
+
+	public static Paint getHorizontalPaint(int left, int top, int height, int width)
+	{
+		int darkColor = Color.argb(200, 24, 17, 7);
+		int lightColor = Color.argb(100, 62, 43, 18);
+
+		Paint tileHorizontalPaint = new Paint();
+		tileHorizontalPaint.setAntiAlias(true);
+		tileHorizontalPaint.setShader(new LinearGradient(left, top + height / 2f, left + width, top
+				+ height / 2f, new int[] { darkColor, lightColor, lightColor, darkColor,
+				Color.argb(20, 255, 255, 255) }, new float[] { 0f, 0.2f, 0.8f, 1f - 1.5f / width,
+				1f }, Shader.TileMode.MIRROR));
+		tileHorizontalPaint.setAlpha(150);
+
+		return tileHorizontalPaint;
+	}
+	
+	
+
+	public static Paint getVerticalPaint(int left, int top, int height, int width)
+	{
+		int darkColor2 = Color.rgb(19, 14, 6);
+		int lightColor2 = Color.argb(150, 62, 43, 18);
+
+		Paint verticalPaint = new Paint();
+		verticalPaint.setAntiAlias(true);
+		verticalPaint.setShader(new LinearGradient(left + width / 2f, top, left + width / 2f, top
+				+ height,
+				new int[] { darkColor2, lightColor2, lightColor2, darkColor2, Color.WHITE },
+				new float[] { 0f, 0.25f, 0.75f, 1f - 1.5f / height, 1f }, Shader.TileMode.MIRROR));
+		verticalPaint.setAlpha(150);
+		
+		return verticalPaint;
 	}
 
 	private static void setupSimplePaints()
@@ -115,6 +150,8 @@ public class SUI
 
 		piecePaint = new Paint();
 		piecePaint.setAntiAlias(true);
+		piecePaint.setFilterBitmap(true);
+		piecePaint.setDither(true);
 
 		labelPaint = new Paint();
 		labelPaint.setColor(Color.rgb(0, 0, 0));
@@ -187,13 +224,12 @@ public class SUI
 						Color.rgb(255, 255, 200), Color.argb(255, 20, 20, 0) }, new float[] { 0.3f,
 						0.8f }, Shader.TileMode.MIRROR));
 		boardLightingPaint.setAlpha(80);
-		
+
 		gameLightingPaint = new Paint();
 		gameLightingPaint.setAntiAlias(true);
-		gameLightingPaint.setShader(new RadialGradient(WIDTH / 2f + 6 * UNIT,
-				(float) HEIGHT_CENTER - 4 * UNIT, HEIGHT/2, new int[] {
-						Color.rgb(255, 255, 200), Color.argb(255, 20, 20, 0) }, new float[] { 0.2f,
-						0.5f }, Shader.TileMode.MIRROR));
+		gameLightingPaint.setShader(new RadialGradient(WIDTH / 2f + 6 * UNIT, (float) HEIGHT_CENTER
+				- 4 * UNIT, HEIGHT / 2, new int[] { Color.rgb(255, 255, 200),
+				Color.argb(255, 20, 20, 0) }, new float[] { 0.2f, 0.5f }, Shader.TileMode.MIRROR));
 		gameLightingPaint.setAlpha(40);
 	}
 

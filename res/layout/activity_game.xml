@@ -1,15 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/gameLayout"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-  <com.petrifiednightmares.singularityChess.GameDrawingPanel
-      android:id="@+id/canvas"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
-      android:layout_alignParentLeft="true"
-      android:layout_alignParentTop="true" />
-  
+    <com.petrifiednightmares.singularityChess.GameDrawingPanel
+        android:id="@+id/canvas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <ScrollView
+        android:id="@+id/movesView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="invisible" >
+
+        <TextView
+            android:id="@+id/movesTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="" />
+    </ScrollView>
+
 </RelativeLayout>
