@@ -3,7 +3,6 @@ package com.petrifiednightmares.singularityChess.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -140,7 +139,6 @@ public class SUI
 
 	private static void setupTexturedPaints(Resources r)
 	{
-//		wood_pattern
 		_darkTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.wood_pattern);
 		BitmapShader darkShader = new BitmapShader(_darkTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
