@@ -62,9 +62,6 @@ public class BottomBar
 					_gui.PROMPT = _gui.movesDialog;
 					break;
 				case 1:
-					_gui.promotionDialog.display();
-					_gui.PROMPT_WAITING = true;
-					_gui.PROMPT = _gui.promotionDialog;
 					break;
 				case 3:
 					// expand menu

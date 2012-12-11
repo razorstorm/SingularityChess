@@ -75,13 +75,13 @@ public class PromotionDialog extends HoverDialog
 	{
 		if (queenTile.onClick(x, y))
 		{
-			_gui.promote(AbstractPiece.PieceType.Queen);
 			_gui.closePrompt();
+			_gui.promote(AbstractPiece.PieceType.Queen);
 			return true;
 		} else if (knightTile.onClick(x, y))
 		{
-			_gui.promote(AbstractPiece.PieceType.Knight);
 			_gui.closePrompt();
+			_gui.promote(AbstractPiece.PieceType.Knight);
 		}
 		return false;
 	}

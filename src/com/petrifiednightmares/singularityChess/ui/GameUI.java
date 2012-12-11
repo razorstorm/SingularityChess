@@ -64,6 +64,8 @@ public class GameUI extends GameDrawable
 	{
 		PROMPT = null;
 		PROMPT_WAITING = false;
+		
+		System.out.println("Prompt waiting is now "+PROMPT_WAITING);
 	}
 
 	@Override

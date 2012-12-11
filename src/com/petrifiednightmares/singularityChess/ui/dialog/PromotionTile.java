@@ -96,8 +96,7 @@ public class PromotionTile extends GameDrawable
 	@Override
 	public boolean onClick(int x, int y)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		return _rectf.contains(x, y);
 	}
 
 	public void show()

@@ -183,6 +183,7 @@ public class Game extends GameDrawable
 	{
 		if (!_gui.PROMPT_WAITING)
 		{
+			System.out.println("asdf"); 
 			playPieceSounds();
 			switchTurns();
 			unselect();
@@ -240,7 +241,7 @@ public class Game extends GameDrawable
 
 		if (selectedPiece instanceof Pawn)
 		{
-			if (Board.isEndOfFile(selectedPiece.getLocation()))
+			if (true || Board.isEndOfFile(selectedPiece.getLocation()))
 			{
 				// can be promoted
 				promptPromotion(selectedPiece);
@@ -257,19 +258,44 @@ public class Game extends GameDrawable
 		_gui.openPromotionDialog();
 	}
 
-	//replace the piece in our array so the old one gets thrown away.
+	// replace the piece in our array so the old one gets thrown away.
 	private void replacePiece(AbstractPiece oldPiece, AbstractPiece newPiece)
 	{
-		if(newPiece.isWhite())
+		if (newPiece.isWhite())
 		{
-			int index = Arrays.asList(whitePieces).indexOf(selectedPiece);
-			whitePieces[index]=newPiece;
-		}
-		else
+			int index = findPiece(selectedPiece);
+			if (index != -1)
+				whitePieces[index] = newPiece;
+		} else
 		{
-			int index = Arrays.asList(blackPieces).indexOf(selectedPiece);
-			blackPieces[index]=newPiece;
+			int index = findPiece(selectedPiece);
+			if (index != -1)
+				blackPieces[index] = newPiece;
 		}
+	}
+
+	private int findPiece(AbstractPiece p)
+	{
+		if (p.isWhite())
+		{
+			for (int i = 0; i < whitePieces.length; i++)
+			{
+				if (whitePieces[i].equals(p))
+				{
+					return i;
+				}
+			}
+		} else
+		{
+			for (int i = 0; i < blackPieces.length; i++)
+			{
+				if (blackPieces[i].equals(p))
+				{
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 
 	public void promotePiece(AbstractPiece.PieceType pieceType)

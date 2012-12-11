@@ -55,9 +55,9 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		game = new Game(this);
 
-		gui = new GameUI(this,game);
+		gui = new GameUI(this, game);
 
-		board = new Board(this,game);
+		board = new Board(this, game);
 		game.setGameUI(gui);
 		game.setBoard(board);
 
@@ -73,9 +73,12 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	@Override
 	public void onDraw(Canvas canvas)
 	{
-		// do drawing stuff here.
-		game.onDraw(_drawingCanvas);
-		board.onDraw(_drawingCanvas);
+		if (!gui.PROMPT_WAITING)
+		{
+			// do drawing stuff here.
+			game.onDraw(_drawingCanvas);
+			board.onDraw(_drawingCanvas);
+		}
 		gui.onDraw(_drawingCanvas);
 
 		canvas.drawBitmap(_drawingBitmap, 0, 0, null);
