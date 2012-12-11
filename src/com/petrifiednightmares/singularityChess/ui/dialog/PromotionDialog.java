@@ -29,27 +29,31 @@ public class PromotionDialog extends HoverDialog
 		int tileLeftMargin = tileMargin * 2;
 		int _tileTop = _top + tileTopMargin;
 
-		Bitmap queenBitmap = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
-				game.isWhiteTurn() ? R.drawable.queen : R.drawable.black_queen,
-				(int) (tileWidth * 0.7), (int) (tileWidth * 0.64));
+		Bitmap whiteQueenBitmap = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
+				R.drawable.queen, (int) (tileWidth * 0.7), (int) (tileWidth * 0.64));
 
-		Bitmap knightBitmap = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
-				game.isWhiteTurn() ? R.drawable.knight : R.drawable.black_knight,
-				(int) (tileWidth * 0.7), (int) (tileWidth * 0.64));
+		Bitmap blackQueenBitmap = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
+				R.drawable.black_queen, (int) (tileWidth * 0.7), (int) (tileWidth * 0.64));
 
-		queenTile = new PromotionTile(gdp, "Queen", queenBitmap, _tileTop, _left + tileLeftMargin,
-				tileWidth, tileWidth);
-		knightTile = new PromotionTile(gdp, "Knight", knightBitmap, _tileTop, _left + _width / 2
-				+ tileMargin, tileWidth, tileWidth);
+		Bitmap whiteKnightBitmap = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
+				R.drawable.knight, (int) (tileWidth * 0.7), (int) (tileWidth * 0.64));
+
+		Bitmap blackKnightBitmap = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
+				R.drawable.black_knight, (int) (tileWidth * 0.7), (int) (tileWidth * 0.64));
+
+		queenTile = new PromotionTile(gdp, "Queen", whiteQueenBitmap, blackQueenBitmap, _tileTop,
+				_left + tileLeftMargin, tileWidth, tileWidth);
+		knightTile = new PromotionTile(gdp, "Knight", whiteKnightBitmap, blackKnightBitmap,
+				_tileTop, _left + _width / 2 + tileMargin, tileWidth, tileWidth);
 	}
 
-	public synchronized void display()
+	public synchronized void display(boolean isWhite)
 	{
 		super.display();
-		queenTile.show();
+		queenTile.show(isWhite);
 		queenTile.redraw();
 
-		knightTile.show();
+		knightTile.show(isWhite);
 		knightTile.redraw();
 		redraw();
 	}

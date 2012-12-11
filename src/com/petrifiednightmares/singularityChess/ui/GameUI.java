@@ -86,10 +86,10 @@ public class GameUI extends GameDrawable
 		promptTime = System.currentTimeMillis();
 	}
 
-	public void openPromotionDialog()
+	public void openPromotionDialog(boolean isWhite)
 	{
 		openInteractiveDialog();
-		promotionDialog.display();
+		((PromotionDialog)promotionDialog).display(isWhite);
 		PROMPT = promotionDialog;
 		PROMPT_WAITING = true;
 	}

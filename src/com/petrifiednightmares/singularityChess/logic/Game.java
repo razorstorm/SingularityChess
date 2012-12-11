@@ -253,7 +253,7 @@ public class Game extends GameDrawable
 	private void promptPromotion(AbstractPiece piece)
 	{
 		select(piece);
-		_gui.openPromotionDialog();
+		_gui.openPromotionDialog(piece.isWhite());
 	}
 
 	// replace the piece in our array so the old one gets thrown away.

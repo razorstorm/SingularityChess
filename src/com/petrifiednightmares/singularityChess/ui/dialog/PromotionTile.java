@@ -20,17 +20,21 @@ public class PromotionTile extends GameDrawable
 	private RectF _rectf;
 	private Rect _textBounds, _mHeight;
 	private Paint _iconPaint;
-	private Bitmap _icon;
+	private Bitmap _whiteIcon, _blackIcon, _icon;
 	private boolean _shown;
 
 	private Paint _horizontalPaint, _verticalPaint;
 
-	public PromotionTile(GameDrawingPanel gdp, String title, Bitmap icon, int top, int left,
-			int width, int height)
+	public PromotionTile(GameDrawingPanel gdp, String title, Bitmap whiteIcon, Bitmap blackIcon,
+			int top, int left, int width, int height)
 	{
 		super(gdp);
 		this._shown = false;
-		this._icon = icon;
+		this._whiteIcon = whiteIcon;
+		this._blackIcon = blackIcon;
+
+		this._icon = this._whiteIcon;
+
 		this._top = top;
 		this._left = left;
 		this._width = width;
@@ -40,7 +44,7 @@ public class PromotionTile extends GameDrawable
 
 		int darkColor = Color.argb(200, 24, 17, 7);
 		int lightColor = Color.argb(100, 62, 43, 18);
-		int darkColor2 = Color.rgb( 19, 14, 6);
+		int darkColor2 = Color.rgb(19, 14, 6);
 		int lightColor2 = Color.argb(150, 62, 43, 18);
 
 		this._horizontalPaint = new Paint();
@@ -99,9 +103,13 @@ public class PromotionTile extends GameDrawable
 		return _rectf.contains(x, y);
 	}
 
-	public void show()
+	public void show(boolean isWhite)
 	{
 		_shown = true;
+		if (isWhite)
+			_icon = _whiteIcon;
+		else
+			_icon = _blackIcon;
 	}
 
 	public void hide()
