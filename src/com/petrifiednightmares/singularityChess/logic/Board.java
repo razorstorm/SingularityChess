@@ -368,19 +368,22 @@ public class Board extends GameDrawable
 			}
 		}
 		Square[] corners;
-		corners = next.getSides();
-
-		for (int i = 0; i < 2; i++)
+		if (next != null)
 		{
-			next = corners[i];
+			corners = next.getSides();
 
-			if (next != null && next.getFile() != startSquare.getFile() && next.hasPiece())
+			for (int i = 0; i < 2; i++)
 			{
-				AbstractPiece obstructingPiece = next.getPiece();
-				// if the square is capturable
-				if (obstructingPiece.isWhite() != isWhite)
+				next = corners[i];
+
+				if (next != null && next.getFile() != startSquare.getFile() && next.hasPiece())
 				{
-					moves.add(next);
+					AbstractPiece obstructingPiece = next.getPiece();
+					// if the square is capturable
+					if (obstructingPiece.isWhite() != isWhite)
+					{
+						moves.add(next);
+					}
 				}
 			}
 		}
@@ -434,7 +437,7 @@ public class Board extends GameDrawable
 	{
 		if (NEEDS_REDRAW)
 		{
-			//draw the squares
+			// draw the squares
 			canvas.drawBitmap(Square.squareBitMap, 0, 0, null);
 			// Draw lighting overlay
 			canvas.save();
@@ -445,7 +448,7 @@ public class Board extends GameDrawable
 			canvas.restore();
 			NEEDS_REDRAW = false;
 		}
-		//draw special overlays on the squares
+		// draw special overlays on the squares
 		drawSquares(canvas);
 	}
 
@@ -498,7 +501,7 @@ public class Board extends GameDrawable
 					_game.select(s.getPiece());
 				} else
 				{
-					//if didn't hit anything
+					// if didn't hit anything
 					_game.unselect();
 				}
 
@@ -508,7 +511,6 @@ public class Board extends GameDrawable
 
 		return false;
 	}
-
 
 	void unhighlightAllSquares()
 	{
@@ -555,7 +557,7 @@ public class Board extends GameDrawable
 	@Override
 	public void redraw()
 	{
-		NEEDS_REDRAW=true;
+		NEEDS_REDRAW = true;
 		for (char file = 'a'; file <= 'h'; file++)
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)
