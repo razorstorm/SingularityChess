@@ -240,7 +240,7 @@ public class Game extends GameDrawable
 
 		if (selectedPiece instanceof Pawn)
 		{
-			if (true || Board.isEndOfFile(selectedPiece.getLocation()))
+			if (Board.isEndOfFile(selectedPiece.getLocation()))
 			{
 				// can be promoted
 				promptPromotion(selectedPiece);
