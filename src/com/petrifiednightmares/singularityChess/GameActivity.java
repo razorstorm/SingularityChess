@@ -1,7 +1,10 @@
 package com.petrifiednightmares.singularityChess;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,6 +73,28 @@ public class GameActivity extends Activity implements OnClickListener
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if ((keyCode == KeyEvent.KEYCODE_BACK))
+		{
+			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+					.setTitle(R.string.quit).setMessage(R.string.really_quit)
+					.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
+					{
+						public void onClick(DialogInterface dialog, int which)
+						{
+							// Stop the activity
+							GameActivity.this.finish();
+						}
+
+					}).setNegativeButton(R.string.no, null).show();
+
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	public void displayMessage(String message)

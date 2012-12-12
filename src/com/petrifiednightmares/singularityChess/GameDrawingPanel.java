@@ -151,6 +151,8 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		return _context;
 	}
 
+	
+
 }
 
 class PanelThread extends Thread
