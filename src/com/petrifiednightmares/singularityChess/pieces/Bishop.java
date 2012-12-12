@@ -17,8 +17,8 @@ public class Bishop extends AbstractPiece
 	{
 		super(game, location, isWhite, isWhite ? "\u2657" : "\u265D", SingularBitmapFactory
 				.buildScaledBitmap(game.getDrawingPanel().getResources(),
-						isWhite ? R.drawable.bishop : R.drawable.black_bishop,
-						SUI.PIECE_SIZE, SUI.PIECE_SIZE));
+						isWhite ? R.drawable.bishop : R.drawable.black_bishop, SUI.PIECE_SIZE,
+						SUI.PIECE_SIZE), PieceType.Bishop);
 	}
 
 	public Set<Square> getMoves() throws GameException

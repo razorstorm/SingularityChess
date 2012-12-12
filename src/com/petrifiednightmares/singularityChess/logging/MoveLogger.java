@@ -7,7 +7,7 @@ import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 
 public class MoveLogger
 {
-	private LinkedList<Action> _actions = new LinkedList<Action>();
+	private LinkedList<Action> _actions;
 
 	public String addMove(AbstractPiece actor, Square source, Square destination)
 	{
@@ -23,19 +23,34 @@ public class MoveLogger
 		_actions.add(a);
 		return a.toString();
 	}
-	
+
+	public MoveLogger()
+	{
+		this._actions = new LinkedList<Action>();
+	}
+
+	public MoveLogger(LinkedList<Action> actions)
+	{
+		this._actions = actions;
+	}
+
 	public LinkedList<Action> getMoves()
 	{
 		return _actions;
 	}
-	
+
+	public int getNumMoves()
+	{
+		return _actions.size();
+	}
+
 	public String returnLineSeparatedMoves()
 	{
-		int i =1;
-		StringBuilder sb= new StringBuilder(); 
-		for(Action a:_actions)
+		int i = 1;
+		StringBuilder sb = new StringBuilder();
+		for (Action a : _actions)
 		{
-			sb.append(i+": "+a.toString()+"\n");
+			sb.append(i + ": " + a.toString() + "\n");
 			i++;
 		}
 		return sb.toString();

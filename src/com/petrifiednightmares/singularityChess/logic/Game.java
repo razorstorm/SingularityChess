@@ -1,5 +1,7 @@
 package com.petrifiednightmares.singularityChess.logic;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 
 import android.graphics.Bitmap;
@@ -10,6 +12,7 @@ import android.graphics.RectF;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
+import com.petrifiednightmares.singularityChess.jdbc.GameSaveable;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Bishop;
 import com.petrifiednightmares.singularityChess.pieces.King;
@@ -45,9 +48,7 @@ public class Game extends GameDrawable
 	public Game(GameDrawingPanel drawingPanel)
 	{
 		super(drawingPanel);
-	
-
-		isWhiteTurn = true;
+		
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
 
@@ -56,19 +57,29 @@ public class Game extends GameDrawable
 
 		setupBorder();
 	}
-
-	public void setBoard(Board board)
+	
+	public void initialize(Board board, GameUI gui)
 	{
+		this._gui = gui;
+		gui.setTurnName(whiteName, isWhiteTurn);
+		
+		isWhiteTurn = true;
+
 		this._board = board;
 		initializePieces(whitePieces, true);
 		initializePieces(blackPieces, false);
 	}
-
-	public void setGameUI(GameUI gui)
+	
+	public void resume(InputStream in) throws IOException
 	{
-		this._gui = gui;
-		gui.setTurnName(whiteName, isWhiteTurn);
+		GameSaveable gs = new GameSaveable();
+		gs.deserialize(in);
+		
+		whitePieces = gs.getWhitePieces();
+		blackPieces = gs.getBlackPieces();
+		isWhiteTurn = gs.isWhiteTurn();
 	}
+
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
 	{
@@ -446,5 +457,12 @@ public class Game extends GameDrawable
 	{
 		return isWhiteTurn;
 	}
+	
+	
+	public void saveGame()
+	{
+		
+	}
+	
 
 }

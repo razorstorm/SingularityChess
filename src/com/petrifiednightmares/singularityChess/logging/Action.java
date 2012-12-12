@@ -10,6 +10,8 @@ public class Action
 	private Square _source, _destination;
 	private boolean _isCapture;
 	private AbstractPiece _prisoner;
+	private boolean simplified;
+	private String simplifiedString;
 
 	public Action(AbstractPiece actor, Square source, Square destination)
 	{
@@ -17,6 +19,7 @@ public class Action
 		this._source = source;
 		this._destination = destination;
 		this._isCapture = false;
+		this.simplified = false;
 	}
 
 	public Action(AbstractPiece actor, Square source, Square destination, AbstractPiece prisoner)
@@ -26,6 +29,13 @@ public class Action
 		this._destination = destination;
 		this._isCapture = true;
 		this._prisoner = prisoner;
+		this.simplified = false;
+	}
+
+	public Action(String action)
+	{
+		this.simplified = true;
+		this.simplifiedString = action;
 	}
 
 	public AbstractPiece getActor()
@@ -55,20 +65,27 @@ public class Action
 
 	public String toString()
 	{
-		if (_isCapture)
+		if (simplified)
 		{
-			if (_actor instanceof Pawn)
-			{
-				return _actor.getIcon() + _source.getFile() + "x" + _destination.getFile()
-						+ _destination.getRank();
-			} else
-			{
-				return _actor.getIcon() + "x" + _destination.getFile() + _destination.getRank();
-			}
+			return simplifiedString;
 		} else
 		{
-			// Pawn will still get figurine
-			return _actor.getIcon() + _destination.getFile() + _destination.getRank(); 
+
+			if (_isCapture)
+			{
+				if (_actor instanceof Pawn)
+				{
+					return _actor.getIcon() + _source.getFile() + "x" + _destination.getFile()
+							+ _destination.getRank();
+				} else
+				{
+					return _actor.getIcon() + "x" + _destination.getFile() + _destination.getRank();
+				}
+			} else
+			{
+				// Pawn will still get figurine
+				return _actor.getIcon() + _destination.getFile() + _destination.getRank();
+			}
 		}
 	}
 }

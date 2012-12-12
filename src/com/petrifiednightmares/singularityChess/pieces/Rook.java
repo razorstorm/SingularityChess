@@ -17,8 +17,7 @@ public class Rook extends AbstractPiece
 	{
 		super(game, location, isWhite, isWhite ? "\u2656" : "\u265C", SingularBitmapFactory
 				.buildScaledBitmap(game.getDrawingPanel().getResources(), isWhite ? R.drawable.rook
-						: R.drawable.black_rook, SUI.PIECE_SIZE,
-						SUI.PIECE_SIZE));
+						: R.drawable.black_rook, SUI.PIECE_SIZE, SUI.PIECE_SIZE), PieceType.Rook);
 	}
 
 	public Set<Square> getMoves() throws GameException

@@ -69,8 +69,8 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		gui = new GameUI(this, game, movesView);
 
 		board = new Board(this, game);
-		game.setGameUI(gui);
-		game.setBoard(board);
+		
+		game.initialize(board,gui);
 	}
 
 	@Override

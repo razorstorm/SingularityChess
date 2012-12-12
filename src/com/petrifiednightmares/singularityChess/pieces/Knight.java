@@ -18,7 +18,7 @@ public class Knight extends AbstractPiece
 		super(game, location, isWhite, isWhite ? "\u2658" : "\u265E", SingularBitmapFactory
 				.buildScaledBitmap(game.getDrawingPanel().getResources(),
 						isWhite ? R.drawable.knight : R.drawable.black_knight,
-						SUI.PIECE_SIZE, SUI.PIECE_SIZE));
+						SUI.PIECE_SIZE, SUI.PIECE_SIZE), PieceType.Knight);
 	}
 
 	public Set<Square> getMoves() throws GameException

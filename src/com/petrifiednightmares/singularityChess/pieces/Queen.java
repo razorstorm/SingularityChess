@@ -17,8 +17,8 @@ public class Queen extends AbstractPiece
 	{
 		super(game, location, isWhite, isWhite ? "\u2655" : "\u265B", SingularBitmapFactory
 				.buildScaledBitmap(game.getDrawingPanel().getResources(),
-						isWhite ? R.drawable.queen : R.drawable.black_queen,
-						SUI.PIECE_SIZE, SUI.PIECE_SIZE));
+						isWhite ? R.drawable.queen : R.drawable.black_queen, SUI.PIECE_SIZE,
+						SUI.PIECE_SIZE), PieceType.Queen);
 	}
 
 	public Set<Square> getMoves() throws GameException
