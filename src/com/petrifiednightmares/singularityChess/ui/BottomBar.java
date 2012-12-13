@@ -5,7 +5,6 @@ import android.view.HapticFeedbackConstants;
 
 import com.petrifiednightmares.singularityChess.GameActivity;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
-import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class BottomBar
@@ -41,7 +40,7 @@ public class BottomBar
 				* 2, _buttonWidth, _height);
 
 		buttons[3] = new ActionButton(SingularBitmapFactory.buildScaledBitmap(_gdp.getResources(),
-				R.drawable.menu, (int) (_thinButtonWidth * 0.6), (int) (_height * 0.5)), _top,
+				android.R.drawable.ic_menu_preferences, (int) (_thinButtonWidth * 0.6), (int) (_height * 0.5)), _top,
 				SUI.PADDING + _space * 6 + _buttonWidth * 3, _thinButtonWidth, _height);
 
 	}

@@ -17,7 +17,7 @@
     <string name="quit">Quit</string>
     <string name="really_quit">Really quit?</string>
     <string name="start_new_game">Start new game</string>
-    <string name="really_start_new_game">Overwrite current save and start new game?</string>
+    <string name="really_start_new_game">Start new game?</string>
     <string name="no_resume">No, resume old game</string>
 
 </resources>

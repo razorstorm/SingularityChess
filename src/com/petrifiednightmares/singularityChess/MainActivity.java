@@ -48,7 +48,7 @@ public class MainActivity extends Activity
 
 	private void startSinglePlayerGame()
 	{
-		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_media_play)
 				.setTitle(R.string.start_new_game).setMessage(R.string.really_start_new_game)
 				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
 				{
