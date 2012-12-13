@@ -7,19 +7,17 @@ import com.petrifiednightmares.singularityChess.GameActivity;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
-public class BottomBar
+public class BottomBar extends GameDrawable
 {
-	public boolean NEEDS_REDRAW;
 	ActionButton[] buttons;
 	private int _barWidth, _space, _buttonWidth, _top, _height, _thinButtonWidth;
 
-	private GameDrawingPanel _gdp;
 	private GameUI _gui;
 
 	public BottomBar(GameUI gui, GameDrawingPanel gdp)
 	{
+		super(gdp);
 		this._gui = gui;
-		this._gdp = gdp;
 
 		_barWidth = SUI.WIDTH - SUI.PADDING * 2;
 		_buttonWidth = SUI.UNIT * 25;
@@ -29,7 +27,6 @@ public class BottomBar
 
 		_space = (_barWidth - 3 * _buttonWidth - _thinButtonWidth) / 6;
 
-		NEEDS_REDRAW = true;
 		buttons = new ActionButton[4];
 		buttons[0] = new ActionButton("Show Moves", _top, SUI.PADDING, _buttonWidth, _height);
 
@@ -39,14 +36,15 @@ public class BottomBar
 		buttons[2] = new ActionButton("Surrender", _top, SUI.PADDING + _space * 4 + _buttonWidth
 				* 2, _buttonWidth, _height);
 
-		buttons[3] = new ActionButton(SingularBitmapFactory.buildScaledBitmap(_gdp.getResources(),
-				android.R.drawable.ic_menu_preferences, (int) (_thinButtonWidth * 0.6), (int) (_height * 0.5)), _top,
-				SUI.PADDING + _space * 6 + _buttonWidth * 3, _thinButtonWidth, _height);
+		buttons[3] = new ActionButton(SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
+				android.R.drawable.ic_menu_preferences, (int) (_thinButtonWidth * 0.6),
+				(int) (_height * 0.5)), _top, SUI.PADDING + _space * 6 + _buttonWidth * 3,
+				_thinButtonWidth, _height);
 
 	}
 
 	// returns whether a prompt is open
-	public void onClick(int x, int y)
+	public boolean onClick(int x, int y)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -64,24 +62,20 @@ public class BottomBar
 					break;
 				case 3:
 					// expand menu
-					((GameActivity) _gdp.getContext()).openOptionsMenu();
-					_gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+					((GameActivity) gdp.getContext()).openOptionsMenu();
+					gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 					break;
 				}
 			}
 		}
+		return false;
 	}
 
 	public void onDraw(Canvas c)
 	{
-		if (NEEDS_REDRAW)
+		for (ActionButton b : buttons)
 		{
-			NEEDS_REDRAW = false;
-
-			for (ActionButton b : buttons)
-			{
-				b.onDraw(c);
-			}
+			b.onDraw(c);
 		}
 	}
 }

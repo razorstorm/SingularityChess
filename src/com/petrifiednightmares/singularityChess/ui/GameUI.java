@@ -32,7 +32,7 @@ public class GameUI extends GameDrawable
 		super(drawingPanel);
 		this._game = game;
 		PROMPT = null;
-		this.topBar = new TopBar();
+		this.topBar = new TopBar(drawingPanel);
 		this.bottomBar = new BottomBar(this, drawingPanel);
 		_ml = new MoveLogger();
 		movesDialog = new MovesLogDialog(gdp, this, movesView, _ml);
@@ -82,9 +82,9 @@ public class GameUI extends GameDrawable
 	@Override
 	public void redraw()
 	{
-		bottomBar.NEEDS_REDRAW = true;
-		movesDialog.NEEDS_REDRAW = true;
-		topBar.NEEDS_REDRAW = true;
+		bottomBar.redraw();
+		movesDialog.redraw();
+		topBar.redraw();
 	}
 
 	private void openInteractiveDialog()

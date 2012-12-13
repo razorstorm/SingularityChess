@@ -401,16 +401,7 @@ public class Game extends GameDrawable
 
 	public void onDraw(Canvas canvas)
 	{
-		if (NEEDS_REDRAW)
-		{
-			NEEDS_REDRAW = false;
-			canvas.drawBitmap(_background, 0, 0, null);
-		}
-	}
-
-	public void redraw()
-	{
-		NEEDS_REDRAW = true;
+		canvas.drawBitmap(_background, 0, 0, null);
 	}
 
 	public Board getBoard()

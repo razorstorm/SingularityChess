@@ -3,10 +3,7 @@ package com.petrifiednightmares.singularityChess;
 import java.io.IOException;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Path;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -22,15 +19,12 @@ import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
 import com.petrifiednightmares.singularityChess.ui.SUI;
-import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		SurfaceHolder.Callback
 {
 	PanelThread _thread;
 
-	private Bitmap _drawingBitmap;
-	private Canvas _drawingCanvas;
 
 	GameActivity gameActivity;
 
@@ -42,9 +36,12 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 	ScrollView movesView;
 
+	public boolean NEEDS_REDRAW;
+
 	public GameDrawingPanel(Context context, AttributeSet aSet)
 	{
 		super(context, aSet);
+		NEEDS_REDRAW = true;
 		this._context = context;
 		getHolder().addCallback(this);
 
@@ -53,14 +50,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		SUI.setup(disp.getWidth(), disp.getHeight(), getResources(), getContext());
 
-		Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-		_drawingBitmap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT, conf);
-		_drawingCanvas = new Canvas(_drawingBitmap);
 
 		this.setOnTouchListener(this);
 
 		GameIO.setContext(_context);
-		
+
 	}
 
 	public void initialize(GameActivity g, ScrollView movesView)
@@ -77,7 +71,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		game.initialize(board, gui);
 	}
 
-	public void resume(GameActivity g, ScrollView movesView) 
+	public void resume(GameActivity g, ScrollView movesView)
 	{
 		this.gameActivity = g;
 		this.movesView = movesView;
@@ -98,20 +92,20 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		}
 	}
 
-	
 	@Override
 	public void onDraw(Canvas canvas)
 	{
+		NEEDS_REDRAW = false;
 		if (!gui.PROMPT_WAITING)
 		{
 			// do drawing stuff here.
-			game.onDraw(_drawingCanvas);
-			board.onDraw(_drawingCanvas);
+			game.onDraw(canvas);
+			board.onDraw(canvas);
 		}
-		
-		gui.onDraw(_drawingCanvas);
 
-		canvas.drawBitmap(_drawingBitmap, 0, 0, null);
+		gui.onDraw(canvas);
+
+
 	}
 
 	public void redrawAll()
@@ -178,6 +172,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		return _context;
 	}
 
+	public void redraw()
+	{
+		NEEDS_REDRAW = true;
+	}
+
 }
 
 class PanelThread extends Thread
@@ -212,12 +211,16 @@ class PanelThread extends Thread
 			c = null; // set to false and loop ends, stopping thread
 			try
 			{
-				c = _surfaceHolder.lockCanvas(null);
-				synchronized (_surfaceHolder)
+				if (_panel.NEEDS_REDRAW)
 				{
-					// Insert methods to modify positions of items in onDraw()
-					_panel.updateGame();
-					_panel.postInvalidate();
+					c = _surfaceHolder.lockCanvas(null);
+					synchronized (_surfaceHolder)
+					{
+						// Insert methods to modify positions of items in
+						// onDraw()
+						_panel.updateGame();
+						_panel.postInvalidate();
+					}
 				}
 			} finally
 			{

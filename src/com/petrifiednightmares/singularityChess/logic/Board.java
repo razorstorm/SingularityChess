@@ -44,7 +44,7 @@ public class Board extends GameDrawable
 		{
 			for (int rank = 1; rank <= realBoardRanks[file - 'a']; rank++)
 			{
-				squares.put(file + "" + rank, new Square(file, rank, this));
+				squares.put(file + "" + rank, new Square(file, rank, this, gdp));
 			}
 		}
 		linkUpSquares();
@@ -137,6 +137,13 @@ public class Board extends GameDrawable
 				getSquares().get(file + "" + rank).setUpBitMap();
 			}
 		}
+
+		Square.squareCanvas.save();
+		Square.squareCanvas.clipRect(SUI.WIDTH / 2 - 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, 0, SUI.WIDTH
+				/ 2 + 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
+		Square.squareCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
+				6 * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.boardLightingPaint);
+		Square.squareCanvas.restore();
 	}
 
 	public Set<Square> getSideMovements(AbstractPiece piece, boolean limit) throws GameException
@@ -435,19 +442,10 @@ public class Board extends GameDrawable
 
 	public void onDraw(Canvas canvas)
 	{
-		if (NEEDS_REDRAW)
-		{
-			// draw the squares
-			canvas.drawBitmap(Square.squareBitMap, 0, 0, null);
-			// Draw lighting overlay
-			canvas.save();
-			canvas.clipRect(SUI.WIDTH / 2 - 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, 0, SUI.WIDTH / 2 + 4
-					* SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
-			canvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6 * SUI.CIRCLE_RADIUS_DIFFERENCE,
-					SUI.boardLightingPaint);
-			canvas.restore();
-			NEEDS_REDRAW = false;
-		}
+		// draw the squares
+		canvas.drawBitmap(Square.squareBitMap, 0, 0, null);
+		// Draw lighting overlay
+
 		// draw special overlays on the squares
 		drawSquares(canvas);
 	}
@@ -518,7 +516,7 @@ public class Board extends GameDrawable
 		{
 			squares.get(key).unhighlight();
 		}
-		NEEDS_REDRAW = true;
+		redraw();
 	}
 
 	public void select(Square s)
@@ -557,7 +555,7 @@ public class Board extends GameDrawable
 	@Override
 	public void redraw()
 	{
-		NEEDS_REDRAW = true;
+		super.redraw();
 		for (char file = 'a'; file <= 'h'; file++)
 		{
 			for (int rank = 1; rank <= boardRanks[file - 'a']; rank++)

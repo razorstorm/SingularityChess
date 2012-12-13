@@ -76,27 +76,22 @@ public class HoverDialog extends GameDrawable
 
 	public void onDraw(Canvas c)
 	{
-		if (NEEDS_REDRAW)
+		if (_shown)
 		{
-			NEEDS_REDRAW = false;
-			if (_shown)
-			{
-				c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, _backgroundPaint);
-				c.drawBitmap(_background, _left, _top, null);
+			c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, _backgroundPaint);
+			c.drawBitmap(_background, _left, _top, null);
 
-				c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, SUI.gameLightingPaint);
+			c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, SUI.gameLightingPaint);
 
-				c.drawText(_title, _rectf.left + SUI.UNIT * 5, _rectf.top + SUI.UNIT * 8,
-						_textPaint);
+			c.drawText(_title, _rectf.left + SUI.UNIT * 5, _rectf.top + SUI.UNIT * 8, _textPaint);
 
-				c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
-						+ SUI.UNIT * 10, (int) (_left + _width - _width * 0.1), _rectf.top
-						+ _mHeight.height() + _header + 1, _dimDark);
+			c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
+					+ SUI.UNIT * 10, (int) (_left + _width - _width * 0.1),
+					_rectf.top + _mHeight.height() + _header + 1, _dimDark);
 
-				c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
-						+ SUI.UNIT * 10 + 1, (int) (_left + _width - _width * 0.1), _rectf.top
-						+ _mHeight.height() + _header + 2, _dimWhite);
-			}
+			c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
+					+ SUI.UNIT * 10 + 1, (int) (_left + _width - _width * 0.1), _rectf.top
+					+ _mHeight.height() + _header + 2, _dimWhite);
 		}
 	}
 
@@ -122,12 +117,6 @@ public class HoverDialog extends GameDrawable
 			_gui.closePrompt();
 		}
 		return click;
-	}
-
-	@Override
-	public void redraw()
-	{
-		NEEDS_REDRAW = true;
 	}
 
 }

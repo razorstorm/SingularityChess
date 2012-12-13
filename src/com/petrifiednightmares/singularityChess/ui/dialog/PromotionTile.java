@@ -41,11 +41,8 @@ public class PromotionTile extends GameDrawable
 		this._height = height;
 		this._rectf = new RectF(_left, top, _left + _width, _top + _height);
 
-	
 		_horizontalPaint = SUI.getHorizontalPaint(_left, _top, _height, _width);
 		_verticalPaint = SUI.getVerticalPaint(_left, _top, _height, _width);
-
-
 
 		this._iconPaint = new Paint();
 		this._iconPaint.setAntiAlias(true);
@@ -62,22 +59,18 @@ public class PromotionTile extends GameDrawable
 	@Override
 	public void onDraw(Canvas c)
 	{
-		if (NEEDS_REDRAW)
+		if (_shown)
 		{
-			NEEDS_REDRAW = false;
-			if (_shown)
-			{
 
-				c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f, _verticalPaint);
-				c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f, _horizontalPaint);
+			c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f, _verticalPaint);
+			c.drawRoundRect(_rectf, _width * 0.05f, _width * 0.05f, _horizontalPaint);
 
-				c.drawBitmap(_icon, _left + _width / 2 - _icon.getWidth() / 2, _rectf.top
-						+ (int) (_height * 0.7) / 2 - _icon.getHeight() / 2, _iconPaint);
+			c.drawBitmap(_icon, _left + _width / 2 - _icon.getWidth() / 2, _rectf.top
+					+ (int) (_height * 0.7) / 2 - _icon.getHeight() / 2, _iconPaint);
 
-				c.drawText(_title, _left + _width / 2 - _textBounds.width() / 2, (int) (_rectf.top
-						+ _height * 0.7 + (_height * 0.3) / 2 + _mHeight.height() / 2), _iconPaint);
+			c.drawText(_title, _left + _width / 2 - _textBounds.width() / 2, (int) (_rectf.top
+					+ _height * 0.7 + (_height * 0.3) / 2 + _mHeight.height() / 2), _iconPaint);
 
-			}
 		}
 	}
 
@@ -99,12 +92,6 @@ public class PromotionTile extends GameDrawable
 	public void hide()
 	{
 		_shown = false;
-	}
-
-	@Override
-	public void redraw()
-	{
-		NEEDS_REDRAW = true;
 	}
 
 }

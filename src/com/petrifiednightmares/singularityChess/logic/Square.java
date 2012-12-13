@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.geom.Circle;
 import com.petrifiednightmares.singularityChess.geom.ComplexShape;
@@ -38,17 +39,18 @@ public class Square extends GameDrawable
 		return _shape.containsPoint(x, y);
 	}
 
-	public Square(char file, int rank, Board board)
+	public Square(char file, int rank, Board board, GameDrawingPanel gdp)
 	{
-		super(null);
+		super(gdp);
 		this.file = file;
 		this.rank = rank;
 		this._board = board;
 	}
 
-	public Square(Square[] corners, Square[] sides, char file, int rank, Board board)
+	public Square(Square[] corners, Square[] sides, char file, int rank, Board board,
+			GameDrawingPanel gdp)
 	{
-		super(null);
+		super(gdp);
 		this._corners = corners;
 		this._sides = sides;
 		this.file = file;
@@ -95,7 +97,7 @@ public class Square extends GameDrawable
 
 		Rect borderRect;
 
-		//determine left or right side of board
+		// determine left or right side of board
 		if (file <= 'd')
 		{
 			borderRect = new Rect(SUI.WIDTH / 2 - ('d' - file + 1) * SUI.CIRCLE_RADIUS_DIFFERENCE,
@@ -109,7 +111,7 @@ public class Square extends GameDrawable
 		}
 		_shape.setBoundingRect(borderRect);
 
-		//build inner circle
+		// build inner circle
 		Circle innerCircle = new Circle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
 				(fileOutwards() + rankOutwards()) * SUI.CIRCLE_RADIUS_DIFFERENCE);
 
@@ -157,41 +159,36 @@ public class Square extends GameDrawable
 
 	public void onDraw(Canvas c)
 	{
-		if (NEEDS_REDRAW)
+
+		if (Preferences.SHOW_SQUARE_LABELS)
 		{
-			NEEDS_REDRAW = false;
-
-			if (Preferences.SHOW_SQUARE_LABELS)
-			{
-				labelSquare(c);
-			}
-
-			if (_highlighted)
-			{
-				_paint = _board.getGame().isTurn() ? SUI.highlightPaint : SUI.highlightPaint2;
-				if (_piece != null && _piece.isCapturable() == true)
-				{
-					_paint = _board.getGame().isTurn() ? SUI.attackPaint : SUI.attackPaint2;
-				} else if (_piece != null && _piece.isCapturable() == false)
-				{
-					_paint = _board.getGame().isTurn() ? SUI.kingThreatenPaint
-							: SUI.kingThreatenPaint2;
-				}
-
-				drawSquare(c);
-			}
-			if (_selected)
-			{
-				flashSquare(c);
-			}
-
-			if (_piece != null)
-				_piece.onDraw(c, _shape.getX(), _shape.getY());
+			labelSquare(c);
 		}
+
+		if (_highlighted)
+		{
+			_paint = _board.getGame().isTurn() ? SUI.highlightPaint : SUI.highlightPaint2;
+			if (_piece != null && _piece.isCapturable() == true)
+			{
+				_paint = _board.getGame().isTurn() ? SUI.attackPaint : SUI.attackPaint2;
+			} else if (_piece != null && _piece.isCapturable() == false)
+			{
+				_paint = _board.getGame().isTurn() ? SUI.kingThreatenPaint : SUI.kingThreatenPaint2;
+			}
+
+			drawSquare(c);
+		}
+		if (_selected)
+		{
+			flashSquare(c);
+		}
+
+		if (_piece != null)
+			_piece.onDraw(c, _shape.getX(), _shape.getY());
 
 		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)
 		{
-			NEEDS_REDRAW = true;
+			redraw();
 			_board.redraw();
 			_showSquarePref = Preferences.SHOW_SQUARE_LABELS;
 		}
@@ -225,13 +222,13 @@ public class Square extends GameDrawable
 
 		drawSquare(c);
 
-		NEEDS_REDRAW = true;
+		redraw();
 	}
 
 	public void highlight()
 	{
 		_highlighted = true;
-		NEEDS_REDRAW = true;
+		redraw();
 		if (this.getTag().compareTo("d12") == 0)
 			this._board.getSquares().get("d6").highlight();
 		if (this.getTag().compareTo("e12") == 0)
@@ -242,7 +239,7 @@ public class Square extends GameDrawable
 	{
 		_highlighted = false;
 		_selected = false;
-		NEEDS_REDRAW = true;
+		redraw();
 		if (this.getTag().compareTo("d12") == 0)
 			this._board.getSquares().get("d6").unhighlight();
 		if (this.getTag().compareTo("e12") == 0)
@@ -253,13 +250,13 @@ public class Square extends GameDrawable
 	{
 		flashCount = 200;
 		_selected = true;
-		NEEDS_REDRAW = true;
+		redraw();
 	}
 
 	public void removePiece()
 	{
 		this._piece = null;
-		NEEDS_REDRAW = true;
+		redraw();
 		if (this.getTag().compareTo("d12") == 0 && this._board.getSquares().get("d6").hasPiece())
 			this._board.getSquares().get("d6").removePiece();
 		if (this.getTag().compareTo("d6") == 0 && this._board.getSquares().get("d12").hasPiece())
@@ -273,7 +270,7 @@ public class Square extends GameDrawable
 	public void addPiece(AbstractPiece piece)
 	{
 		this._piece = piece;
-		NEEDS_REDRAW = true;
+		redraw();
 		if (this.getTag().compareTo("d12") == 0 && !this._board.getSquares().get("d6").hasPiece())
 			this._board.getSquares().get("d6").addPiece(piece);
 		if (this.getTag().compareTo("e12") == 0 && !this._board.getSquares().get("e6").hasPiece())
@@ -388,9 +385,4 @@ public class Square extends GameDrawable
 		return this._highlighted;
 	}
 
-	@Override
-	public void redraw()
-	{
-		NEEDS_REDRAW=true;
-	}
 }

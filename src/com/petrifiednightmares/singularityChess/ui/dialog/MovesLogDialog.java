@@ -24,7 +24,7 @@ public class MovesLogDialog extends HoverDialog
 	TextView _text;
 	RectF _movesViewRect;
 
-	Paint _horizontalPaint, _verticalPaint,_dimWhite;
+	Paint _horizontalPaint, _verticalPaint, _dimWhite;
 
 	public MovesLogDialog(GameDrawingPanel gdp, GameUI gui, ScrollView movesView, MoveLogger ml)
 	{
@@ -36,7 +36,6 @@ public class MovesLogDialog extends HoverDialog
 		this._movesView = movesView;
 		_movesView.bringToFront();
 		_text = (TextView) (_movesView.getChildAt(0));
-		
 
 		int viewHeight = (int) ((_height - _headerBottom) * 0.9);
 		int viewWidth = (int) (_width * 0.9);
@@ -47,10 +46,9 @@ public class MovesLogDialog extends HoverDialog
 		_movesView.getLayoutParams().width = viewWidth;
 		((RelativeLayout.LayoutParams) movesView.getLayoutParams()).leftMargin = viewLeft;
 		((RelativeLayout.LayoutParams) movesView.getLayoutParams()).topMargin = viewTop;
-		
-		
-		((FrameLayout.LayoutParams) _text.getLayoutParams()).topMargin = (int)(viewHeight*0.05);
-		((FrameLayout.LayoutParams) _text.getLayoutParams()).leftMargin = (int)(viewWidth*0.08);
+
+		((FrameLayout.LayoutParams) _text.getLayoutParams()).topMargin = (int) (viewHeight * 0.05);
+		((FrameLayout.LayoutParams) _text.getLayoutParams()).leftMargin = (int) (viewWidth * 0.08);
 
 		_movesViewRect = new RectF(viewLeft, viewTop, viewLeft + viewWidth, viewTop + viewHeight);
 
@@ -64,10 +62,9 @@ public class MovesLogDialog extends HoverDialog
 		this._horizontalPaint = new Paint();
 		this._horizontalPaint.setAntiAlias(true);
 		this._horizontalPaint.setShader(new LinearGradient(viewLeft, viewTop + viewHeight / 2f,
-				viewLeft + viewWidth, viewTop + viewHeight / 2f, new int[] {
-						Color.rgb( 30, 21, 9), Color.rgb( 62, 43, 18),
-						Color.rgb( 62, 43, 18), Color.rgb( 30, 21, 9) }, new float[] { 0f, 0.1f, 0.9f,
-						1f}, Shader.TileMode.MIRROR));
+				viewLeft + viewWidth, viewTop + viewHeight / 2f, new int[] { Color.rgb(30, 21, 9),
+						Color.rgb(62, 43, 18), Color.rgb(62, 43, 18), Color.rgb(30, 21, 9) },
+				new float[] { 0f, 0.1f, 0.9f, 1f }, Shader.TileMode.MIRROR));
 		this._horizontalPaint.setAlpha(150);
 
 		this._verticalPaint = new Paint();
@@ -78,10 +75,10 @@ public class MovesLogDialog extends HoverDialog
 						Color.WHITE }, new float[] { 0f, 0.1f, 0.9f, 1f - 2f / viewHeight, 1f },
 				Shader.TileMode.MIRROR));
 		this._verticalPaint.setAlpha(100);
-		
+
 		_text.setTextSize(15);
 		_text.setTextColor(Color.WHITE);
-		
+
 		_dimWhite = new Paint();
 		_dimWhite.setAntiAlias(true);
 		_dimWhite.setColor(Color.WHITE);
@@ -90,20 +87,19 @@ public class MovesLogDialog extends HoverDialog
 
 	public void onDraw(Canvas c)
 	{
-		if (NEEDS_REDRAW)
+		// only check, don't set
+		super.onDraw(c);
+		if (_shown)
 		{
-			super.onDraw(c);
-			if (_shown)
-			{
-				c.drawRoundRect(_movesViewRect,
-						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
-						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _horizontalPaint);
-				c.drawRoundRect(_movesViewRect,
-						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
-						(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _verticalPaint);
-				
-				c.drawRect(_movesViewRect.left + (_movesViewRect.bottom - _movesViewRect.top) * 0.02f , _movesViewRect.bottom  , _movesViewRect.right -  (_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _movesViewRect.bottom+1, _dimWhite);
-			}
+			c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
+					(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _horizontalPaint);
+			c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
+					(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _verticalPaint);
+
+			c.drawRect(_movesViewRect.left + (_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
+					_movesViewRect.bottom, _movesViewRect.right
+							- (_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
+					_movesViewRect.bottom + 1, _dimWhite);
 		}
 	}
 
@@ -121,7 +117,6 @@ public class MovesLogDialog extends HoverDialog
 		super.hide();
 		_movesView.setVisibility(View.INVISIBLE);
 	}
-	
 
 	public void setMoveLogger(MoveLogger ml)
 	{
