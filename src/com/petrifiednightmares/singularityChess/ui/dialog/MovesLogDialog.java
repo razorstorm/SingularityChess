@@ -121,4 +121,10 @@ public class MovesLogDialog extends HoverDialog
 		super.hide();
 		_movesView.setVisibility(View.INVISIBLE);
 	}
+	
+
+	public void setMoveLogger(MoveLogger ml)
+	{
+		this._ml = ml;
+	}
 }

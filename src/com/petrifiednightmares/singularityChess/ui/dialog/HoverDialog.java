@@ -129,4 +129,5 @@ public class HoverDialog extends GameDrawable
 	{
 		NEEDS_REDRAW = true;
 	}
+
 }

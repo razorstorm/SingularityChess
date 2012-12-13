@@ -6,6 +6,7 @@ import android.widget.ScrollView;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.logging.MoveLogger;
 import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.logic.Square;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.ui.dialog.HoverDialog;
 import com.petrifiednightmares.singularityChess.ui.dialog.MovesLogDialog;
@@ -21,7 +22,6 @@ public class GameUI extends GameDrawable
 	private Game _game;
 	private MoveLogger _ml;
 
-
 	private static final long WAITING_THRESHOLD = 500; // wait half a second
 														// before making prompts
 														// clickable
@@ -35,7 +35,7 @@ public class GameUI extends GameDrawable
 		this.topBar = new TopBar();
 		this.bottomBar = new BottomBar(this, drawingPanel);
 		_ml = new MoveLogger();
-		movesDialog = new MovesLogDialog(gdp, this, movesView,_ml);
+		movesDialog = new MovesLogDialog(gdp, this, movesView, _ml);
 
 		promotionDialog = new PromotionDialog(gdp, _game, this);
 
@@ -100,6 +100,17 @@ public class GameUI extends GameDrawable
 		PROMPT_WAITING = true;
 	}
 
+	public String recordMove(AbstractPiece actor, Square source, Square destination)
+	{
+		return _ml.addMove(actor, source, destination);
+	}
+
+	public String recordMove(AbstractPiece actor, Square source, Square destination,
+			AbstractPiece capturedPiece)
+	{
+		return _ml.addMove(actor, source, destination, capturedPiece);
+	}
+
 	public void promote(AbstractPiece.PieceType pieceType)
 	{
 		_game.promotePiece(pieceType);
@@ -109,10 +120,12 @@ public class GameUI extends GameDrawable
 	{
 		return _ml;
 	}
-	
-	//for resuming
+
+	// for resuming
 	public void setMoveLogger(MoveLogger ml)
 	{
 		this._ml = ml;
+		((MovesLogDialog) movesDialog).setMoveLogger(_ml);
 	}
+
 }

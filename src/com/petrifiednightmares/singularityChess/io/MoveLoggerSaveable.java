@@ -17,7 +17,7 @@ public class MoveLoggerSaveable implements Saveable
 	int numActions;
 
 	// For resuming
-	MoveLogger ml;
+	private MoveLogger _ml;
 
 	// Empty constructor for reading
 	public MoveLoggerSaveable()
@@ -27,7 +27,7 @@ public class MoveLoggerSaveable implements Saveable
 	
 	public MoveLogger getMoveLogger()
 	{
-		return ml;
+		return _ml;
 	}
 
 	// full constructor for writing
@@ -58,6 +58,8 @@ public class MoveLoggerSaveable implements Saveable
 			
 			actions.add(as.getAction());
 		}
+		
+		_ml = new MoveLogger(actions);
 	}
 
 	public void serialize(OutputStream out) throws IOException

@@ -47,7 +47,6 @@ public class Game extends GameDrawable
 	private Bitmap _borderBitmap;
 	private Canvas _borderCanvas;
 
-
 	public Game(GameDrawingPanel drawingPanel)
 	{
 		super(drawingPanel);
@@ -79,24 +78,19 @@ public class Game extends GameDrawable
 		this._board = board;
 
 		GameSaveable gs = new GameSaveable(this);
-		
+
 		GameIO.intentionSaveGame();
 		InputStream in = GameIO.getInputStream();
-		
-		
+
 		gs.deserialize(in);
 		in.close();
-		
+
 		whitePieces = gs.getWhitePieces();
 		blackPieces = gs.getBlackPieces();
-		
-		for(AbstractPiece p: whitePieces)
-		{
-			System.out.println(p+" at "+p.getLocation());
-		}
 
 		isWhiteTurn = gs.isWhiteTurn();
 		this._gui.setMoveLogger(gs.getMoveLogger());
+		this._gui.setTurnName(isWhiteTurn() ? whiteName : blackName, isWhiteTurn());
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
@@ -181,18 +175,14 @@ public class Game extends GameDrawable
 					select(checkingPiece);
 				return false;
 			}
-			String actionLog;
 			// log to movelogger
 			if (capturedPiece == null)
 			{
-				actionLog = _gui.getMoveLogger().addMove(selectedPiece, sourceLocation, target);
+				_gui.recordMove(selectedPiece, sourceLocation, target);
 			} else
 			{
-				actionLog = _gui.getMoveLogger().addMove(selectedPiece, sourceLocation, target,
-						capturedPiece);
+				_gui.recordMove(selectedPiece, sourceLocation, target, capturedPiece);
 			}
-			// TODO, display actionLog
-			System.out.println(actionLog);
 
 			if (checkPostMoveConditions())
 			{
@@ -213,7 +203,7 @@ public class Game extends GameDrawable
 			playPieceSounds();
 			switchTurns();
 			unselect();
-			
+
 			saveGame();
 		}
 	}
@@ -483,10 +473,10 @@ public class Game extends GameDrawable
 		try
 		{
 			GameIO.intentionSaveGame();
-			
+
 			GameSaveable gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces,
 					_gui.getMoveLogger());
-			
+
 			OutputStream out = GameIO.getOutputStream();
 			gs.serialize(out);
 			out.close();
