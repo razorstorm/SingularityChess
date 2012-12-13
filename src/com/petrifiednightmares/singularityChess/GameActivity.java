@@ -3,6 +3,7 @@ package com.petrifiednightmares.singularityChess;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -33,8 +34,23 @@ public class GameActivity extends Activity implements OnClickListener
 
 		ScrollView movesView = (ScrollView) findViewById(R.id.movesView);
 
-//		gdp.initialize(this, movesView);
-		gdp.resume(this, movesView);
+		
+		//Decide whether to start new game or resume
+		boolean resume = false;
+		Intent i = getIntent();
+		if (i.hasExtra("resume"))
+		{
+			Bundle b = getIntent().getExtras();
+			resume = b.getBoolean("resume", false);
+		}
+
+		if (resume)
+		{
+			gdp.resume(this, movesView);
+		} else
+		{
+			gdp.initialize(this, movesView);
+		}
 
 	}
 

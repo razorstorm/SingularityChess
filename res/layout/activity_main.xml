@@ -4,28 +4,36 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg" >
 
-        <Button
-            android:id="@+id/multi_player"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:text="@string/multi_player" />
+    <Button
+        android:id="@+id/vs_human"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/vs_computer"
+        android:layout_alignParentLeft="true"
+        android:text="@string/vs_human" />
 
-        <Button
-            android:id="@+id/vs_human"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/vs_computer"
-            android:layout_alignParentLeft="true"
-            android:text="@string/vs_human" />
-        
-          <Button
-            android:id="@+id/vs_computer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/multi_player"
-            android:layout_alignParentLeft="true"
-            android:text="@string/vs_computer" />
- 
+    <Button
+        android:id="@+id/vs_computer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/resume"
+        android:layout_alignParentLeft="true"
+        android:text="@string/vs_computer" />
+
+    <Button
+        android:id="@+id/resume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/multi_player"
+        android:layout_alignParentLeft="true"
+        android:text="@string/resume" />
+
+    <Button
+        android:id="@+id/multi_player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/multi_player" />
+
 </RelativeLayout>
