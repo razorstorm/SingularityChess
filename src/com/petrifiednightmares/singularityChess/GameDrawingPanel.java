@@ -5,6 +5,8 @@ import java.io.IOException;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Path;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -26,10 +28,9 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		SurfaceHolder.Callback
 {
 	PanelThread _thread;
-	public static Bitmap background;
 
-	private static Bitmap _drawingBitmap;
-	private static Canvas _drawingCanvas;
+	private Bitmap _drawingBitmap;
+	private Canvas _drawingCanvas;
 
 	GameActivity gameActivity;
 
@@ -56,12 +57,10 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		_drawingBitmap = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT, conf);
 		_drawingCanvas = new Canvas(_drawingBitmap);
 
-		background = SingularBitmapFactory.buildScaledBitmap(getResources(), R.drawable.background,
-				SUI.WIDTH, SUI.HEIGHT);
-
 		this.setOnTouchListener(this);
 
 		GameIO.setContext(_context);
+		
 	}
 
 	public void initialize(GameActivity g, ScrollView movesView)
@@ -99,6 +98,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		}
 	}
 
+	
 	@Override
 	public void onDraw(Canvas canvas)
 	{
@@ -108,6 +108,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 			game.onDraw(_drawingCanvas);
 			board.onDraw(_drawingCanvas);
 		}
+		
 		gui.onDraw(_drawingCanvas);
 
 		canvas.drawBitmap(_drawingBitmap, 0, 0, null);
