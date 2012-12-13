@@ -73,18 +73,29 @@ public class Game extends GameDrawable
 		initializePieces(blackPieces, false);
 	}
 
-	public void resume(InputStream in, Board board, GameUI gui) throws IOException
+	public void resume(Board board, GameUI gui) throws IOException
 	{
-		GameSaveable gs = new GameSaveable(this);
-		gs.deserialize(in);
-
-		whitePieces = gs.getWhitePieces();
-		blackPieces = gs.getBlackPieces();
-		isWhiteTurn = gs.isWhiteTurn();
-
 		this._gui = gui;
 		this._board = board;
 
+		GameSaveable gs = new GameSaveable(this);
+		
+		GameIO.intentionSaveGame();
+		InputStream in = GameIO.getInputStream();
+		
+		
+		gs.deserialize(in);
+		in.close();
+		
+		whitePieces = gs.getWhitePieces();
+		blackPieces = gs.getBlackPieces();
+		
+		for(AbstractPiece p: whitePieces)
+		{
+			System.out.println(p+" at "+p.getLocation());
+		}
+
+		isWhiteTurn = gs.isWhiteTurn();
 		this._gui.setMoveLogger(gs.getMoveLogger());
 	}
 

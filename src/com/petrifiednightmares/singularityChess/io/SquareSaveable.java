@@ -41,7 +41,7 @@ public class SquareSaveable implements Saveable
 	
 	public String getIndex()
 	{
-		return file+" "+rank;
+		return file+""+rank;
 	}
 
 	public void serialize(OutputStream out) throws IOException

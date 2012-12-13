@@ -1,7 +1,6 @@
 package com.petrifiednightmares.singularityChess;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -79,7 +78,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		game.initialize(board, gui);
 	}
 
-	public void resume(GameActivity g, ScrollView movesView, InputStream in) throws IOException
+	public void resume(GameActivity g, ScrollView movesView) 
 	{
 		this.gameActivity = g;
 		this.movesView = movesView;
@@ -90,7 +89,14 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		board = new Board(this, game);
 
-		game.resume(in, board, gui);
+		try
+		{
+			game.resume(board, gui);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+			displayMessage(e.getMessage());
+		}
 	}
 
 	@Override

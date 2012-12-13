@@ -33,7 +33,8 @@ public class GameActivity extends Activity implements OnClickListener
 
 		ScrollView movesView = (ScrollView) findViewById(R.id.movesView);
 
-		gdp.initialize(this, movesView);
+//		gdp.initialize(this, movesView);
+		gdp.resume(this, movesView);
 
 	}
 

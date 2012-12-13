@@ -108,7 +108,6 @@ public class GameSaveable implements Saveable
 
 		for (int i = 0; i < 16; i++)
 		{
-
 			whitePieceSaveables[i].serialize(dataOut);
 		}
 

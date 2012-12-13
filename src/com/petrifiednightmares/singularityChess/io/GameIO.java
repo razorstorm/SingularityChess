@@ -1,9 +1,12 @@
 package com.petrifiednightmares.singularityChess.io;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.Context;
@@ -36,14 +39,15 @@ public class GameIO
 	// for saving
 	public static OutputStream getOutputStream() throws FileNotFoundException
 	{
-		System.out.println(_context.getExternalFilesDir(null));
 		switch (_storageOption)
 		{
 		case STDOUT:
 			return new BufferedOutputStream(System.out);
 		case FILE:
-			FileOutputStream fos = new FileOutputStream(new File(_context.getExternalFilesDir(null), _fileName));
-//			FileOutputStream fos = _context.openFileOutput(_fileName, Context.MODE_PRIVATE);
+			FileOutputStream fos = new FileOutputStream(new File(
+					_context.getExternalFilesDir(null), _fileName));
+			// FileOutputStream fos = _context.openFileOutput(_fileName,
+			// Context.MODE_PRIVATE);
 			return new BufferedOutputStream(fos);
 		case SQLITE:
 			return null;
@@ -53,9 +57,21 @@ public class GameIO
 	}
 
 	// for reading
-	// public static InputStream getInputStream()
-	// {
-	// // return new BufferedInputStream(new FileInputStream(file));
-	//
-	// }
+	public static InputStream getInputStream() throws FileNotFoundException
+	{
+		switch (_storageOption)
+		{
+		case STDOUT:
+			return null;
+		case FILE:
+			FileInputStream fos = new FileInputStream(new File(
+					_context.getExternalFilesDir(null), _fileName));
+			return new BufferedInputStream(fos);
+		case SQLITE:
+			return null;
+		default:
+			return null;
+		}
+
+	}
 }
