@@ -1,4 +1,4 @@
-package com.petrifiednightmares.singularityChess.jdbc;
+package com.petrifiednightmares.singularityChess.io;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,7 +9,12 @@ import java.io.OutputStream;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
+import com.petrifiednightmares.singularityChess.pieces.Bishop;
 import com.petrifiednightmares.singularityChess.pieces.King;
+import com.petrifiednightmares.singularityChess.pieces.Knight;
+import com.petrifiednightmares.singularityChess.pieces.Pawn;
+import com.petrifiednightmares.singularityChess.pieces.Queen;
+import com.petrifiednightmares.singularityChess.pieces.Rook;
 
 public class PieceSaveable implements Saveable
 {
@@ -47,6 +52,8 @@ public class PieceSaveable implements Saveable
 
 	// ****************************Saveable ****************************/
 
+	// NOTE: This method has a side effect. it will modify _game's squares to
+	// add the pieces.
 	public void deserialize(InputStream in) throws IOException
 	{
 		DataInputStream dataIn = new DataInputStream(in);
@@ -68,15 +75,39 @@ public class PieceSaveable implements Saveable
 			location = null;
 		}
 
-		switch (type)
+		switch (AbstractPiece.PieceType.values()[type])
 		{
-		case AbstractPiece.PieceType.King.getValue():
+		case King:
 			p = new King(_game, location, isWhite);
 			p.setIsAlive(isAlive);
 			break;
-			
-		case AbstractPiece.PieceType.Queen.getValue():
+
+		case Queen:
+			p = new Queen(_game, location, isWhite);
+			p.setIsAlive(isAlive);
 			break;
+		case Bishop:
+			p = new Bishop(_game, location, isWhite);
+			p.setIsAlive(isAlive);
+			break;
+		case Knight:
+			p = new Knight(_game, location, isWhite);
+			p.setIsAlive(isAlive);
+			break;
+		case Pawn:
+			p = new Pawn(_game, location, isWhite);
+			p.setIsAlive(isAlive);
+			break;
+		case Rook:
+			p = new Rook(_game, location, isWhite);
+			p.setIsAlive(isAlive);
+			break;
+		default:
+			break;
+		}
+		if (location != null)
+		{
+			location.addPiece(p);
 		}
 
 	}

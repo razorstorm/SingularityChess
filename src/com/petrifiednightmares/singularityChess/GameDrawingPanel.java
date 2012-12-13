@@ -1,5 +1,9 @@
 package com.petrifiednightmares.singularityChess;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,6 +17,7 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.ScrollView;
 
+import com.petrifiednightmares.singularityChess.io.GameIO;
 import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
@@ -64,13 +69,42 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	{
 		this.gameActivity = g;
 		this.movesView = movesView;
-		game = new Game(this);
+
+		try
+		{
+			game = new Game(this, GameIO.getOutputStream(_context));
+		} catch (FileNotFoundException e)
+		{
+			displayMessage(e.getMessage());
+			e.printStackTrace();
+		}
 
 		gui = new GameUI(this, game, movesView);
 
 		board = new Board(this, game);
+
+		game.initialize(board, gui);
+	}
+
+	public void resume(GameActivity g, ScrollView movesView, InputStream in) throws IOException
+	{
+		this.gameActivity = g;
+		this.movesView = movesView;
 		
-		game.initialize(board,gui);
+		try
+		{
+			game = new Game(this, GameIO.getOutputStream(_context));
+		} catch (FileNotFoundException e)
+		{
+			displayMessage(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		gui = new GameUI(this, game, movesView);
+
+		board = new Board(this, game);
+
+		game.resume(in, board, gui);
 	}
 
 	@Override
@@ -150,8 +184,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	{
 		return _context;
 	}
-
-	
 
 }
 

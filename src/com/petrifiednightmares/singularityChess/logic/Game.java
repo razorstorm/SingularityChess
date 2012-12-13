@@ -2,6 +2,7 @@ package com.petrifiednightmares.singularityChess.logic;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Set;
 
 import android.graphics.Bitmap;
@@ -12,7 +13,7 @@ import android.graphics.RectF;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
-import com.petrifiednightmares.singularityChess.jdbc.GameSaveable;
+import com.petrifiednightmares.singularityChess.io.GameSaveable;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Bishop;
 import com.petrifiednightmares.singularityChess.pieces.King;
@@ -45,41 +46,48 @@ public class Game extends GameDrawable
 	private Bitmap _borderBitmap;
 	private Canvas _borderCanvas;
 
-	public Game(GameDrawingPanel drawingPanel)
+	private OutputStream _out; // for saving the game
+
+	public Game(GameDrawingPanel drawingPanel, OutputStream out)
 	{
 		super(drawingPanel);
-		
+
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
 
 		whiteName = "White";
 		blackName = "Black";
 
+		this._out = out;
 		setupBorder();
 	}
-	
+
 	public void initialize(Board board, GameUI gui)
 	{
 		this._gui = gui;
 		gui.setTurnName(whiteName, isWhiteTurn);
-		
+
 		isWhiteTurn = true;
 
 		this._board = board;
 		initializePieces(whitePieces, true);
 		initializePieces(blackPieces, false);
 	}
-	
-	public void resume(InputStream in) throws IOException
+
+	public void resume(InputStream in, Board board, GameUI gui) throws IOException
 	{
-		GameSaveable gs = new GameSaveable();
+		GameSaveable gs = new GameSaveable(this);
 		gs.deserialize(in);
-		
+
 		whitePieces = gs.getWhitePieces();
 		blackPieces = gs.getBlackPieces();
 		isWhiteTurn = gs.isWhiteTurn();
-	}
 
+		this._gui = gui;
+		this._board = board;
+
+		this._gui.setMoveLogger(gs.getMoveLogger());
+	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
 	{
@@ -170,7 +178,8 @@ public class Game extends GameDrawable
 				actionLog = _gui.getMoveLogger().addMove(selectedPiece, sourceLocation, target);
 			} else
 			{
-				actionLog = _gui.getMoveLogger().addMove(selectedPiece, sourceLocation, target, capturedPiece);
+				actionLog = _gui.getMoveLogger().addMove(selectedPiece, sourceLocation, target,
+						capturedPiece);
 			}
 			// TODO, display actionLog
 			System.out.println(actionLog);
@@ -194,6 +203,8 @@ public class Game extends GameDrawable
 			playPieceSounds();
 			switchTurns();
 			unselect();
+			
+			saveGame();
 		}
 	}
 
@@ -437,7 +448,6 @@ public class Game extends GameDrawable
 				checkingPiece = null;
 			} catch (GameException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -457,12 +467,19 @@ public class Game extends GameDrawable
 	{
 		return isWhiteTurn;
 	}
-	
-	
+
 	public void saveGame()
 	{
-		
+		try
+		{
+			GameSaveable gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces,
+					_gui.getMoveLogger());
+			gs.serialize(_out);
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+			gdp.displayMessage(e.getMessage());
+		}
 	}
-	
 
 }

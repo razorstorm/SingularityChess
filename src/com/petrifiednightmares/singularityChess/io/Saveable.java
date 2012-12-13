@@ -1,4 +1,4 @@
-package com.petrifiednightmares.singularityChess.jdbc;
+package com.petrifiednightmares.singularityChess.io;
 
 import java.io.IOException;
 import java.io.InputStream;

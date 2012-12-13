@@ -109,4 +109,10 @@ public class GameUI extends GameDrawable
 	{
 		return _ml;
 	}
+	
+	//for resuming
+	public void setMoveLogger(MoveLogger ml)
+	{
+		this._ml = ml;
+	}
 }
