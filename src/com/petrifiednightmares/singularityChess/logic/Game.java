@@ -13,6 +13,7 @@ import android.graphics.RectF;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
+import com.petrifiednightmares.singularityChess.io.GameIO;
 import com.petrifiednightmares.singularityChess.io.GameSaveable;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Bishop;
@@ -46,9 +47,8 @@ public class Game extends GameDrawable
 	private Bitmap _borderBitmap;
 	private Canvas _borderCanvas;
 
-	private OutputStream _out; // for saving the game
 
-	public Game(GameDrawingPanel drawingPanel, OutputStream out)
+	public Game(GameDrawingPanel drawingPanel)
 	{
 		super(drawingPanel);
 
@@ -58,7 +58,6 @@ public class Game extends GameDrawable
 		whiteName = "White";
 		blackName = "Black";
 
-		this._out = out;
 		setupBorder();
 	}
 
@@ -472,9 +471,14 @@ public class Game extends GameDrawable
 	{
 		try
 		{
+			GameIO.intentionSaveGame();
+			
 			GameSaveable gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces,
 					_gui.getMoveLogger());
-			gs.serialize(_out);
+			
+			OutputStream out = GameIO.getOutputStream();
+			gs.serialize(out);
+			out.close();
 		} catch (IOException e)
 		{
 			e.printStackTrace();
