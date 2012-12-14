@@ -114,54 +114,51 @@ public class Board extends GameDrawable
 
 	private void setupSquaresBitmap()
 	{
-
-		// test if the cached resource exists
-		// int test = gdp.getResources().getIdentifier("board_bitmap",
-		// "drawable",
-		// gdp.getContext().getPackageName());
-		// if (test != 0)
-		// {
-		// _background =
-		// SingularBitmapFactory.buildScaledBitmap(gdp.getResources(), test,
-		// SUI.WIDTH, SUI.HEIGHT);
-		// } else
-		// {
-		// _background = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT,
-		// Bitmap.Config.ARGB_8888);
-		Canvas backgroundCanvas = _bg.getBackgroundCanvas();
-
-		// Have to draw from outwards in
-		for (char file = 'a'; file <= 'd'; file++)
+		// otherwise it is already there, no need to redraw it
+		if (!SUI.CACHED_BACKGROUND)
 		{
-			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
-			{
-				getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
-			}
-			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
-			{
-				getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
-			}
-		}
 
-		for (char file = 'h'; file >= 'e'; file--)
-		{
-			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
-			{
-				getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
-			}
-			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
-			{
-				getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
-			}
-		}
+			Canvas backgroundCanvas = _bg.getBackgroundCanvas();
 
-		backgroundCanvas.save();
-		backgroundCanvas.clipRect(SUI.WIDTH / 2 - 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, 0, SUI.WIDTH
-				/ 2 + 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
-		backgroundCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
-				6 * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.boardLightingPaint);
-		backgroundCanvas.restore();
-		// }
+			// Have to draw from outwards in
+			for (char file = 'a'; file <= 'd'; file++)
+			{
+				for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
+				{
+					getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
+				}
+				for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
+				{
+					getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
+				}
+			}
+
+			for (char file = 'h'; file >= 'e'; file--)
+			{
+				for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
+				{
+					getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
+				}
+				for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
+				{
+					getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
+				}
+			}
+
+			backgroundCanvas.save();
+			backgroundCanvas.clipRect(SUI.WIDTH / 2 - 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, 0,
+					SUI.WIDTH / 2 + 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
+			backgroundCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER,
+					6 * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.boardLightingPaint);
+			backgroundCanvas.restore();
+
+			cacheBackground();
+		}
+	}
+
+	public void cacheBackground()
+	{
+//		_bg.cacheBitmap();
 	}
 
 	public Set<Square> getSideMovements(AbstractPiece piece, boolean limit) throws GameException

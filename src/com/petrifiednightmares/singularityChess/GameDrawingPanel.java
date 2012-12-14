@@ -42,6 +42,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	public GameDrawingPanel(Context context, AttributeSet aSet)
 	{
 		super(context, aSet);
+
 		NEEDS_REDRAW = true;
 		this._context = context;
 		getHolder().addCallback(this);
@@ -56,7 +57,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		GameIO.setContext(_context);
 
 		bg = new Background(this);
-
 	}
 
 	public void initialize(GameActivity g, ScrollView movesView)

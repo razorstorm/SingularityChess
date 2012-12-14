@@ -10,16 +10,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.Context;
+import android.os.Environment;
 
 public class GameIO
 {
 
-	private static enum StorageOption
+	public static enum StorageOption
 	{
-		STDOUT, SQLITE, FILE, NETWORK
+		STDOUT, SQLITE, FILE, NETWORK, IMAGE_CACHE
 	};
-
-	private static StorageOption _storageOption = StorageOption.FILE;
 
 	// determine where the shiet is saved
 	private static String _fileName = "game_state";
@@ -36,36 +35,53 @@ public class GameIO
 		_fileName = "game_state";
 	}
 
-	// for saving
-	public static OutputStream getOutputStream() throws FileNotFoundException
+	public static void intentionCacheBg()
 	{
-		switch (_storageOption)
+		_fileName = "bg_bitmap";
+	}
+	
+	public static String getCacheBgFileName()
+	{
+		return _context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() +"/"+ _fileName;
+	}
+
+	// for saving
+	public static OutputStream getOutputStream(StorageOption storageOption)
+			throws FileNotFoundException
+	{
+		FileOutputStream fos;
+		switch (storageOption)
 		{
 		case STDOUT:
 			return new BufferedOutputStream(System.out);
 		case FILE:
-			FileOutputStream fos = new FileOutputStream(new File(
+			 fos = new FileOutputStream(new File(
 					_context.getExternalFilesDir(null), _fileName));
 			// FileOutputStream fos = _context.openFileOutput(_fileName,
 			// Context.MODE_PRIVATE);
 			return new BufferedOutputStream(fos);
 		case SQLITE:
 			return null;
+		case IMAGE_CACHE:
+			fos = new FileOutputStream(new File(
+					_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), _fileName));
+			return new BufferedOutputStream(fos);
 		default:
 			return null;
 		}
 	}
 
 	// for reading
-	public static InputStream getInputStream() throws FileNotFoundException
+	public static InputStream getInputStream(StorageOption storageOption)
+			throws FileNotFoundException
 	{
-		switch (_storageOption)
+		switch (storageOption)
 		{
 		case STDOUT:
 			return null;
 		case FILE:
-			FileInputStream fos = new FileInputStream(new File(
-					_context.getExternalFilesDir(null), _fileName));
+			FileInputStream fos = new FileInputStream(new File(_context.getExternalFilesDir(null),
+					_fileName));
 			return new BufferedInputStream(fos);
 		case SQLITE:
 			return null;

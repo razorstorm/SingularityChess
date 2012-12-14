@@ -30,6 +30,9 @@ public class SUI
 	private static Bitmap _darkTexture, _lightTexture, _topBarTexture, _borderTexture;
 
 	public static MediaPlayer pieceSound;
+	
+	//determines if a cached bg was found. This means board doesn't have to set up draws. 
+	public static boolean CACHED_BACKGROUND=false;
 
 	public static void setup(int width, int height, Resources r, Context c)
 	{

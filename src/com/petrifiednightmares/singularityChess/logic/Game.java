@@ -74,7 +74,7 @@ public class Game extends GameDrawable
 		GameSaveable gs = new GameSaveable(this);
 
 		GameIO.intentionSaveGame();
-		InputStream in = GameIO.getInputStream();
+		InputStream in = GameIO.getInputStream(GameIO.StorageOption.FILE);
 
 		gs.deserialize(in);
 		in.close();
@@ -403,7 +403,7 @@ public class Game extends GameDrawable
 			GameSaveable gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces,
 					_gui.getMoveLogger());
 
-			OutputStream out = GameIO.getOutputStream();
+			OutputStream out = GameIO.getOutputStream(GameIO.StorageOption.FILE);
 			gs.serialize(out);
 			out.close();
 		} catch (IOException e)

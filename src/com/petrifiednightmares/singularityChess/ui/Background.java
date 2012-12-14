@@ -1,27 +1,41 @@
 package com.petrifiednightmares.singularityChess.ui;
 
-import com.petrifiednightmares.singularityChess.GameDrawingPanel;
-import com.petrifiednightmares.singularityChess.R;
-import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
+import java.io.OutputStream;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
 
+import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.R;
+import com.petrifiednightmares.singularityChess.io.GameIO;
+import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
+
 public class Background extends GameDrawable
 {
 	private Bitmap _background;
 	private Canvas _backgroundCanvas;
-	
+
 	public Background(GameDrawingPanel gdp)
 	{
 		super(gdp);
 		setupBackgroundAndBorder();
 	}
-	
+
 	private void setupBackgroundAndBorder()
 	{
+		// File file = new File(GameIO.getCacheBgFileName());
+		// if (file.exists())
+		// {
+		// System.out.println("file exists lel");
+		// _background =
+		// SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
+		// GameIO.getCacheBgFileName(), SUI.WIDTH, SUI.HEIGHT);
+		// SUI.CACHED_BACKGROUND = true;
+		// } else
+		// {
+		SUI.CACHED_BACKGROUND = false;
 		_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
 				R.drawable.background, SUI.WIDTH, SUI.HEIGHT);
 		_backgroundCanvas = new Canvas(_background);
@@ -33,6 +47,7 @@ public class Background extends GameDrawable
 		_backgroundCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6
 				* SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH, SUI.borderPaint);
 		_backgroundCanvas.restore();
+		// }
 	}
 
 	private void setupBorderShadow()
@@ -79,11 +94,11 @@ public class Background extends GameDrawable
 		// draw the path onto the canvas
 		_backgroundCanvas.drawPath(p, SUI.borderShadowPaint);
 	}
+
 	public Canvas getBackgroundCanvas()
 	{
 		return _backgroundCanvas;
 	}
-
 
 	@Override
 	public void onDraw(Canvas c)
@@ -95,6 +110,20 @@ public class Background extends GameDrawable
 	public boolean onClick(int x, int y)
 	{
 		return false;
+	}
+
+	public void cacheBitmap()
+	{
+		try
+		{
+			GameIO.intentionCacheBg();
+			OutputStream out = GameIO.getOutputStream(GameIO.StorageOption.IMAGE_CACHE);
+			_background.compress(Bitmap.CompressFormat.PNG, 100, out);
+			out.close();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }

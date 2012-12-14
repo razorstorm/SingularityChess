@@ -46,5 +46,29 @@ public class SingularBitmapFactory
 		}
 
 	}
+	
+	
+	public static Bitmap buildScaledBitmap(Resources r, String f, int newWidth, int newHeight)
+	{
+		Bitmap b = bitmaps.get(f.hashCode(), null);
+		if (b != null && b.getWidth() == newWidth && b.getHeight() == newHeight)
+		{
+			return b;
+		} else
+		{
+			b = BitmapFactory.decodeFile(f);
+
+			float scaleWidth = ((float) newWidth) / b.getWidth();
+			float scaleHeight = ((float) newHeight) / b.getHeight();
+			Matrix matrix = new Matrix();
+			matrix.postScale(scaleWidth, scaleHeight);
+
+			b = Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), matrix, false);
+
+			bitmaps.put(f.hashCode(), b);
+			return b;
+		}
+
+	}
 
 }
