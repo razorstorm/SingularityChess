@@ -105,7 +105,6 @@ public class HoverDialog extends GameDrawable
 	{
 		_shown = false;
 		redraw();
-		gdp.redrawAll();
 	}
 
 	public boolean onClick(int x, int y)

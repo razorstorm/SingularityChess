@@ -15,6 +15,7 @@ import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
+import com.petrifiednightmares.singularityChess.ui.Background;
 import com.petrifiednightmares.singularityChess.ui.GameDrawable;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 
@@ -27,14 +28,16 @@ public class Board extends GameDrawable
 	private Game _game; // back reference to game
 	private Resources _res;
 
+	private Background _bg;
 
-	public Board(GameDrawingPanel gdp, Game game)
+	public Board(GameDrawingPanel gdp, Game game, Background bg)
 	{
 		super(gdp);
 		this._res = gdp.getResources();
 		this._game = game;
 		squares = new HashMap<String, Square>();
 
+		this._bg = bg;
 		initializeSquares();
 		setupSquaresBitmap();
 	}
@@ -125,7 +128,7 @@ public class Board extends GameDrawable
 		// {
 		// _background = Bitmap.createBitmap(SUI.WIDTH, SUI.HEIGHT,
 		// Bitmap.Config.ARGB_8888);
-		Canvas backgroundCanvas = _game.getBackgroundCanvas();
+		Canvas backgroundCanvas = _bg.getBackgroundCanvas();
 
 		// Have to draw from outwards in
 		for (char file = 'a'; file <= 'd'; file++)
@@ -457,9 +460,6 @@ public class Board extends GameDrawable
 
 	public void onDraw(Canvas canvas)
 	{
-		// draw the squares
-		// canvas.drawBitmap(Square.squareBitMap, 0, 0, null);
-		// Draw lighting overlay
 
 		// draw special overlays on the squares
 		drawSquares(canvas);

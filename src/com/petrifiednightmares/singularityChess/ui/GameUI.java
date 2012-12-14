@@ -76,7 +76,7 @@ public class GameUI extends GameDrawable
 	{
 		PROMPT = null;
 		PROMPT_WAITING = false;
-		gdp.redrawAll();
+		gdp.redraw();
 	}
 
 	@Override

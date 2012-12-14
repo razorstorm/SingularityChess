@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 import com.petrifiednightmares.singularityChess.io.GameIO;
 import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.ui.Background;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 
@@ -25,12 +26,12 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 {
 	PanelThread _thread;
 
-
 	GameActivity gameActivity;
 
 	private Context _context;
 
 	public Game game;
+	public Background bg;
 	public Board board;
 	public GameUI gui;
 
@@ -50,10 +51,11 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		SUI.setup(disp.getWidth(), disp.getHeight(), getResources(), getContext());
 
-
 		this.setOnTouchListener(this);
 
 		GameIO.setContext(_context);
+
+		bg = new Background(this);
 
 	}
 
@@ -66,7 +68,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		gui = new GameUI(this, game, movesView);
 
-		board = new Board(this, game);
+		board = new Board(this, game, bg);
 
 		game.initialize(board, gui);
 	}
@@ -80,7 +82,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		gui = new GameUI(this, game, movesView);
 
-		board = new Board(this, game);
+		board = new Board(this, game, bg);
 
 		try
 		{
@@ -97,25 +99,15 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	{
 		NEEDS_REDRAW = false;
 
-		//draw game cuz it has the background
+		// draw bg
+		bg.onDraw(canvas);
+
+		// do drawing stuff here.
 		game.onDraw(canvas);
-		
-		if (!gui.PROMPT_WAITING)
-		{
-			// do drawing stuff here.
-			board.onDraw(canvas);
-		}
+		board.onDraw(canvas);
 
 		gui.onDraw(canvas);
 
-
-	}
-
-	public void redrawAll()
-	{
-		game.redraw();
-		board.redraw();
-		gui.redraw();
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
@@ -169,7 +161,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	{
 		gameActivity.displayMessage(message);
 	}
-
 
 	public void redraw()
 	{

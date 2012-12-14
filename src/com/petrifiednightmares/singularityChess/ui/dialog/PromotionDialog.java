@@ -70,20 +70,25 @@ public class PromotionDialog extends HoverDialog
 
 	public void onDraw(Canvas c)
 	{
-		super.onDraw(c);
-		queenTile.onDraw(c);
-		knightTile.onDraw(c);
+		if (_shown)
+		{
+			super.onDraw(c);
+			queenTile.onDraw(c);
+			knightTile.onDraw(c);
+		}
 	}
 
 	public boolean onClick(int x, int y)
 	{
 		if (queenTile.onClick(x, y))
 		{
+			hide();
 			_gui.closePrompt();
 			_gui.promote(AbstractPiece.PieceType.Queen);
 			return true;
 		} else if (knightTile.onClick(x, y))
 		{
+			hide();
 			_gui.closePrompt();
 			_gui.promote(AbstractPiece.PieceType.Knight);
 		}
