@@ -18,7 +18,7 @@ public class HoverDialog extends GameDrawable
 {
 	protected int _top, _left, _width, _height, _header, _headerBottom;
 	protected String _title;
-	protected RectF _rectf;
+	protected RectF _rectf,_relativeRectF;
 	protected Rect _textBounds, _mHeight;
 	protected Paint _backgroundPaint, _textPaint, _dimDark, _dimWhite;
 	protected boolean _shown;
@@ -37,6 +37,7 @@ public class HoverDialog extends GameDrawable
 		this._height = height;
 		this._title = title;
 		this._rectf = new RectF(_left, _top, _left + _width, _top + _height);
+		this._relativeRectF = new RectF(0,0,_width,_height);
 
 		this._backgroundPaint = new Paint();
 		this._backgroundPaint.setAntiAlias(true);
@@ -72,26 +73,30 @@ public class HoverDialog extends GameDrawable
 
 		_header = SUI.UNIT * 10;
 		_headerBottom = _header + SUI.UNIT;
+
+		setupBitmap();
+	}
+
+	public void setupBitmap()
+	{
+		Canvas c = new Canvas(_background);
+
+		c.drawRoundRect(_relativeRectF, _height * 0.01f, _height * 0.01f, SUI.gameLightingPaint);
+
+		c.drawText(_title, SUI.UNIT * 5, SUI.UNIT * 8, _textPaint);
+
+		c.drawRect((int) (_width * 0.1), _mHeight.height() + SUI.UNIT * 10,
+				(int) (_left + _width - _width * 0.1), _mHeight.height() + _header + 1, _dimDark);
+
+		c.drawRect((int) (_width * 0.1), _mHeight.height() + SUI.UNIT * 10 + 1, (int) (_left
+				+ _width - _width * 0.1), _mHeight.height() + _header + 2, _dimWhite);
 	}
 
 	public void onDraw(Canvas c)
 	{
 		if (_shown)
 		{
-			c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, _backgroundPaint);
 			c.drawBitmap(_background, _left, _top, null);
-
-			c.drawRoundRect(_rectf, _height * 0.01f, _height * 0.01f, SUI.gameLightingPaint);
-
-			c.drawText(_title, _rectf.left + SUI.UNIT * 5, _rectf.top + SUI.UNIT * 8, _textPaint);
-
-			c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
-					+ SUI.UNIT * 10, (int) (_left + _width - _width * 0.1),
-					_rectf.top + _mHeight.height() + _header + 1, _dimDark);
-
-			c.drawRect((int) (_rectf.left + _width * 0.1), _rectf.top + _mHeight.height()
-					+ SUI.UNIT * 10 + 1, (int) (_left + _width - _width * 0.1), _rectf.top
-					+ _mHeight.height() + _header + 2, _dimWhite);
 		}
 	}
 
