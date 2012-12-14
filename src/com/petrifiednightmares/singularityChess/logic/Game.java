@@ -477,5 +477,10 @@ public class Game extends GameDrawable
 			gdp.displayMessage(e.getMessage());
 		}
 	}
+	
+	public Canvas getBackgroundCanvas()
+	{
+		return _backgroundCanvas;
+	}
 
 }

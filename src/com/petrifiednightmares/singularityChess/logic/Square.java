@@ -1,6 +1,5 @@
 package com.petrifiednightmares.singularityChess.logic;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -20,8 +19,6 @@ public class Square extends GameDrawable
 	private Square[] _sides;
 	private final char file; // rooks are on file a and h
 	private final int rank; // white on 1 black on 8
-	public static Bitmap squareBitMap;
-	public static Canvas squareCanvas;
 	private Board _board;
 	private boolean _isWhite;
 	private Paint _paint;
@@ -58,7 +55,7 @@ public class Square extends GameDrawable
 		this._board = board;
 	}
 
-	public void setUpBitMap()
+	public void setUpBitMap(Canvas c)
 	{
 
 		// if parity is the same, it's white
@@ -72,7 +69,7 @@ public class Square extends GameDrawable
 
 		setupShape();
 
-		_shape.onDraw(Square.squareCanvas, _paint);
+		_shape.onDraw(c, _paint);
 
 	}
 

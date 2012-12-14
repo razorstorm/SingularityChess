@@ -96,10 +96,13 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	public void onDraw(Canvas canvas)
 	{
 		NEEDS_REDRAW = false;
+
+		//draw game cuz it has the background
+		game.onDraw(canvas);
+		
 		if (!gui.PROMPT_WAITING)
 		{
 			// do drawing stuff here.
-			game.onDraw(canvas);
 			board.onDraw(canvas);
 		}
 
@@ -167,10 +170,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		gameActivity.displayMessage(message);
 	}
 
-	public Context get_context()
-	{
-		return _context;
-	}
 
 	public void redraw()
 	{
