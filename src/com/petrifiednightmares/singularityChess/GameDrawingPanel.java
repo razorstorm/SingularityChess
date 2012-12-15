@@ -167,6 +167,10 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		NEEDS_REDRAW = true;
 	}
 
+	public Object getLayoutResource(int id)
+	{
+		return gameActivity.findViewById(id);
+	}
 }
 
 class PanelThread extends Thread

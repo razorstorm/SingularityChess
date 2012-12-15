@@ -130,6 +130,7 @@ public class GameUI extends GameDrawable
 	{
 		this._ml = ml;
 		((MovesLogDialog) movesDialog).setMoveLogger(_ml);
+		((CapturesDialog) capturesDialog ).setMoveLogger(_ml);
 	}
 
 }

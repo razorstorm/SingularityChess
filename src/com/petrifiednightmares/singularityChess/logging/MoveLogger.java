@@ -61,6 +61,26 @@ public class MoveLogger
 	{
 		return _capturedBlackPieces;
 	}
+	
+	public String generateCapturedWhitePiecesString()
+	{
+		StringBuilder sb = new StringBuilder();
+		for (String a : _capturedWhitePieces)
+		{
+			sb.append(a +" ");
+		}
+		return sb.toString();
+	}
+	
+	public String generateCapturedBlackPiecesString()
+	{
+		StringBuilder sb = new StringBuilder();
+		for (String a : _capturedBlackPieces)
+		{
+			sb.append(a +" ");
+		}
+		return sb.toString();
+	}
 
 	public LinkedList<Action> getMoves()
 	{

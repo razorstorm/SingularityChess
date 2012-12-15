@@ -25,4 +25,18 @@
             android:text="" />
     </ScrollView>
 
+    <TextView
+        android:id="@+id/whiteCapturesTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/blackCapturesTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="" />
+
 </RelativeLayout>
