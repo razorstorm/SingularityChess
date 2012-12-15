@@ -37,8 +37,8 @@ public class MovesLogDialog extends HoverDialog
 		_movesView.bringToFront();
 		_text = (TextView) (_movesView.getChildAt(0));
 
-		int viewHeight = (int) ((_height - _headerBottom) * 0.9);
-		int viewWidth = (int) (_width * 0.9);
+		int viewHeight = (int) ((_height - _headerBottom) * 0.8);
+		int viewWidth = (int) (_width * 0.8);
 		int viewLeft = _left + (_width - viewWidth) / 2;
 		int viewTop = _top + _headerBottom + ((_height - _headerBottom) - viewHeight) / 2;
 
@@ -52,12 +52,6 @@ public class MovesLogDialog extends HoverDialog
 
 		_movesViewRect = new RectF(viewLeft, viewTop, viewLeft + viewWidth, viewTop + viewHeight);
 
-		// _horizontalPaint = SUI.getHorizontalPaint(viewLeft, viewTop, viewLeft
-		// + viewWidth, viewTop
-		// + viewHeight);
-		// _verticalPaint = SUI.getVerticalPaint(viewLeft, viewTop, viewLeft +
-		// viewWidth, viewTop
-		// + viewHeight);
 
 		this._horizontalPaint = new Paint();
 		this._horizontalPaint.setAntiAlias(true);
@@ -91,14 +85,14 @@ public class MovesLogDialog extends HoverDialog
 		super.onDraw(c);
 		if (_shown)
 		{
-			c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
-					(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _horizontalPaint);
-			c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
-					(_movesViewRect.bottom - _movesViewRect.top) * 0.02f, _verticalPaint);
+			c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
+					(_movesViewRect.bottom - _movesViewRect.top) * 0.01f, _horizontalPaint);
+			c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
+					(_movesViewRect.bottom - _movesViewRect.top) * 0.01f, _verticalPaint);
 
-			c.drawRect(_movesViewRect.left + (_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
+			c.drawRect(_movesViewRect.left + (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
 					_movesViewRect.bottom, _movesViewRect.right
-							- (_movesViewRect.bottom - _movesViewRect.top) * 0.02f,
+							- (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
 					_movesViewRect.bottom + 1, _dimWhite);
 		}
 	}

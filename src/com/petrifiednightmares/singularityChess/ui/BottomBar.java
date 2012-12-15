@@ -59,6 +59,9 @@ public class BottomBar extends GameDrawable
 					_gui.PROMPT = _gui.movesDialog;
 					break;
 				case 1:
+					_gui.capturesDialog.display();
+					_gui.PROMPT_WAITING = true;
+					_gui.PROMPT = _gui.capturesDialog;
 					break;
 				case 3:
 					// expand menu

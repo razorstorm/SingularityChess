@@ -18,7 +18,7 @@ public class HoverDialog extends GameDrawable
 {
 	protected int _top, _left, _width, _height, _header, _headerBottom;
 	protected String _title;
-	protected RectF _rectf,_relativeRectF;
+	protected RectF _rectf, _relativeRectF;
 	protected Rect _textBounds, _mHeight;
 	protected Paint _backgroundPaint, _textPaint, _dimDark, _dimWhite;
 	protected boolean _shown;
@@ -37,7 +37,7 @@ public class HoverDialog extends GameDrawable
 		this._height = height;
 		this._title = title;
 		this._rectf = new RectF(_left, _top, _left + _width, _top + _height);
-		this._relativeRectF = new RectF(0,0,_width,_height);
+		this._relativeRectF = new RectF(0, 0, _width, _height);
 
 		this._backgroundPaint = new Paint();
 		this._backgroundPaint.setAntiAlias(true);
@@ -86,10 +86,10 @@ public class HoverDialog extends GameDrawable
 		c.drawText(_title, SUI.UNIT * 5, SUI.UNIT * 8, _textPaint);
 
 		c.drawRect((int) (_width * 0.1), _mHeight.height() + SUI.UNIT * 10,
-				(int) (_left + _width - _width * 0.1), _mHeight.height() + _header + 1, _dimDark);
+				(int) (_width - _width * 0.1), _mHeight.height() + _header + 1, _dimDark);
 
-		c.drawRect((int) (_width * 0.1), _mHeight.height() + SUI.UNIT * 10 + 1, (int) (_left
-				+ _width - _width * 0.1), _mHeight.height() + _header + 2, _dimWhite);
+		c.drawRect((int) (_width * 0.1), _mHeight.height() + SUI.UNIT * 10 + 1,
+				(int) (_width - _width * 0.1), _mHeight.height() + _header + 2, _dimWhite);
 	}
 
 	public void onDraw(Canvas c)

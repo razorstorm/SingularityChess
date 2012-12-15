@@ -8,6 +8,7 @@ import com.petrifiednightmares.singularityChess.logging.MoveLogger;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
+import com.petrifiednightmares.singularityChess.ui.dialog.CapturesDialog;
 import com.petrifiednightmares.singularityChess.ui.dialog.HoverDialog;
 import com.petrifiednightmares.singularityChess.ui.dialog.MovesLogDialog;
 import com.petrifiednightmares.singularityChess.ui.dialog.PromotionDialog;
@@ -38,6 +39,8 @@ public class GameUI extends GameDrawable
 		movesDialog = new MovesLogDialog(gdp, this, movesView, _ml);
 
 		promotionDialog = new PromotionDialog(gdp, _game, this);
+		
+		capturesDialog = new CapturesDialog(gdp,this,_ml);
 
 		PROMPT_WAITING = false;
 
@@ -53,6 +56,7 @@ public class GameUI extends GameDrawable
 		topBar.onDraw(canvas);
 		bottomBar.onDraw(canvas);
 		movesDialog.onDraw(canvas);
+		capturesDialog.onDraw(canvas);
 		promotionDialog.onDraw(canvas);
 	}
 

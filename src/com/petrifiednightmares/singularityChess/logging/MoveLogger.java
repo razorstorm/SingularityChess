@@ -9,6 +9,25 @@ public class MoveLogger
 {
 	private LinkedList<Action> _actions;
 
+	// these are the prisoners
+	private LinkedList<String> _capturedWhitePieces;
+	private LinkedList<String> _capturedBlackPieces;
+
+	public MoveLogger()
+	{
+		this._actions = new LinkedList<Action>();
+		_capturedWhitePieces = new LinkedList<String>();
+		_capturedBlackPieces = new LinkedList<String>();
+	}
+
+	public MoveLogger(LinkedList<Action> actions, LinkedList<String> capturedWhitePieces,
+			LinkedList<String> capturedBlackPieces)
+	{
+		this._actions = actions;
+		this._capturedWhitePieces = capturedWhitePieces;
+		this._capturedBlackPieces = capturedBlackPieces;
+	}
+
 	public String addMove(AbstractPiece actor, Square source, Square destination)
 	{
 		Action a = new Action(actor, source, destination);
@@ -21,17 +40,26 @@ public class MoveLogger
 	{
 		Action a = new Action(actor, source, destination, prisoner);
 		_actions.add(a);
+
+		if (prisoner.isWhite())
+		{
+			_capturedWhitePieces.add(prisoner.getIcon());
+		} else
+		{
+			_capturedBlackPieces.add(prisoner.getIcon());
+		}
+
 		return a.toString();
 	}
 
-	public MoveLogger()
+	public LinkedList<String> getCapturedWhitePieces()
 	{
-		this._actions = new LinkedList<Action>();
+		return _capturedWhitePieces;
 	}
 
-	public MoveLogger(LinkedList<Action> actions)
+	public LinkedList<String> getCapturedBlackPieces()
 	{
-		this._actions = actions;
+		return _capturedBlackPieces;
 	}
 
 	public LinkedList<Action> getMoves()

@@ -19,9 +19,9 @@ public class TopBar extends GameDrawable
 
 	public void setTurnName(String turnName, boolean isWhite)
 	{
-		redraw();
 		this._isWhite = isWhite;
 		this._turnName = turnName + "'s turn";
+		redraw();
 	}
 
 	public void onDraw(Canvas c)
