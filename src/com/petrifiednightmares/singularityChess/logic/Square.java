@@ -180,7 +180,7 @@ public class Square extends GameDrawable
 			flashSquare(c);
 		}
 
-		if (_piece != null)
+		if (_piece != null && _piece.isAlive())
 			_piece.onDraw(c, _shape.getX(), _shape.getY());
 
 		if (_showSquarePref != Preferences.SHOW_SQUARE_LABELS)

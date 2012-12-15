@@ -46,7 +46,9 @@ public class PieceSaveable implements Saveable
 		isWhite = p.isWhite();
 		isAlive = p.isAlive();
 
-		this.location = new SquareSaveable(p.getLocation());
+		if (p.getLocation() != null)
+			this.location = new SquareSaveable(p.getLocation());
+
 		this.pieceType = p.getType();
 	}
 

@@ -94,6 +94,7 @@ public abstract class AbstractPiece
 	public void getCaptured()
 	{
 		this.alive = false;
+		this.location = null;
 	}
 
 	public Game getGame()
