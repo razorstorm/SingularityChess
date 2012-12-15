@@ -16,7 +16,7 @@ public class Bishop extends AbstractPiece
 	public Bishop(Game game, Square location, boolean isWhite)
 	{
 		super(game, location, isWhite, isWhite ? "\u2657" : "\u265D", SingularBitmapFactory
-				.buildScaledBitmap(game.getDrawingPanel().getResources(),
+				.buildSingularScaledBitmap(game.getDrawingPanel().getResources(),
 						isWhite ? R.drawable.bishop : R.drawable.black_bishop, SUI.PIECE_SIZE,
 						SUI.PIECE_SIZE), PieceType.Bishop);
 	}

@@ -27,7 +27,7 @@ public class PieceSaveable implements Saveable
 
 	// for resuming
 	AbstractPiece p;
-	Game _game;
+	Game _game;	
 
 	public AbstractPiece getPiece()
 	{

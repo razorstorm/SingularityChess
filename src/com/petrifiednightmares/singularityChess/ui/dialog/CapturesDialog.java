@@ -128,6 +128,7 @@ public class CapturesDialog extends HoverDialog
 	public synchronized void display()
 	{
 		super.display();
+		
 		_whiteText.setVisibility(View.VISIBLE);
 		_blackText.setVisibility(View.VISIBLE);
 		_whiteText.setText(_ml.generateCapturedWhitePiecesString());

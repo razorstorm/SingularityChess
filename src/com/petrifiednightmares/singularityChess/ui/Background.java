@@ -1,5 +1,6 @@
 package com.petrifiednightmares.singularityChess.ui;
 
+import java.io.File;
 import java.io.OutputStream;
 
 import android.graphics.Bitmap;
@@ -25,29 +26,28 @@ public class Background extends GameDrawable
 
 	private void setupBackgroundAndBorder()
 	{
-		// File file = new File(GameIO.getCacheBgFileName());
-		// if (file.exists())
-		// {
-		// System.out.println("file exists lel");
-		// _background =
-		// SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
-		// GameIO.getCacheBgFileName(), SUI.WIDTH, SUI.HEIGHT);
-		// SUI.CACHED_BACKGROUND = true;
-		// } else
-		// {
-		SUI.CACHED_BACKGROUND = false;
-		_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
-				R.drawable.background, SUI.WIDTH, SUI.HEIGHT);
-		_backgroundCanvas = new Canvas(_background);
+		File file = new File(GameIO.getCacheBgFileName());
+		if (file.exists())
+		{
+			System.out.println("file exists lel");
+			_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
+					GameIO.getCacheBgFileName(), SUI.WIDTH, SUI.HEIGHT);
+			SUI.CACHED_BACKGROUND = true;
+		} else
+		{
+			SUI.CACHED_BACKGROUND = false;
+			_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
+					R.drawable.background, SUI.WIDTH, SUI.HEIGHT);
+			_backgroundCanvas = new Canvas(_background);
 
-		setupBorderShadow();
+			setupBorderShadow();
 
-		_backgroundCanvas.save();
-		_backgroundCanvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
-		_backgroundCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6
-				* SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH, SUI.borderPaint);
-		_backgroundCanvas.restore();
-		// }
+			_backgroundCanvas.save();
+			_backgroundCanvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
+			_backgroundCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6
+					* SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH, SUI.borderPaint);
+			_backgroundCanvas.restore();
+		}
 	}
 
 	private void setupBorderShadow()
@@ -114,16 +114,29 @@ public class Background extends GameDrawable
 
 	public void cacheBitmap()
 	{
-		try
+		Thread cacheThread = new Thread(new Runnable()
 		{
-			GameIO.intentionCacheBg();
-			OutputStream out = GameIO.getOutputStream(GameIO.StorageOption.IMAGE_CACHE);
-			_background.compress(Bitmap.CompressFormat.PNG, 100, out);
-			out.close();
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+
+			public void run()
+			{
+				long time = System.currentTimeMillis();
+				try
+				{
+					GameIO.intentionCacheBg();
+					OutputStream out = GameIO.getOutputStream(GameIO.StorageOption.IMAGE_CACHE);
+					_background.compress(Bitmap.CompressFormat.PNG, 100, out);
+					out.close();
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+				System.out.println("cacheBitmap took: " + (System.currentTimeMillis() - time));
+
+			}
+
+		});
+		cacheThread.start();
+
 	}
 
 }

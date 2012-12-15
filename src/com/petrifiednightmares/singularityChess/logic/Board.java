@@ -115,36 +115,36 @@ public class Board extends GameDrawable
 	private void setupSquaresBitmap()
 	{
 		// otherwise it is already there, no need to redraw it
+
+		Canvas backgroundCanvas = _bg.getBackgroundCanvas();
+
+		// Have to draw from outwards in
+		for (char file = 'a'; file <= 'd'; file++)
+		{
+			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
+			{
+				getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
+			}
+			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
+			{
+				getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
+			}
+		}
+
+		for (char file = 'h'; file >= 'e'; file--)
+		{
+			for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
+			{
+				getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
+			}
+			for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
+			{
+				getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
+			}
+		}
+		
 		if (!SUI.CACHED_BACKGROUND)
 		{
-
-			Canvas backgroundCanvas = _bg.getBackgroundCanvas();
-
-			// Have to draw from outwards in
-			for (char file = 'a'; file <= 'd'; file++)
-			{
-				for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
-				{
-					getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
-				}
-				for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
-				{
-					getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
-				}
-			}
-
-			for (char file = 'h'; file >= 'e'; file--)
-			{
-				for (int rank = 1; rank <= boardRanks[file - 'a'] / 2; rank++)
-				{
-					getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
-				}
-				for (int rank = boardRanks[file - 'a']; rank >= boardRanks[file - 'a'] / 2 + 1; rank--)
-				{
-					getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
-				}
-			}
-
 			backgroundCanvas.save();
 			backgroundCanvas.clipRect(SUI.WIDTH / 2 - 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, 0,
 					SUI.WIDTH / 2 + 4 * SUI.CIRCLE_RADIUS_DIFFERENCE, SUI.HEIGHT);
@@ -158,7 +158,7 @@ public class Board extends GameDrawable
 
 	public void cacheBackground()
 	{
-//		_bg.cacheBitmap();
+		 _bg.cacheBitmap();
 	}
 
 	public Set<Square> getSideMovements(AbstractPiece piece, boolean limit) throws GameException

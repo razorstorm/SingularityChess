@@ -16,7 +16,7 @@ public class Queen extends AbstractPiece
 	public Queen(Game game, Square location, boolean isWhite)
 	{
 		super(game, location, isWhite, isWhite ? "\u2655" : "\u265B", SingularBitmapFactory
-				.buildScaledBitmap(game.getDrawingPanel().getResources(),
+				.buildSingularScaledBitmap(game.getDrawingPanel().getResources(),
 						isWhite ? R.drawable.queen : R.drawable.black_queen, SUI.PIECE_SIZE,
 						SUI.PIECE_SIZE), PieceType.Queen);
 	}

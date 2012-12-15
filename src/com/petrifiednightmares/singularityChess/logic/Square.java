@@ -69,8 +69,8 @@ public class Square extends GameDrawable
 
 		setupShape();
 
-		_shape.onDraw(c, _paint);
-
+		if (!SUI.CACHED_BACKGROUND)
+			_shape.onDraw(c, _paint);
 	}
 
 	public void setSides(Square[] sides)

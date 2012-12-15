@@ -28,6 +28,8 @@ public class SUI
 			gameLightingPaint;
 	public static Paint whitePaint;
 	private static Bitmap _darkTexture, _lightTexture, _topBarTexture, _borderTexture;
+	
+	
 
 	public static MediaPlayer pieceSound;
 	

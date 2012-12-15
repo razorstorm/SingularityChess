@@ -19,7 +19,7 @@ public class Pawn extends AbstractPiece
 	public Pawn(Game game, Square location, boolean isWhite)
 	{
 		super(game, location, isWhite, isWhite ? "\u2659" : "\u265F", SingularBitmapFactory
-				.buildScaledBitmap(game.getDrawingPanel().getResources(), isWhite ? R.drawable.pawn
+				.buildSingularScaledBitmap(game.getDrawingPanel().getResources(), isWhite ? R.drawable.pawn
 						: R.drawable.black_pawn, SUI.PIECE_SIZE, SUI.PIECE_SIZE), PieceType.Pawn);
 	}
 
