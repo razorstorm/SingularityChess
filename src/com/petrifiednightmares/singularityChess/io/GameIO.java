@@ -37,7 +37,7 @@ public class GameIO
 
 	public static void intentionCacheBg()
 	{
-		_fileName = "bg_bitmap";
+		_fileName = "bg_bitmap.png";
 	}
 	
 	public static String getCacheBgFileName()

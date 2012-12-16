@@ -27,7 +27,6 @@ public class SUI
 			turnNameBlackPaint, borderPaint, borderShadowPaint, boardLightingPaint,
 			gameLightingPaint;
 	public static Paint whitePaint;
-	private static Bitmap _darkTexture, _lightTexture, _topBarTexture, _borderTexture;
 	
 	
 
@@ -181,7 +180,7 @@ public class SUI
 
 	private static void setupTexturedPaints(Resources r)
 	{
-		_darkTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.wood_pattern);
+		Bitmap _darkTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.wood_pattern);
 		BitmapShader darkShader = new BitmapShader(_darkTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 
@@ -190,11 +189,11 @@ public class SUI
 		darkPaint.setAntiAlias(true);
 		darkPaint.setFilterBitmap(true);
 
-		_lightTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.retina_wood_1);
+		Bitmap _lightTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.retina_wood_1);
 		BitmapShader lightShader = new BitmapShader(_lightTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 
-		_topBarTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.wild_oliva);
+		Bitmap _topBarTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.wild_oliva);
 		BitmapShader topBarShader = new BitmapShader(_topBarTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 
@@ -208,7 +207,7 @@ public class SUI
 		lightPaint.setAntiAlias(true);
 		lightPaint.setFilterBitmap(true);
 
-		_borderTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.leather);
+		Bitmap _borderTexture = SingularBitmapFactory.buildBitmap(r, R.drawable.leather);
 		BitmapShader borderShader = new BitmapShader(_borderTexture, Shader.TileMode.REPEAT,
 				Shader.TileMode.REPEAT);
 		borderPaint = new Paint();

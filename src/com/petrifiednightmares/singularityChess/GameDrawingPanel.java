@@ -43,6 +43,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	{
 		super(context, aSet);
 
+		
 		NEEDS_REDRAW = true;
 		this._context = context;
 		getHolder().addCallback(this);
@@ -51,12 +52,16 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 				.getDefaultDisplay();
 
 		SUI.setup(disp.getWidth(), disp.getHeight(), getResources(), getContext());
-
+		
 		this.setOnTouchListener(this);
 
 		GameIO.setContext(_context);
+		
+		
 
 		bg = new Background(this);
+		
+		
 	}
 
 	public void initialize(GameActivity g, ScrollView movesView)
@@ -238,7 +243,6 @@ class PanelThread extends Thread
 			} else
 			{
 				// we're behind, fuck it.
-				// System.out.println("behind!");
 				nextGameTick = System.currentTimeMillis();
 			}
 		}

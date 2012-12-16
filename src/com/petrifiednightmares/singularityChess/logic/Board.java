@@ -142,7 +142,7 @@ public class Board extends GameDrawable
 				getSquares().get(file + "" + rank).setUpBitMap(backgroundCanvas);
 			}
 		}
-		
+
 		if (!SUI.CACHED_BACKGROUND)
 		{
 			backgroundCanvas.save();
@@ -158,7 +158,7 @@ public class Board extends GameDrawable
 
 	public void cacheBackground()
 	{
-		 _bg.cacheBitmap();
+		_bg.cacheBitmap();
 	}
 
 	public Set<Square> getSideMovements(AbstractPiece piece, boolean limit) throws GameException
@@ -392,13 +392,17 @@ public class Board extends GameDrawable
 		Square[] corners;
 		if (next != null)
 		{
-			corners = next.getSides();
+			corners = next.getAdjacentSides(startSquare);
 
 			for (int i = 0; i < 2; i++)
 			{
 				next = corners[i];
 
-				if (next != null && next.getFile() != startSquare.getFile() && next.hasPiece())
+				//to prevent some stupid thing where the pawn can capture enemy pawn immediately. so bood
+				if (isInitialPawnCapture(next, startSquare))
+					continue;
+				
+				if (next != null && next.hasPiece())
 				{
 					AbstractPiece obstructingPiece = next.getPiece();
 					// if the square is capturable
@@ -410,6 +414,17 @@ public class Board extends GameDrawable
 			}
 		}
 		return moves;
+	}
+
+	private boolean isInitialPawnCapture(Square next, Square startSquare)
+	{
+		if ((next.getRank() == 2 && startSquare.getRank() == 4) || (next.getRank() == 4 && startSquare.getRank() == 2))
+		{
+			if ((next.getFile() == 'a' && startSquare.getFile() == 'a')
+					|| (next.getFile() == 'h' && startSquare.getFile() == 'h'))
+				return true;
+		}
+		return false;
 	}
 
 	public Set<Square> getKnightMoves(AbstractPiece piece) throws GameException

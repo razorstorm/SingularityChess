@@ -29,7 +29,6 @@ public class Background extends GameDrawable
 		File file = new File(GameIO.getCacheBgFileName());
 		if (file.exists())
 		{
-			System.out.println("file exists lel");
 			_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
 					GameIO.getCacheBgFileName(), SUI.WIDTH, SUI.HEIGHT);
 			SUI.CACHED_BACKGROUND = true;
