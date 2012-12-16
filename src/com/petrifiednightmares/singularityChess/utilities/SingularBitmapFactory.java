@@ -59,7 +59,7 @@ public class SingularBitmapFactory
 				image = scaleImage(image, newWidth, newHeight);
 				b = new WeakReference<Bitmap>(image);
 				cache.put(id, b);
-				
+
 				return image;
 			}
 		}
@@ -92,7 +92,10 @@ public class SingularBitmapFactory
 	{
 		Bitmap image = BitmapFactory.decodeFile(f);
 
-		return scaleImage(image, newWidth, newHeight);
+		if (image != null)
+			return scaleImage(image, newWidth, newHeight);
+		else
+			return null;
 	}
 
 }

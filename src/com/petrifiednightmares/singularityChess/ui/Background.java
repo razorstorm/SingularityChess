@@ -32,7 +32,8 @@ public class Background extends GameDrawable
 			_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
 					GameIO.getCacheBgFileName(), SUI.WIDTH, SUI.HEIGHT);
 			SUI.CACHED_BACKGROUND = true;
-		} else
+		}
+		else if (!file.exists() || _background == null)
 		{
 			SUI.CACHED_BACKGROUND = false;
 			_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
@@ -125,7 +126,8 @@ public class Background extends GameDrawable
 					OutputStream out = GameIO.getOutputStream(GameIO.StorageOption.IMAGE_CACHE);
 					_background.compress(Bitmap.CompressFormat.PNG, 100, out);
 					out.close();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
