@@ -1,9 +1,15 @@
 package com.petrifiednightmares.singularityChess.ui.dialog;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -41,16 +47,26 @@ public class TextViewOutline extends TextView
 	{
 		int lineHeight = 0;
 		int yoffset = 0;
-		String[] lines = str.split("\n");
+		LinkedList<String> lines = new LinkedList<String>(Arrays.asList(str.split("\n")));
 
 		Rect mBounds = new Rect();
 		// set height of each line (height of text + 20%)
-		paint.getTextBounds("Ig", 0, 2, mBounds);
+		paint.getTextBounds(str, 0, 2, mBounds);
 		lineHeight = (int) ((float) mBounds.height() * 1.2);
+
+
 		// draw each line
-		for (int i = 0; i < lines.length; ++i)
+		for (int i = 0; i < lines.size(); ++i)
 		{
-			canvas.drawText(lines[i], x, y + yoffset, paint);
+			// canvas.drawText(lines.get(i), x, y + yoffset, paint);
+			StaticLayout layout = new StaticLayout(lines.get(i), new TextPaint(paint), getWidth(),
+					Layout.Alignment.ALIGN_NORMAL, 1f, 0f, false);
+
+			canvas.save();
+			canvas.translate(x, y + yoffset); // position the text
+			layout.draw(canvas);
+			canvas.restore();
+
 			yoffset = yoffset + lineHeight;
 		}
 	}
@@ -63,12 +79,14 @@ public class TextViewOutline extends TextView
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
+		long time = System.currentTimeMillis();
 		
-		drawMultilineText(getText().toString(), getPaddingLeft(),
-				getPaddingTop() - mTextPaintOutline.ascent(), mTextPaintOutline,canvas);
-		
-		drawMultilineText(getText().toString(), getPaddingLeft(),
-				getPaddingTop() - mTextPaintOutline.ascent(), mTextPaint,canvas);
-		
+		drawMultilineText(getText().toString(), getPaddingLeft(), getPaddingTop(),
+				mTextPaintOutline, canvas);
+
+		drawMultilineText(getText().toString(), getPaddingLeft(), getPaddingTop(), mTextPaint,
+				canvas);
+
+		System.out.println(System.currentTimeMillis() - time);
 	}
 }
