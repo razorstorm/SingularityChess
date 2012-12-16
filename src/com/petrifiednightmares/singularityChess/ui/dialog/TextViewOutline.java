@@ -63,10 +63,6 @@ public class TextViewOutline extends TextView
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		System.out.println(mTextPaint.getTextSize());
-		System.out.println(mTextPaint.ascent());
-		System.out.println(getPaddingTop());
-		// super.onDraw(canvas);
 		
 		drawMultilineText(getText().toString(), getPaddingLeft(),
 				getPaddingTop() - mTextPaintOutline.ascent(), mTextPaintOutline,canvas);
@@ -74,9 +70,5 @@ public class TextViewOutline extends TextView
 		drawMultilineText(getText().toString(), getPaddingLeft(),
 				getPaddingTop() - mTextPaintOutline.ascent(), mTextPaint,canvas);
 		
-//		canvas.drawText(getText().toString(), getPaddingLeft(),
-//				getPaddingTop() - mTextPaintOutline.ascent(), mTextPaintOutline);
-//		canvas.drawText(getText().toString(), getPaddingLeft(),
-//				getPaddingTop() - mTextPaint.ascent(), mTextPaint);
 	}
 }

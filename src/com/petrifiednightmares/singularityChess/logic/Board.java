@@ -399,10 +399,8 @@ public class Board extends GameDrawable
 				next = corners[i];
 
 				//to prevent some stupid thing where the pawn can capture enemy pawn immediately. so bood
-				if (isInitialPawnCapture(next, startSquare))
-					continue;
 				
-				if (next != null && next.hasPiece())
+				if (next != null && !isInitialPawnCapture(next, startSquare) &&  next.hasPiece())
 				{
 					AbstractPiece obstructingPiece = next.getPiece();
 					// if the square is capturable
@@ -422,8 +420,11 @@ public class Board extends GameDrawable
 		{
 			if ((next.getFile() == 'a' && startSquare.getFile() == 'a')
 					|| (next.getFile() == 'h' && startSquare.getFile() == 'h'))
+			{
 				return true;
+			}
 		}
+		
 		return false;
 	}
 
