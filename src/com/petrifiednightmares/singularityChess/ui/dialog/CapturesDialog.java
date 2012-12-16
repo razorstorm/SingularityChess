@@ -86,8 +86,11 @@ public class CapturesDialog extends HoverDialog
 
 	private void setupTextViews()
 	{
-		_whiteText = (TextView) gdp.getLayoutResource(R.id.whiteCapturesTextView);
-		_blackText = (TextView) gdp.getLayoutResource(R.id.blackCapturesTextView);
+		_whiteText = (TextViewOutline) gdp.getLayoutResource(R.id.whiteCapturesTextView);
+		_blackText = (TextViewOutline) gdp.getLayoutResource(R.id.blackCapturesTextView);
+		
+		((TextViewOutline)_whiteText).initTextViewOutline(Color.BLACK, Color.WHITE, 40, 2);
+		((TextViewOutline)_blackText).initTextViewOutline(Color.BLACK, Color.WHITE, 40, 2);
 
 		_whiteText.getLayoutParams().height = _tileHeight;
 		_whiteText.getLayoutParams().width = _tileWidth;
@@ -106,10 +109,6 @@ public class CapturesDialog extends HoverDialog
 		_whiteText.setPadding(10, 10, 10, 10);
 		_blackText.setPadding(10, 10, 10, 10);
 		
-		_whiteText.setTextColor(Color.WHITE);
-		_whiteText.setTextSize(25);
-		_blackText.setTextColor(Color.WHITE);
-		_blackText.setTextSize(25);
 
 	}
 

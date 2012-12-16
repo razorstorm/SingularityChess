@@ -18,21 +18,21 @@
         android:layout_height="fill_parent"
         android:visibility="invisible" >
 
-        <TextView
+        <com.petrifiednightmares.singularityChess.ui.dialog.TextViewOutline
             android:id="@+id/movesTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="" />
     </ScrollView>
 
-    <TextView
+    <com.petrifiednightmares.singularityChess.ui.dialog.TextViewOutline
         android:id="@+id/whiteCapturesTextView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"
         android:text="" />
 
-    <TextView
+    <com.petrifiednightmares.singularityChess.ui.dialog.TextViewOutline
         android:id="@+id/blackCapturesTextView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -70,8 +70,7 @@ public class MovesLogDialog extends HoverDialog
 				Shader.TileMode.MIRROR));
 		this._verticalPaint.setAlpha(100);
 
-		_text.setTextSize(15);
-		_text.setTextColor(Color.WHITE);
+		((TextViewOutline)_text).initTextViewOutline(Color.BLACK, Color.WHITE, 25, 1);
 
 		_dimWhite = new Paint();
 		_dimWhite.setAntiAlias(true);
