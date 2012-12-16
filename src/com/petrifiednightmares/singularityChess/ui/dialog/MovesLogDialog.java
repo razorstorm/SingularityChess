@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.logging.MoveLogger;
@@ -21,7 +20,7 @@ public class MovesLogDialog extends HoverDialog
 {
 	ScrollView _movesView;
 	MoveLogger _ml;
-	TextView _text;
+	TextViewOutline _text;
 	RectF _movesViewRect;
 
 	Paint _horizontalPaint, _verticalPaint, _dimWhite;
@@ -35,7 +34,7 @@ public class MovesLogDialog extends HoverDialog
 
 		this._movesView = movesView;
 		_movesView.bringToFront();
-		_text = (TextView) (_movesView.getChildAt(0));
+		_text = (TextViewOutline) (_movesView.getChildAt(0));
 
 		int viewHeight = (int) ((_height - _headerBottom) * 0.8);
 		int viewWidth = (int) (_width * 0.8);
@@ -51,7 +50,6 @@ public class MovesLogDialog extends HoverDialog
 		((FrameLayout.LayoutParams) _text.getLayoutParams()).leftMargin = (int) (viewWidth * 0.08);
 
 		_movesViewRect = new RectF(viewLeft, viewTop, viewLeft + viewWidth, viewTop + viewHeight);
-
 
 		this._horizontalPaint = new Paint();
 		this._horizontalPaint.setAntiAlias(true);
@@ -70,7 +68,9 @@ public class MovesLogDialog extends HoverDialog
 				Shader.TileMode.MIRROR));
 		this._verticalPaint.setAlpha(100);
 
-		((TextViewOutline)_text).initTextViewOutline(Color.BLACK, Color.WHITE, 30, 1);
+		_text.initTextViewOutline(Color.BLACK, Color.WHITE, 30, 1, false);
+		_text.setBold(true);
+		_text.setInterleave(true, Color.WHITE);
 
 		_dimWhite = new Paint();
 		_dimWhite.setAntiAlias(true);

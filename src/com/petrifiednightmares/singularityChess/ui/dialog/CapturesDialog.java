@@ -47,8 +47,8 @@ public class CapturesDialog extends HoverDialog
 		_tileTop = _headerBottom + tileMargin;
 
 		_whiteBox = new RectF(_tileLeft, _tileTop, _tileLeft + _tileWidth, _tileTop + _tileHeight);
-		_blackBox = new RectF(_tileLeft, _tileTop + _tileHeight + _gap, _tileLeft + _tileWidth, _tileTop
-				+ _tileHeight + _gap + _tileHeight);
+		_blackBox = new RectF(_tileLeft, _tileTop + _tileHeight + _gap, _tileLeft + _tileWidth,
+				_tileTop + _tileHeight + _gap + _tileHeight);
 
 		this._horizontalPaint = new Paint();
 		this._horizontalPaint.setAntiAlias(true);
@@ -60,11 +60,11 @@ public class CapturesDialog extends HoverDialog
 
 		this._verticalWhitePaint = new Paint();
 		this._verticalWhitePaint.setAntiAlias(true);
-		this._verticalWhitePaint.setShader(new LinearGradient(_tileLeft + _tileWidth / 2f, _tileTop,
-				_tileLeft + _tileWidth / 2f, _tileTop + _tileHeight, new int[] { Color.rgb(30, 21, 9),
-						Color.rgb(62, 43, 18), Color.rgb(62, 43, 18), Color.rgb(30, 21, 9),
-						Color.WHITE }, new float[] { 0f, 0.1f, 0.9f, 1f - 1f / _tileHeight, 1f },
-				Shader.TileMode.MIRROR));
+		this._verticalWhitePaint.setShader(new LinearGradient(_tileLeft + _tileWidth / 2f,
+				_tileTop, _tileLeft + _tileWidth / 2f, _tileTop + _tileHeight, new int[] {
+						Color.rgb(30, 21, 9), Color.rgb(62, 43, 18), Color.rgb(62, 43, 18),
+						Color.rgb(30, 21, 9), Color.WHITE }, new float[] { 0f, 0.1f, 0.9f,
+						1f - 1f / _tileHeight, 1f }, Shader.TileMode.MIRROR));
 		this._verticalWhitePaint.setAlpha(100);
 
 		this._verticalBlackPaint = new Paint();
@@ -76,8 +76,6 @@ public class CapturesDialog extends HoverDialog
 				0.9f, 1f - 1f / _tileHeight, 1f }, Shader.TileMode.MIRROR));
 		this._verticalBlackPaint.setAlpha(100);
 
-	
-
 		augmentBitmap();
 
 		setupTextViews();
@@ -88,9 +86,9 @@ public class CapturesDialog extends HoverDialog
 	{
 		_whiteText = (TextViewOutline) gdp.getLayoutResource(R.id.whiteCapturesTextView);
 		_blackText = (TextViewOutline) gdp.getLayoutResource(R.id.blackCapturesTextView);
-		
-		((TextViewOutline)_whiteText).initTextViewOutline(Color.BLACK, Color.WHITE, 40, 2);
-		((TextViewOutline)_blackText).initTextViewOutline(Color.BLACK, Color.WHITE, 40, 2);
+
+		((TextViewOutline) _whiteText).initTextViewOutline(Color.BLACK, Color.WHITE, 40, 2, true);
+		((TextViewOutline) _blackText).initTextViewOutline(Color.BLACK, Color.WHITE, 40, 2, true);
 
 		_whiteText.getLayoutParams().height = _tileHeight;
 		_whiteText.getLayoutParams().width = _tileWidth;
@@ -108,7 +106,6 @@ public class CapturesDialog extends HoverDialog
 
 		_whiteText.setPadding(10, 10, 10, 10);
 		_blackText.setPadding(10, 10, 10, 10);
-		
 
 	}
 
@@ -127,7 +124,7 @@ public class CapturesDialog extends HoverDialog
 	public synchronized void display()
 	{
 		super.display();
-		
+
 		_whiteText.setVisibility(View.VISIBLE);
 		_blackText.setVisibility(View.VISIBLE);
 		_whiteText.setText(_ml.generateCapturedWhitePiecesString());
