@@ -156,9 +156,6 @@ public class Square extends GameDrawable
 
 	public void onDraw(Canvas c)
 	{
-
-
-
 		if (_highlighted)
 		{
 			_paint = _board.getGame().isTurn() ? SUI.highlightPaint : SUI.highlightPaint2;

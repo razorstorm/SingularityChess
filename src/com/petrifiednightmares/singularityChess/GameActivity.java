@@ -20,6 +20,8 @@ import com.petrifiednightmares.singularityChess.ui.Preferences;
 public class GameActivity extends Activity implements OnClickListener
 {
 
+	GameDrawingPanel gdp;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -30,12 +32,11 @@ public class GameActivity extends Activity implements OnClickListener
 
 		setContentView(R.layout.activity_game);
 
-		GameDrawingPanel gdp = (GameDrawingPanel) findViewById(R.id.canvas);
+		gdp = (GameDrawingPanel) findViewById(R.id.canvas);
 
 		ScrollView movesView = (ScrollView) findViewById(R.id.movesView);
 
-		
-		//Decide whether to start new game or resume
+		// Decide whether to start new game or resume
 		boolean resume = false;
 		Intent i = getIntent();
 		if (i.hasExtra("resume"))
@@ -70,10 +71,14 @@ public class GameActivity extends Activity implements OnClickListener
 			{
 				item.setChecked(false);
 				Preferences.SHOW_SQUARE_LABELS = false;
+				if (gdp != null)
+					gdp.redraw();
 			} else
 			{
 				item.setChecked(true);
 				Preferences.SHOW_SQUARE_LABELS = true;
+				if (gdp != null)
+					gdp.redraw();
 			}
 			return true;
 		case R.id.pref_mute:
