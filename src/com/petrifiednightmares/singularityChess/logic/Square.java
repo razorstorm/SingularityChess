@@ -157,10 +157,7 @@ public class Square extends GameDrawable
 	public void onDraw(Canvas c)
 	{
 
-		if (Preferences.SHOW_SQUARE_LABELS)
-		{
-			labelSquare(c);
-		}
+
 
 		if (_highlighted)
 		{
@@ -178,6 +175,11 @@ public class Square extends GameDrawable
 		if (_selected)
 		{
 			flashSquare(c);
+		}
+		
+		if (Preferences.SHOW_SQUARE_LABELS)
+		{
+			labelSquare(c);
 		}
 
 		if (_piece != null && _piece.isAlive())
