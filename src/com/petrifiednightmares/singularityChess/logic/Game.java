@@ -67,23 +67,33 @@ public class Game extends GameDrawable
 
 	public void resume(Board board, GameUI gui) throws IOException
 	{
-		this._gui = gui;
-		this._board = board;
+		try
+		{
 
-		GameSaveable gs = new GameSaveable(this);
+			this._gui = gui;
+			this._board = board;
 
-		GameIO.intentionSaveGame();
-		InputStream in = GameIO.getInputStream();
+			GameSaveable gs = new GameSaveable(this);
 
-		gs.deserialize(in);
-		in.close();
+			GameIO.intentionSaveGame();
+			InputStream in = GameIO.getInputStream();
 
-		whitePieces = gs.getWhitePieces();
-		blackPieces = gs.getBlackPieces();
+			gs.deserialize(in);
+			in.close();
 
-		isWhiteTurn = gs.isWhiteTurn();
-		this._gui.setMoveLogger(gs.getMoveLogger());
-		this._gui.setTurnName(isWhiteTurn() ? whiteName : blackName, isWhiteTurn());
+			whitePieces = gs.getWhitePieces();
+			blackPieces = gs.getBlackPieces();
+
+			isWhiteTurn = gs.isWhiteTurn();
+			this._gui.setMoveLogger(gs.getMoveLogger());
+			this._gui.setTurnName(isWhiteTurn() ? whiteName : blackName, isWhiteTurn());
+		}
+		catch (Exception e)
+		{
+			// for some reason resume didnt work, initializing instead
+			initialize(board, gui);
+			gdp.displayMessage("Resume failed, starting new game");
+		}
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
@@ -359,7 +369,8 @@ public class Game extends GameDrawable
 	{
 		// TODO, derek fill out this method, make it call either winGame() or
 		// loseGame() if necessary.
-		return false; //return whether the game is over or not. True if game is over
+		return false; // return whether the game is over or not. True if game is
+						// over
 	}
 
 	public void winGame()
