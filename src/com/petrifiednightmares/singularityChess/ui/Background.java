@@ -123,7 +123,7 @@ public class Background extends GameDrawable
 				try
 				{
 					GameIO.intentionCacheBg();
-					OutputStream out = GameIO.getOutputStream(GameIO.StorageOption.IMAGE_CACHE);
+					OutputStream out = GameIO.getOutputStream();
 					_background.compress(Bitmap.CompressFormat.PNG, 100, out);
 					out.close();
 				}

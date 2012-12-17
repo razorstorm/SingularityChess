@@ -25,6 +25,8 @@ public class GameIO
 
 	private static Context _context;
 
+	private static StorageOption _storageOption;
+
 	public static void setContext(Context context)
 	{
 		_context = context;
@@ -33,30 +35,48 @@ public class GameIO
 	public static void intentionSaveGame()
 	{
 		_fileName = "game_state";
+		_storageOption = StorageOption.FILE;
 	}
 
 	public static void intentionCacheBg()
 	{
 		_fileName = "bg_bitmap.png";
+		_storageOption = StorageOption.IMAGE_CACHE;
 	}
-	
+
+	public static boolean removeFile()
+	{
+		File toBeDeleted;
+		switch (_storageOption)
+		{
+		case FILE:
+			toBeDeleted = new File(_context.getExternalFilesDir(null), _fileName);
+			return toBeDeleted.delete();
+		case IMAGE_CACHE:
+			toBeDeleted = new File(_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+					_fileName);
+			return toBeDeleted.delete();
+		default:
+			return false;
+		}
+	}
+
 	public static String getCacheBgFileName()
 	{
-		return _context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() +"/"+ _fileName;
+		return _context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/"
+				+ _fileName;
 	}
 
 	// for saving
-	public static OutputStream getOutputStream(StorageOption storageOption)
-			throws FileNotFoundException
+	public static OutputStream getOutputStream() throws FileNotFoundException
 	{
 		FileOutputStream fos;
-		switch (storageOption)
+		switch (_storageOption)
 		{
 		case STDOUT:
 			return new BufferedOutputStream(System.out);
 		case FILE:
-			 fos = new FileOutputStream(new File(
-					_context.getExternalFilesDir(null), _fileName));
+			fos = new FileOutputStream(new File(_context.getExternalFilesDir(null), _fileName));
 			// FileOutputStream fos = _context.openFileOutput(_fileName,
 			// Context.MODE_PRIVATE);
 			return new BufferedOutputStream(fos);
@@ -72,10 +92,9 @@ public class GameIO
 	}
 
 	// for reading
-	public static InputStream getInputStream(StorageOption storageOption)
-			throws FileNotFoundException
+	public static InputStream getInputStream() throws FileNotFoundException
 	{
-		switch (storageOption)
+		switch (_storageOption)
 		{
 		case STDOUT:
 			return null;

@@ -41,7 +41,6 @@ public class Game extends GameDrawable
 
 	private String whiteName, blackName;
 
-
 	public Game(GameDrawingPanel drawingPanel)
 	{
 		super(drawingPanel);
@@ -51,7 +50,7 @@ public class Game extends GameDrawable
 
 		whiteName = "White";
 		blackName = "Black";
-		
+
 	}
 
 	public void initialize(Board board, GameUI gui)
@@ -74,7 +73,7 @@ public class Game extends GameDrawable
 		GameSaveable gs = new GameSaveable(this);
 
 		GameIO.intentionSaveGame();
-		InputStream in = GameIO.getInputStream(GameIO.StorageOption.FILE);
+		InputStream in = GameIO.getInputStream();
 
 		gs.deserialize(in);
 		in.close();
@@ -86,8 +85,6 @@ public class Game extends GameDrawable
 		this._gui.setMoveLogger(gs.getMoveLogger());
 		this._gui.setTurnName(isWhiteTurn() ? whiteName : blackName, isWhiteTurn());
 	}
-
-	
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
 	{
@@ -125,7 +122,8 @@ public class Game extends GameDrawable
 			p.select();
 			// remember the selected piece's moves
 			return selectedPieceMoves = selectedPiece.getMoves();
-		} else
+		}
+		else
 		{
 			// otherwise unselect all pieces.
 			if (selectedPiece != null)
@@ -175,7 +173,8 @@ public class Game extends GameDrawable
 			if (capturedPiece == null)
 			{
 				_gui.recordMove(selectedPiece, sourceLocation, target);
-			} else
+			}
+			else
 			{
 				_gui.recordMove(selectedPiece, sourceLocation, target, capturedPiece);
 			}
@@ -184,7 +183,8 @@ public class Game extends GameDrawable
 			{
 				finishMove();
 			}
-		} else
+		}
+		else
 		{
 			throw new InvalidMoveException(
 					"Invalid Move: Either piece not selected or illegal move");
@@ -194,13 +194,17 @@ public class Game extends GameDrawable
 
 	private void finishMove()
 	{
-		if (!_gui.PROMPT_WAITING)
+		// have to check again.
+		if (checkPostMoveConditions())
 		{
-			playPieceSounds();
-			switchTurns();
-			unselect();
+			if (!_gui.PROMPT_WAITING)
+			{
+				playPieceSounds();
+				switchTurns();
+				unselect();
 
-			saveGame();
+				saveGame();
+			}
 		}
 	}
 
@@ -262,8 +266,7 @@ public class Game extends GameDrawable
 				return false;
 			}
 		}
-
-		return true;
+		return !checkWinCondition();
 	}
 
 	private void promptPromotion(AbstractPiece piece)
@@ -280,7 +283,8 @@ public class Game extends GameDrawable
 			int index = findPiece(selectedPiece);
 			if (index != -1)
 				whitePieces[index] = newPiece;
-		} else
+		}
+		else
 		{
 			int index = findPiece(selectedPiece);
 			if (index != -1)
@@ -299,7 +303,8 @@ public class Game extends GameDrawable
 					return i;
 				}
 			}
-		} else
+		}
+		else
 		{
 			for (int i = 0; i < blackPieces.length; i++)
 			{
@@ -319,7 +324,8 @@ public class Game extends GameDrawable
 			AbstractPiece newPiece = ((Pawn) (selectedPiece)).promote(pieceType);
 			replacePiece(selectedPiece, newPiece);
 			finishMove();
-		} else
+		}
+		else
 		{
 			gdp.displayMessage(selectedPiece + " at location: " + selectedPiece.getLocation()
 					+ " is not a pawn yet was attempted to be promoted");
@@ -336,7 +342,7 @@ public class Game extends GameDrawable
 
 	public void onDraw(Canvas canvas)
 	{
-	
+
 	}
 
 	public Board getBoard()
@@ -348,26 +354,35 @@ public class Game extends GameDrawable
 	{
 		return gdp;
 	}
-	
-	
-	private void checkWinCondition()
+
+	private boolean checkWinCondition()
 	{
-		//TODO, derek fill out this method, make it call either winGame() or loseGame() if necessary.
-		
+		// TODO, derek fill out this method, make it call either winGame() or
+		// loseGame() if necessary.
+		return false; //return whether the game is over or not. True if game is over
 	}
-	
+
 	public void winGame()
 	{
-		//TODO, derek call this
-		//I will fill out this method with UI stuff
-		//However, you should add the score tracking code here.
-		//Put score tracking storage stuff in the io package. Ask me about the IO stuff
+		// TODO, derek call this
+		// I will fill out this method with UI stuff
+		// However, you should add the score tracking code here.
+		// Put score tracking storage stuff in the io package. Ask me about the
+		// IO stuff
+		endGame();
 	}
-	
+
 	public void loseGame()
 	{
-		//TODO, derek call this
-		//I will fill out this method with UI stuff
+		// TODO, derek call this
+		// I will fill out this method with UI stuff
+		endGame();
+	}
+
+	private void endGame()
+	{
+		GameIO.intentionSaveGame();
+		GameIO.removeFile();
 	}
 
 	// **********************************Saving and restoring
@@ -393,7 +408,8 @@ public class Game extends GameDrawable
 				_board.highlightMoves(selectedPieceMoves);
 				_board.select(piece.getLocation());
 				checkingPiece = null;
-			} catch (GameException e)
+			}
+			catch (GameException e)
 			{
 				e.printStackTrace();
 			}
@@ -424,15 +440,15 @@ public class Game extends GameDrawable
 			GameSaveable gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces,
 					_gui.getMoveLogger());
 
-			OutputStream out = GameIO.getOutputStream(GameIO.StorageOption.FILE);
+			OutputStream out = GameIO.getOutputStream();
 			gs.serialize(out);
 			out.close();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 			gdp.displayMessage(e.getMessage());
 		}
 	}
-	
-	
+
 }
