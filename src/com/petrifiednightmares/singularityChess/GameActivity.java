@@ -92,6 +92,8 @@ public class GameActivity extends Activity implements OnClickListener
 				Preferences.MUTE = true;
 			}
 			return true;
+		case R.id.show_help:
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

@@ -15,9 +15,15 @@
      <item
         android:id="@+id/pref_mute"
         android:checkable="true"
-        android:orderInCategory="99"
+        android:orderInCategory="98"
         android:showAsAction="never"
         android:checked="false"
         android:title="@string/pref_mute_labels"/>
+     
+       <item
+        android:id="@+id/show_help"
+        android:orderInCategory="99"
+        android:showAsAction="never"
+        android:title="@string/pref_show_help"/>
 
 </menu>

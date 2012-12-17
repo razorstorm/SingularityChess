@@ -348,6 +348,27 @@ public class Game extends GameDrawable
 	{
 		return gdp;
 	}
+	
+	
+	private void checkWinCondition()
+	{
+		//TODO, derek fill out this method, make it call either winGame() or loseGame() if necessary.
+		
+	}
+	
+	public void winGame()
+	{
+		//TODO, derek call this
+		//I will fill out this method with UI stuff
+		//However, you should add the score tracking code here.
+		//Put score tracking storage stuff in the io package. Ask me about the IO stuff
+	}
+	
+	public void loseGame()
+	{
+		//TODO, derek call this
+		//I will fill out this method with UI stuff
+	}
 
 	// **********************************Saving and restoring
 	// *********************************************************//
