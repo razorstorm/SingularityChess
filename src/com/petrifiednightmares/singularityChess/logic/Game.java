@@ -69,7 +69,6 @@ public class Game extends GameDrawable
 	{
 		try
 		{
-
 			this._gui = gui;
 			this._board = board;
 

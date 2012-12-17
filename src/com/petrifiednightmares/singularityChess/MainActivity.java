@@ -12,9 +12,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.petrifiednightmares.singularityChess.io.GameIO;
+
 public class MainActivity extends Activity
 {
-	Button singlePlayerButton, resumeButton;
+	Button	singlePlayerButton, resumeButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -44,30 +46,42 @@ public class MainActivity extends Activity
 				resumeSinglePlayerGame();
 			}
 		});
+		
+		GameIO.setContext(this);
 	}
 
 	private void startSinglePlayerGame()
 	{
-		new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_media_play)
-				.setTitle(R.string.start_new_game).setMessage(R.string.really_start_new_game)
-				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int which)
+		GameIO.intentionSaveGame();
+		if (GameIO.hasFile())
+		{
+			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_media_play)
+					.setTitle(R.string.start_new_game).setMessage(R.string.really_start_new_game)
+					.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
 					{
-						Intent singlePlayerGameIntent = new Intent(MainActivity.this,
-								GameActivity.class);
+						public void onClick(DialogInterface dialog, int which)
+						{
+							Intent singlePlayerGameIntent = new Intent(MainActivity.this,
+									GameActivity.class);
 
-						startActivity(singlePlayerGameIntent);
-					}
+							startActivity(singlePlayerGameIntent);
+						}
 
-				}).setNegativeButton(R.string.no_resume, new DialogInterface.OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int which)
+					}).setNegativeButton(R.string.no_resume, new DialogInterface.OnClickListener()
 					{
-						resumeSinglePlayerGame();
-					}
+						public void onClick(DialogInterface dialog, int which)
+						{
+							resumeSinglePlayerGame();
+						}
 
-				}).show();
+					}).show();
+		}
+		else
+		{
+			Intent singlePlayerGameIntent = new Intent(MainActivity.this, GameActivity.class);
+
+			startActivity(singlePlayerGameIntent);
+		}
 
 	}
 

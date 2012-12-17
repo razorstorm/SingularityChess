@@ -21,11 +21,11 @@ public class GameIO
 	};
 
 	// determine where the shiet is saved
-	private static String _fileName = "game_state";
+	private static String			_fileName	= "game_state";
 
-	private static Context _context;
+	private static Context			_context;
 
-	private static StorageOption _storageOption;
+	private static StorageOption	_storageOption;
 
 	public static void setContext(Context context)
 	{
@@ -44,20 +44,37 @@ public class GameIO
 		_storageOption = StorageOption.IMAGE_CACHE;
 	}
 
+	public static boolean hasFile()
+	{
+		File toCheck;
+		switch (_storageOption)
+		{
+			case FILE:
+				toCheck = new File(_context.getExternalFilesDir(null), _fileName);
+				return toCheck.exists();
+			case IMAGE_CACHE:
+				toCheck = new File(_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+						_fileName);
+				return toCheck.exists();
+			default:
+				return false;
+		}
+	}
+
 	public static boolean removeFile()
 	{
 		File toBeDeleted;
 		switch (_storageOption)
 		{
-		case FILE:
-			toBeDeleted = new File(_context.getExternalFilesDir(null), _fileName);
-			return toBeDeleted.delete();
-		case IMAGE_CACHE:
-			toBeDeleted = new File(_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-					_fileName);
-			return toBeDeleted.delete();
-		default:
-			return false;
+			case FILE:
+				toBeDeleted = new File(_context.getExternalFilesDir(null), _fileName);
+				return toBeDeleted.delete();
+			case IMAGE_CACHE:
+				toBeDeleted = new File(
+						_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), _fileName);
+				return toBeDeleted.delete();
+			default:
+				return false;
 		}
 	}
 
@@ -73,21 +90,21 @@ public class GameIO
 		FileOutputStream fos;
 		switch (_storageOption)
 		{
-		case STDOUT:
-			return new BufferedOutputStream(System.out);
-		case FILE:
-			fos = new FileOutputStream(new File(_context.getExternalFilesDir(null), _fileName));
-			// FileOutputStream fos = _context.openFileOutput(_fileName,
-			// Context.MODE_PRIVATE);
-			return new BufferedOutputStream(fos);
-		case SQLITE:
-			return null;
-		case IMAGE_CACHE:
-			fos = new FileOutputStream(new File(
-					_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), _fileName));
-			return new BufferedOutputStream(fos);
-		default:
-			return null;
+			case STDOUT:
+				return new BufferedOutputStream(System.out);
+			case FILE:
+				fos = new FileOutputStream(new File(_context.getExternalFilesDir(null), _fileName));
+				// FileOutputStream fos = _context.openFileOutput(_fileName,
+				// Context.MODE_PRIVATE);
+				return new BufferedOutputStream(fos);
+			case SQLITE:
+				return null;
+			case IMAGE_CACHE:
+				fos = new FileOutputStream(new File(
+						_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), _fileName));
+				return new BufferedOutputStream(fos);
+			default:
+				return null;
 		}
 	}
 
@@ -96,16 +113,16 @@ public class GameIO
 	{
 		switch (_storageOption)
 		{
-		case STDOUT:
-			return null;
-		case FILE:
-			FileInputStream fos = new FileInputStream(new File(_context.getExternalFilesDir(null),
-					_fileName));
-			return new BufferedInputStream(fos);
-		case SQLITE:
-			return null;
-		default:
-			return null;
+			case STDOUT:
+				return null;
+			case FILE:
+				FileInputStream fos = new FileInputStream(new File(
+						_context.getExternalFilesDir(null), _fileName));
+				return new BufferedInputStream(fos);
+			case SQLITE:
+				return null;
+			default:
+				return null;
 		}
 
 	}
