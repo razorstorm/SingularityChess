@@ -27,19 +27,19 @@ import com.petrifiednightmares.singularityChess.ui.SUI;
 public class Game extends GameDrawable
 {
 
-	AbstractPiece[] whitePieces;
-	AbstractPiece[] blackPieces;
+	AbstractPiece[]	whitePieces;
+	AbstractPiece[]	blackPieces;
 
-	private boolean isWhiteTurn;
+	private boolean	isWhiteTurn;
 
-	Board _board;
+	Board			_board;
 
-	AbstractPiece selectedPiece, checkingPiece;
-	Set<Square> selectedPieceMoves;
+	AbstractPiece	selectedPiece, checkingPiece;
+	Set<Square>		selectedPieceMoves;
 
-	private GameUI _gui;
+	private GameUI	_gui;
 
-	private String whiteName, blackName;
+	private String	whiteName, blackName;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
@@ -204,7 +204,7 @@ public class Game extends GameDrawable
 	private void finishMove()
 	{
 		// have to check again.
-		if (checkPostMoveConditions())
+		if (!checkWinCondition())
 		{
 			if (!_gui.PROMPT_WAITING)
 			{
@@ -275,7 +275,7 @@ public class Game extends GameDrawable
 				return false;
 			}
 		}
-		return !checkWinCondition();
+		return true;
 	}
 
 	private void promptPromotion(AbstractPiece piece)
