@@ -67,6 +67,7 @@ public class Game extends GameDrawable
 
 	public void resume(Board board, GameUI gui) throws IOException
 	{
+		InputStream in=null;
 		try
 		{
 			this._gui = gui;
@@ -75,10 +76,9 @@ public class Game extends GameDrawable
 			GameSaveable gs = new GameSaveable(this);
 
 			GameIO.intentionSaveGame();
-			InputStream in = GameIO.getInputStream();
+			 in = GameIO.getInputStream();
 
 			gs.deserialize(in);
-			in.close();
 
 			whitePieces = gs.getWhitePieces();
 			blackPieces = gs.getBlackPieces();
@@ -92,6 +92,10 @@ public class Game extends GameDrawable
 			// for some reason resume didnt work, initializing instead
 			initialize(board, gui);
 			gdp.displayMessage("Resume failed, starting new game");
+		}
+		finally
+		{
+			GameIO.closeSilently(in);
 		}
 	}
 
@@ -391,8 +395,16 @@ public class Game extends GameDrawable
 
 	private void endGame()
 	{
-		GameIO.intentionSaveGame();
-		GameIO.removeFile();
+		try
+		{
+
+			GameIO.intentionSaveGame();
+			GameIO.removeFile();
+		}
+		finally
+		{
+			gdp.gameActivity.finish();
+		}
 	}
 
 	// **********************************Saving and restoring
@@ -443,21 +455,25 @@ public class Game extends GameDrawable
 
 	public void saveGame()
 	{
+		GameSaveable gs;
+		OutputStream out = null;
 		try
 		{
 			GameIO.intentionSaveGame();
 
-			GameSaveable gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces,
-					_gui.getMoveLogger());
+			gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces, _gui.getMoveLogger());
 
-			OutputStream out = GameIO.getOutputStream();
+			out = GameIO.getOutputStream();
 			gs.serialize(out);
-			out.close();
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 			gdp.displayMessage(e.getMessage());
+		}
+		finally
+		{
+			GameIO.closeSilently(out);
 		}
 	}
 

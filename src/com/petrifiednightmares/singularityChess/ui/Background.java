@@ -15,8 +15,8 @@ import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class Background extends GameDrawable
 {
-	private Bitmap _background;
-	private Canvas _backgroundCanvas;
+	private Bitmap	_background;
+	private Canvas	_backgroundCanvas;
 
 	public Background(GameDrawingPanel gdp)
 	{
@@ -116,23 +116,24 @@ public class Background extends GameDrawable
 	{
 		Thread cacheThread = new Thread(new Runnable()
 		{
+			OutputStream	out	= null;
 
 			public void run()
 			{
-				long time = System.currentTimeMillis();
 				try
 				{
 					GameIO.intentionCacheBg();
-					OutputStream out = GameIO.getOutputStream();
+					out = GameIO.getOutputStream();
 					_background.compress(Bitmap.CompressFormat.PNG, 100, out);
-					out.close();
 				}
 				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
-				System.out.println("cacheBitmap took: " + (System.currentTimeMillis() - time));
-
+				finally
+				{
+					GameIO.closeSilently(out);
+				}
 			}
 
 		});

@@ -2,6 +2,7 @@ package com.petrifiednightmares.singularityChess.io;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -125,5 +126,19 @@ public class GameIO
 				return null;
 		}
 
+	}
+
+	public static void closeSilently(Closeable resource)
+	{
+		try
+		{
+			if (resource != null)
+			{
+				resource.close();
+			}
+		}
+		catch (Exception ex)
+		{
+		}
 	}
 }
