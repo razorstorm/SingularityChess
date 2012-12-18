@@ -67,7 +67,6 @@ public class Action
 	{
 		if (simplified)
 		{
-			System.out.println(simplifiedString);
 			return simplifiedString;
 		} else
 		{
