@@ -22,12 +22,12 @@ public class TextViewOutline extends TextView
 		super(context, aSet);
 	}
 
-	private Paint mTextPaint;
-	private Paint mTextPaintOutline; // add another paint attribute for your
+	private Paint	mTextPaint;
+	private Paint	mTextPaintOutline;	// add another paint attribute for your
 										// outline
-	private boolean _wrap, _interleave;
-	private Paint _interleavePaint;
-	private int _interleaveCount;
+	private boolean	_wrap, _interleave;
+	private Paint	_interleavePaint;
+	private int		_interleaveCount;
 
 	// modify initTextViewOutline to setup the outline style
 	public void initTextViewOutline(int textColor, int outlineColor, int textSize, int strokeWidth,
@@ -47,6 +47,7 @@ public class TextViewOutline extends TextView
 		mTextPaintOutline.setStrokeWidth(strokeWidth);
 
 		_wrap = wrap;
+
 	}
 
 	public void setBold(boolean boldness)
@@ -69,14 +70,14 @@ public class TextViewOutline extends TextView
 	private void drawMultilineText(String str, float x, float y, Paint paint, Canvas canvas,
 			boolean isOutline)
 	{
-		_interleaveCount=0;
+		_interleaveCount = 0;
 		int lineHeight = 0;
 		int yoffset = 0;
 		LinkedList<String> lines = new LinkedList<String>(Arrays.asList(str.split("\n")));
 
 		Rect mBounds = new Rect();
 		// set height of each line (height of text + 20%)
-		paint.getTextBounds(str, 0, 2, mBounds);
+		paint.getTextBounds(str, 0, str.length(), mBounds);
 		lineHeight = (int) ((float) mBounds.height() * 1.5);
 
 		// draw each line
@@ -119,7 +120,8 @@ public class TextViewOutline extends TextView
 
 			yoffset = yoffset + lineHeight;
 		}
-	
+
+		setHeight(yoffset + getPaddingBottom());
 	}
 
 	// make sure to update other methods you've overridden to handle your new

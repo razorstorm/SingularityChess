@@ -46,7 +46,7 @@ public class MainActivity extends Activity
 				resumeSinglePlayerGame();
 			}
 		});
-		
+
 		GameIO.setContext(this);
 	}
 

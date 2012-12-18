@@ -19,14 +19,14 @@ import com.petrifiednightmares.singularityChess.ui.SUI;
 public class CapturesDialog extends HoverDialog
 {
 
-	private RectF _whiteBox, _blackBox;
+	private RectF		_whiteBox, _blackBox;
 
-	private int _tileWidth, _tileHeight, _tileLeft, _tileTop, _gap;
+	private int			_tileWidth, _tileHeight, _tileLeft, _tileTop, _gap;
 
-	private Paint _horizontalPaint, _verticalWhitePaint, _verticalBlackPaint;
-	private MoveLogger _ml;
+	private Paint		_horizontalPaint, _verticalWhitePaint, _verticalBlackPaint;
+	private MoveLogger	_ml;
 
-	private TextView _whiteText, _blackText;
+	private TextView	_whiteText, _blackText;
 
 	public CapturesDialog(GameDrawingPanel gdp, GameUI gui, MoveLogger ml)
 	{
