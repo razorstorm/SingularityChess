@@ -57,11 +57,13 @@ public class BottomBar extends GameDrawable
 					_gui.movesDialog.display();
 					_gui.PROMPT_WAITING = true;
 					_gui.PROMPT = _gui.movesDialog;
+					gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 					break;
 				case 1:
 					_gui.capturesDialog.display();
 					_gui.PROMPT_WAITING = true;
 					_gui.PROMPT = _gui.capturesDialog;
+					gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 					break;
 				case 3:
 					// expand menu
