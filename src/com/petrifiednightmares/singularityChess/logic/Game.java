@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.Set;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
@@ -363,13 +364,71 @@ public class Game extends GameDrawable
 	{
 		return gdp;
 	}
+	
+	private boolean isChecked()
+	{
+		AbstractPiece[] enemyPieces = isWhiteTurn() ? whitePieces : blackPieces;
+		Log.i("Derek", "Entering is Checked");
+		for (AbstractPiece p : enemyPieces)
+		{
+			if (p.isAlive())
+			{
+				Log.i("Derek", "Entering is Checked Alive");
+				if (p.checkingKing())
+				{
+					Log.i("Derek", " Checking King!");
+					return true;
+				}
+			}
+		}
+		
+		return false; 
+	}
 
 	private boolean checkWinCondition()
-	{
-		// TODO, derek fill out this method, make it call either winGame() or
-		// loseGame() if necessary.
-		return false; // return whether the game is over or not. True if game is
-						// over
+	{		
+		Log.i("Derek", "entering checkWinCondition");
+		// check if the king of this turn is checked. if not return false;
+		if (this.isChecked())
+		{
+			Log.i("Derek", "it is being checked!");
+			// iterates all moves to see if any can save the king's ass.
+			AbstractPiece[] pieces = isWhiteTurn() ? blackPieces : whitePieces;
+			for (AbstractPiece p : pieces)
+			{
+				if (p.isAlive())
+				{
+					try {
+						Set<Square> moves = p.getMoves();
+						for (Square target : moves)
+						{
+							Square sourceLocation = p.getLocation();				
+							AbstractPiece capturedPiece = p.makeMove(target);
+							if (!this.isChecked())
+							{
+								//someone's ass got saved
+								Log.i("Derek", "some one s ass got saved");
+								unmakeMove(capturedPiece, p, target, sourceLocation);								
+								return false;
+							}
+							
+							unmakeMove(capturedPiece, p, target, sourceLocation);
+						}						
+					} catch (GameException e) {
+						e.printStackTrace();
+					}					
+				}			
+			}
+			
+			// try all the pieces and moves, king cannot be saved 
+			// The king shall fall, call winGame() or loseGame()
+			// TODO 
+			Log.i("Derek", "GG");			
+			loseGame(); 			
+			return true;
+		}		
+		
+		return false;
 	}
 
 	public void winGame()
@@ -385,8 +444,15 @@ public class Game extends GameDrawable
 	public void loseGame()
 	{
 		// TODO, derek call this
-		// I will fill out this method with UI stuff
+		gdp.displayMessage("YOU LOSE!!! T____T ");
+		
 		endGame();
+	}
+	
+	public void tieGame()
+	{
+		// TODO, derek call this
+		endGame();		
 	}
 
 	private void endGame()
