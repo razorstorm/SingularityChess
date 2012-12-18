@@ -96,6 +96,10 @@ public class GameActivity extends Activity implements OnClickListener
 				}
 				return true;
 			case R.id.show_help:
+				if(gdp!=null)
+				{
+					gdp.showInstructions();
+				}
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

@@ -21,4 +21,13 @@
     <string name="really_start_new_game">Start new game?</string>
     <string name="no_resume">No, resume old game</string>
 
+    <string name="instructions">
+        This is just like normal chess, except that the board is warped around a central "singularity".\n
+        Straight movements become curved around the singularity, and diagonal movements become distorted.\n 
+        \n
+        The only pieces impervious to the effects of the singularity are the pawns. Pawns follow straight forward trajectories right across the screen.\n
+        \n
+        No empassant is allowed.\n 
+        No castling is allowed (yet).
+    </string>
 </resources>

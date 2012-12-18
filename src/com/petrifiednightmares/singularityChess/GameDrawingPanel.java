@@ -1,7 +1,5 @@
 package com.petrifiednightmares.singularityChess;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
@@ -24,26 +22,27 @@ import com.petrifiednightmares.singularityChess.ui.SUI;
 public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		SurfaceHolder.Callback
 {
-	PanelThread _thread;
+	PanelThread			_thread;
 
-	public GameActivity gameActivity;
+	public GameActivity	gameActivity;
 
-	private Context _context;
+	private Context		_context;
 
-	public Game game;
-	public Background bg;
-	public Board board;
-	public GameUI gui;
+	public Game			game;
+	public Background	bg;
+	public Board		board;
+	public GameUI		gui;
 
-	ScrollView movesView;
+	ScrollView			movesView;
 
-	public boolean NEEDS_REDRAW;
+	public boolean		NEEDS_REDRAW;
+
+	private boolean		initialized;
 
 	public GameDrawingPanel(Context context, AttributeSet aSet)
 	{
 		super(context, aSet);
 
-		
 		NEEDS_REDRAW = true;
 		this._context = context;
 		getHolder().addCallback(this);
@@ -52,16 +51,13 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 				.getDefaultDisplay();
 
 		SUI.setup(disp.getWidth(), disp.getHeight(), getResources(), getContext());
-		
+
 		this.setOnTouchListener(this);
 
 		GameIO.setContext(_context);
-		
-		
 
 		bg = new Background(this);
-		
-		
+
 	}
 
 	public void initialize(GameActivity g, ScrollView movesView)
@@ -76,6 +72,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		board = new Board(this, game, bg);
 
 		game.initialize(board, gui);
+		initialized = true;
 	}
 
 	public void resume(GameActivity g, ScrollView movesView)
@@ -89,14 +86,8 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		board = new Board(this, game, bg);
 
-		try
-		{
-			game.resume(board, gui);
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-			displayMessage(e.getMessage());
-		}
+		game.resume(board, gui);
+		initialized = true;
 	}
 
 	@Override
@@ -113,6 +104,12 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		gui.onDraw(canvas);
 
+	}
+
+	public void showInstructions()
+	{
+		if (initialized)
+			gui.openInstructionsDialog();
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
@@ -136,7 +133,8 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		{
 			_thread.setRunning(false); // Tells thread to stop
 			_thread.join(); // Removes thread from mem.
-		} catch (InterruptedException e)
+		}
+		catch (InterruptedException e)
 		{
 		}
 	}
@@ -180,12 +178,12 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 class PanelThread extends Thread
 {
-	private SurfaceHolder _surfaceHolder;
-	private GameDrawingPanel _panel;
-	private boolean _run = false;
+	private SurfaceHolder		_surfaceHolder;
+	private GameDrawingPanel	_panel;
+	private boolean				_run					= false;
 
-	private final static int FRAMES_PER_SECOND = 25;
-	private final static int MILLISECONDS_PER_FRAME = 1000 / FRAMES_PER_SECOND;
+	private final static int	FRAMES_PER_SECOND		= 25;
+	private final static int	MILLISECONDS_PER_FRAME	= 1000 / FRAMES_PER_SECOND;
 
 	public PanelThread(SurfaceHolder surfaceHolder, GameDrawingPanel panel)
 	{
@@ -221,7 +219,8 @@ class PanelThread extends Thread
 						_panel.postInvalidate();
 					}
 				}
-			} finally
+			}
+			finally
 			{
 				if (c != null)
 				{
@@ -236,11 +235,13 @@ class PanelThread extends Thread
 				try
 				{
 					sleep(sleepTime, 0);
-				} catch (InterruptedException e)
+				}
+				catch (InterruptedException e)
 				{
 					continue;
 				}
-			} else
+			}
+			else
 			{
 				// we're behind, fuck it.
 				nextGameTick = System.currentTimeMillis();

@@ -43,7 +43,7 @@
         android:id="@+id/instructions_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="@string/instructions"
         android:visibility="invisible" />
 
 </RelativeLayout>

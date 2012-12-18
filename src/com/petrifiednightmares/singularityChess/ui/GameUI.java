@@ -10,6 +10,7 @@ import com.petrifiednightmares.singularityChess.logic.Square;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.ui.dialog.CapturesDialog;
 import com.petrifiednightmares.singularityChess.ui.dialog.HoverDialog;
+import com.petrifiednightmares.singularityChess.ui.dialog.InstructionsDialog;
 import com.petrifiednightmares.singularityChess.ui.dialog.MovesLogDialog;
 import com.petrifiednightmares.singularityChess.ui.dialog.PromotionDialog;
 
@@ -17,7 +18,8 @@ public class GameUI extends GameDrawable
 {
 	TopBar						topBar;
 	BottomBar					bottomBar;
-	public HoverDialog			movesDialog, capturesDialog, surrenderDialog, promotionDialog;
+	public HoverDialog			movesDialog, capturesDialog, surrenderDialog, promotionDialog,
+			instructionsDialog;
 	public boolean				PROMPT_WAITING;
 	public HoverDialog			PROMPT;
 	private Game				_game;
@@ -41,6 +43,8 @@ public class GameUI extends GameDrawable
 
 		capturesDialog = new CapturesDialog(gdp, this, _ml);
 
+		instructionsDialog = new InstructionsDialog(drawingPanel, this);
+
 		PROMPT_WAITING = false;
 
 	}
@@ -57,6 +61,7 @@ public class GameUI extends GameDrawable
 		movesDialog.onDraw(canvas);
 		capturesDialog.onDraw(canvas);
 		promotionDialog.onDraw(canvas);
+		instructionsDialog.onDraw(canvas);
 	}
 
 	public boolean onClick(int x, int y)
@@ -94,6 +99,14 @@ public class GameUI extends GameDrawable
 	private void openInteractiveDialog()
 	{
 		promptTime = System.currentTimeMillis();
+	}
+
+	public void openInstructionsDialog()
+	{
+		openInteractiveDialog();
+		instructionsDialog.display();
+		PROMPT = instructionsDialog;
+		PROMPT_WAITING = true;
 	}
 
 	public void openPromotionDialog(boolean isWhite)

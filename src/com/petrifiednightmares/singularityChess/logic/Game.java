@@ -65,7 +65,7 @@ public class Game extends GameDrawable
 		initializePieces(blackPieces, false);
 	}
 
-	public void resume(Board board, GameUI gui) throws IOException
+	public void resume(Board board, GameUI gui)
 	{
 		InputStream in=null;
 		try
