@@ -391,11 +391,9 @@ public class Game extends GameDrawable
 
 	private boolean checkWinCondition()
 	{		
-		Log.i("Derek", "entering checkWinCondition");
 		// check if the king of this turn is checked. if not return false;
 		if (this.isChecked())
 		{
-			Log.i("Derek", "it is being checked!");
 			// iterates all moves to see if any can save the king's ass.
 			AbstractPiece[] pieces = isWhiteTurn() ? blackPieces : whitePieces;
 			for (AbstractPiece p : pieces)
@@ -411,7 +409,6 @@ public class Game extends GameDrawable
 							if (!this.isChecked())
 							{
 								//someone's ass got saved
-								Log.i("Derek", "some one s ass got saved");
 								unmakeMove(capturedPiece, p, target, sourceLocation);								
 								return false;
 							}
@@ -427,8 +424,7 @@ public class Game extends GameDrawable
 			// try all the pieces and moves, king cannot be saved 
 			// The king shall fall, call winGame() or loseGame()
 			// TODO 
-			Log.i("Derek", "GG");			
-			loseGame(); 			
+			this.winGame();
 			return true;
 		}		
 		
@@ -442,6 +438,7 @@ public class Game extends GameDrawable
 		// However, you should add the score tracking code here.
 		// Put score tracking storage stuff in the io package. Ask me about the
 		// IO stuff
+		gdp.displayMessage("YOU WIN!!! 8=======D ~~~~ ");		
 		endGame();
 	}
 
