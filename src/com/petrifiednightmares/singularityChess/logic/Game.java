@@ -372,15 +372,12 @@ public class Game extends GameDrawable
 	private boolean isChecked()
 	{
 		AbstractPiece[] enemyPieces = isWhiteTurn() ? whitePieces : blackPieces;
-		Log.i("Derek", "Entering is Checked");
 		for (AbstractPiece p : enemyPieces)
 		{
 			if (p.isAlive())
 			{
-				Log.i("Derek", "Entering is Checked Alive");
 				if (p.checkingKing())
 				{
-					Log.i("Derek", " Checking King!");
 					return true;
 				}
 			}
