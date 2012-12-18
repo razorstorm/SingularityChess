@@ -8,47 +8,40 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.logging.MoveLogger;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
 import com.petrifiednightmares.singularityChess.ui.SUI;
 
-public class MovesLogDialog extends HoverDialog
+public class InstructionsDialog extends HoverDialog
 {
-	ScrollView		_movesView;
-	MoveLogger		_ml;
-	TextViewOutline	_text;
-	RectF			_movesViewRect;
+	TextView _instructionsView;
+	RectF _movesViewRect;
 
-	Paint			_horizontalPaint, _verticalPaint, _dimWhite;
+	Paint _horizontalPaint, _verticalPaint, _dimWhite;
 
-	public MovesLogDialog(GameDrawingPanel gdp, GameUI gui, ScrollView movesView, MoveLogger ml)
+	public InstructionsDialog(GameDrawingPanel gdp, GameUI gui)
 	{
 		super(gdp, gui, "Moves", (SUI.HEIGHT / 100) * 20, (SUI.WIDTH / 100) * 10, SUI.WIDTH - 2
 				* ((SUI.WIDTH / 100) * 10), SUI.HEIGHT - 2 * (SUI.HEIGHT / 100) * 20);
 
-		this._ml = ml;
-
-		this._movesView = movesView;
-		_movesView.bringToFront();
-		_text = (TextViewOutline) (_movesView.getChildAt(0));
+		_instructionsView = (TextView) (gdp.getLayoutResource(R.id.instructions_view));
 
 		int viewHeight = (int) ((_height - _headerBottom) * 0.8);
 		int viewWidth = (int) (_width * 0.8);
 		int viewLeft = _left + (_width - viewWidth) / 2;
 		int viewTop = _top + _headerBottom + ((_height - _headerBottom) - viewHeight) / 2;
 
-		_movesView.getLayoutParams().height = viewHeight;
-		_movesView.getLayoutParams().width = viewWidth;
-		((RelativeLayout.LayoutParams) movesView.getLayoutParams()).leftMargin = viewLeft;
-		((RelativeLayout.LayoutParams) movesView.getLayoutParams()).topMargin = viewTop;
+		_instructionsView.getLayoutParams().height = viewHeight;
+		_instructionsView.getLayoutParams().width = viewWidth;
+		((RelativeLayout.LayoutParams) _instructionsView.getLayoutParams()).leftMargin = viewLeft;
+		((RelativeLayout.LayoutParams) _instructionsView.getLayoutParams()).topMargin = viewTop;
 
-		_text.setPadding(10, 10, 10, 10);
 
-		_movesViewRect = new RectF(viewLeft - _left, viewTop - _top, viewLeft - _left + viewWidth,
-				viewTop - _top + viewHeight);
+		_movesViewRect = new RectF(viewLeft, viewTop, viewLeft + viewWidth, viewTop + viewHeight);
 
 		this._horizontalPaint = new Paint();
 		this._horizontalPaint.setAntiAlias(true);
@@ -67,56 +60,49 @@ public class MovesLogDialog extends HoverDialog
 				Shader.TileMode.MIRROR));
 		this._verticalPaint.setAlpha(100);
 
-		_text.initTextViewOutline(Color.BLACK, Color.WHITE, 30, 1, false);
-		_text.setBold(true);
-		_text.setInterleave(true, Color.WHITE);
+		
+		_instructionsView.setTextColor(Color.WHITE);
+		_instructionsView.setTextSize(15);
 
 		_dimWhite = new Paint();
 		_dimWhite.setAntiAlias(true);
 		_dimWhite.setColor(Color.WHITE);
 		_dimWhite.setAlpha(60);
-
-		augmentBitmap();
-	}
-
-	private void augmentBitmap()
-	{
-		Canvas c = new Canvas(_background);
-
-		c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
-				(_movesViewRect.bottom - _movesViewRect.top) * 0.01f, _horizontalPaint);
-		c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
-				(_movesViewRect.bottom - _movesViewRect.top) * 0.01f, _verticalPaint);
-
-		c.drawRect(_movesViewRect.left + (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
-				_movesViewRect.bottom, _movesViewRect.right
-						- (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
-				_movesViewRect.bottom + 1, _dimWhite);
 	}
 
 	public void onDraw(Canvas c)
 	{
 		// only check, don't set
 		super.onDraw(c);
+		if (_shown)
+		{
+			c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
+					(_movesViewRect.bottom - _movesViewRect.top) * 0.01f, _horizontalPaint);
+			c.drawRoundRect(_movesViewRect, (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
+					(_movesViewRect.bottom - _movesViewRect.top) * 0.01f, _verticalPaint);
+
+			c.drawRect(_movesViewRect.left + (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
+					_movesViewRect.bottom, _movesViewRect.right
+							- (_movesViewRect.bottom - _movesViewRect.top) * 0.01f,
+					_movesViewRect.bottom + 1, _dimWhite);
+		}
 	}
 
 	@Override
 	public synchronized void display()
 	{
 		super.display();
-		_movesView.setVisibility(View.VISIBLE);
-		_text.setText(_ml.returnLineSeparatedMoves());
+		_instructionsView.setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public synchronized void hide()
 	{
 		super.hide();
-		_movesView.setVisibility(View.INVISIBLE);
+		_instructionsView.setVisibility(View.INVISIBLE);
 	}
 
 	public void setMoveLogger(MoveLogger ml)
 	{
-		this._ml = ml;
 	}
 }

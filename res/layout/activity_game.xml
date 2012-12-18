@@ -29,14 +29,21 @@
         android:id="@+id/whiteCapturesTextView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:text="" />
+        android:text=""
+        android:visibility="invisible" />
 
     <com.petrifiednightmares.singularityChess.ui.dialog.TextViewOutline
         android:id="@+id/blackCapturesTextView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:text="" />
+        android:text=""
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/instructions_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:visibility="invisible" />
 
 </RelativeLayout>

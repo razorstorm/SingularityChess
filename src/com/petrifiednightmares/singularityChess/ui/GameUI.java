@@ -15,18 +15,17 @@ import com.petrifiednightmares.singularityChess.ui.dialog.PromotionDialog;
 
 public class GameUI extends GameDrawable
 {
-	TopBar topBar;
-	BottomBar bottomBar;
-	public HoverDialog movesDialog, capturesDialog, surrenderDialog, promotionDialog;
-	public boolean PROMPT_WAITING;
-	public HoverDialog PROMPT;
-	private Game _game;
-	private MoveLogger _ml;
+	TopBar						topBar;
+	BottomBar					bottomBar;
+	public HoverDialog			movesDialog, capturesDialog, surrenderDialog, promotionDialog;
+	public boolean				PROMPT_WAITING;
+	public HoverDialog			PROMPT;
+	private Game				_game;
+	private MoveLogger			_ml;
 
-	private static final long WAITING_THRESHOLD = 500; // wait half a second
-														// before making prompts
-														// clickable
-	private long promptTime;
+	// wait half a second before making prompts clickable
+	private static final long	WAITING_THRESHOLD	= 500;
+	private long				promptTime;
 
 	public GameUI(GameDrawingPanel drawingPanel, Game game, ScrollView movesView)
 	{
@@ -39,8 +38,8 @@ public class GameUI extends GameDrawable
 		movesDialog = new MovesLogDialog(gdp, this, movesView, _ml);
 
 		promotionDialog = new PromotionDialog(gdp, _game, this);
-		
-		capturesDialog = new CapturesDialog(gdp,this,_ml);
+
+		capturesDialog = new CapturesDialog(gdp, this, _ml);
 
 		PROMPT_WAITING = false;
 
@@ -67,7 +66,8 @@ public class GameUI extends GameDrawable
 			PROMPT_WAITING = true;
 			if (System.currentTimeMillis() > promptTime + WAITING_THRESHOLD)
 				PROMPT.onClick(x, y);
-		} else
+		}
+		else
 		{
 			PROMPT_WAITING = false;
 			bottomBar.onClick(x, y);
@@ -130,7 +130,7 @@ public class GameUI extends GameDrawable
 	{
 		this._ml = ml;
 		((MovesLogDialog) movesDialog).setMoveLogger(_ml);
-		((CapturesDialog) capturesDialog ).setMoveLogger(_ml);
+		((CapturesDialog) capturesDialog).setMoveLogger(_ml);
 	}
 
 }

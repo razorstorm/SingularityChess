@@ -20,7 +20,7 @@ import com.petrifiednightmares.singularityChess.ui.Preferences;
 public class GameActivity extends Activity implements OnClickListener
 {
 
-	GameDrawingPanel gdp;
+	GameDrawingPanel	gdp;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -48,7 +48,8 @@ public class GameActivity extends Activity implements OnClickListener
 		if (resume)
 		{
 			gdp.resume(this, movesView);
-		} else
+		}
+		else
 		{
 			gdp.initialize(this, movesView);
 		}
@@ -66,36 +67,38 @@ public class GameActivity extends Activity implements OnClickListener
 	{
 		switch (item.getItemId())
 		{
-		case R.id.pref_disp_square_labels:
-			if (item.isChecked())
-			{
-				item.setChecked(false);
-				Preferences.SHOW_SQUARE_LABELS = false;
-				if (gdp != null)
-					gdp.redraw();
-			} else
-			{
-				item.setChecked(true);
-				Preferences.SHOW_SQUARE_LABELS = true;
-				if (gdp != null)
-					gdp.redraw();
-			}
-			return true;
-		case R.id.pref_mute:
-			if (item.isChecked())
-			{
-				item.setChecked(false);
-				Preferences.MUTE = false;
-			} else
-			{
-				item.setChecked(true);
-				Preferences.MUTE = true;
-			}
-			return true;
-		case R.id.show_help:
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.pref_disp_square_labels:
+				if (item.isChecked())
+				{
+					item.setChecked(false);
+					Preferences.SHOW_SQUARE_LABELS = false;
+					if (gdp != null)
+						gdp.redraw();
+				}
+				else
+				{
+					item.setChecked(true);
+					Preferences.SHOW_SQUARE_LABELS = true;
+					if (gdp != null)
+						gdp.redraw();
+				}
+				return true;
+			case R.id.pref_mute:
+				if (item.isChecked())
+				{
+					item.setChecked(false);
+					Preferences.MUTE = false;
+				}
+				else
+				{
+					item.setChecked(true);
+					Preferences.MUTE = true;
+				}
+				return true;
+			case R.id.show_help:
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 

@@ -18,22 +18,22 @@ import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 public class SUI
 {
 
-	public static int WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE, TOP_PADDING,
-			CIRCLE_RADIUS_DIFFERENCE, TOP_BAR_BOTTOM, BORDER_WIDTH, HEIGHT_CENTER, BOTTOM;
+	public static int			WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE,
+			TOP_PADDING, CIRCLE_RADIUS_DIFFERENCE, TOP_BAR_BOTTOM, BORDER_WIDTH, HEIGHT_CENTER,
+			BOTTOM;
 
-	public static Paint darkPaint, lightPaint, highlightPaint, highlightPaint2, attackPaint,
-			attackPaint2, piecePaint, labelPaint, flashPaint, flashPaint2, kingThreatenPaint,
-			kingThreatenPaint2, turnNamePaint, topBarPaint, topBarTexturePaint, turnNameWhitePaint,
-			turnNameBlackPaint, borderPaint, borderShadowPaint, boardLightingPaint,
-			gameLightingPaint;
-	public static Paint whitePaint;
-	
-	
+	public static Paint			darkPaint, lightPaint, highlightPaint, highlightPaint2,
+			attackPaint, attackPaint2, piecePaint, labelPaint, flashPaint, flashPaint2,
+			kingThreatenPaint, kingThreatenPaint2, turnNamePaint, topBarPaint, topBarTexturePaint,
+			turnNameWhitePaint, turnNameBlackPaint, borderPaint, borderShadowPaint,
+			boardLightingPaint, gameLightingPaint;
+	public static Paint			whitePaint;
 
-	public static MediaPlayer pieceSound;
-	
-	//determines if a cached bg was found. This means board doesn't have to set up draws. 
-	public static boolean CACHED_BACKGROUND=false;
+	public static MediaPlayer	pieceSound;
+
+	// determines if a cached bg was found. This means board doesn't have to set
+	// up draws.
+	public static boolean		CACHED_BACKGROUND	= false;
 
 	public static void setup(int width, int height, Resources r, Context c)
 	{
@@ -87,8 +87,6 @@ public class SUI
 
 		return tileHorizontalPaint;
 	}
-	
-	
 
 	public static Paint getVerticalPaint(int left, int top, int height, int width)
 	{
@@ -102,7 +100,7 @@ public class SUI
 				new int[] { darkColor2, lightColor2, lightColor2, darkColor2, Color.WHITE },
 				new float[] { 0f, 0.25f, 0.75f, 1f - 1.5f / height, 1f }, Shader.TileMode.MIRROR));
 		verticalPaint.setAlpha(150);
-		
+
 		return verticalPaint;
 	}
 
