@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.util.Set;
 
 import android.graphics.Canvas;
-import android.util.Log;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
@@ -68,7 +67,7 @@ public class Game extends GameDrawable
 
 	public void resume(Board board, GameUI gui)
 	{
-		InputStream in=null;
+		InputStream in = null;
 		try
 		{
 			this._gui = gui;
@@ -77,7 +76,7 @@ public class Game extends GameDrawable
 			GameSaveable gs = new GameSaveable(this);
 
 			GameIO.intentionSaveGame();
-			 in = GameIO.getInputStream();
+			in = GameIO.getInputStream();
 
 			gs.deserialize(in);
 
@@ -368,7 +367,7 @@ public class Game extends GameDrawable
 	{
 		return gdp;
 	}
-	
+
 	private boolean isChecked()
 	{
 		AbstractPiece[] enemyPieces = isWhiteTurn() ? whitePieces : blackPieces;
@@ -382,12 +381,12 @@ public class Game extends GameDrawable
 				}
 			}
 		}
-		
-		return false; 
+
+		return false;
 	}
 
 	private boolean checkWinCondition()
-	{		
+	{
 		// check if the king of this turn is checked. if not return false;
 		if (this.isChecked())
 		{
@@ -397,74 +396,67 @@ public class Game extends GameDrawable
 			{
 				if (p.isAlive())
 				{
-					try {
+					try
+					{
 						Set<Square> moves = p.getMoves();
 						for (Square target : moves)
 						{
-							Square sourceLocation = p.getLocation();				
+							Square sourceLocation = p.getLocation();
 							AbstractPiece capturedPiece = p.makeMove(target);
 							if (!this.isChecked())
 							{
-								//someone's ass got saved
-								unmakeMove(capturedPiece, p, target, sourceLocation);								
+								// someone's ass got saved
+								unmakeMove(capturedPiece, p, target, sourceLocation);
 								return false;
 							}
-							
+
 							unmakeMove(capturedPiece, p, target, sourceLocation);
-						}						
-					} catch (GameException e) {
+						}
+					}
+					catch (GameException e)
+					{
 						e.printStackTrace();
-					}					
-				}			
+					}
+				}
 			}
-			
-			// try all the pieces and moves, king cannot be saved 
+
+			// try all the pieces and moves, king cannot be saved
 			// The king shall fall, call winGame() or loseGame()
-			// TODO 
+			// TODO
 			this.winGame();
 			return true;
-		}		
-		
+		}
+
 		return false;
 	}
 
 	public void winGame()
 	{
-		// TODO, derek call this
 		// I will fill out this method with UI stuff
 		// However, you should add the score tracking code here.
 		// Put score tracking storage stuff in the io package. Ask me about the
 		// IO stuff
-		gdp.displayMessage("YOU WIN!!! 8=======D ~~~~ ");		
+		gdp.showFinishPrompt("You win!", "Congratulations, you win!");
 		endGame();
 	}
 
 	public void loseGame()
 	{
-		// TODO, derek call this
-		gdp.displayMessage("YOU LOSE!!! T____T ");
-		
+		gdp.showFinishPrompt("You lose!", "Unfortunately, you lost.");
 		endGame();
 	}
-	
+
 	public void tieGame()
 	{
-		// TODO, derek call this
-		endGame();		
+		gdp.showFinishPrompt("Stalemate!", "This is stale meat. Should have put it in the fridge.");
+		endGame();
 	}
 
 	private void endGame()
 	{
-		try
-		{
-
-			GameIO.intentionSaveGame();
-			GameIO.removeFile();
-		}
-		finally
-		{
-			gdp.gameActivity.finish();
-		}
+		GameIO.intentionSaveGame();
+		GameIO.removeFile();
+		// No quitting game here anymore since the finishprompt will do so.
 	}
 
 	// **********************************Saving and restoring

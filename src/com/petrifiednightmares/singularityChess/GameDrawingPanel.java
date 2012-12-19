@@ -1,6 +1,8 @@
 package com.petrifiednightmares.singularityChess;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.Display;
@@ -163,6 +165,20 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	public void displayMessage(String message)
 	{
 		gameActivity.displayMessage(message);
+	}
+	
+	public void showFinishPrompt(String title,String message)
+	{
+		new AlertDialog.Builder(getContext()).setIcon(android.R.drawable.ic_dialog_alert)
+		.setTitle(title).setMessage(message)
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int which)
+			{
+				gameActivity.finish();
+			}
+
+		}).show();
 	}
 
 	public void redraw()
