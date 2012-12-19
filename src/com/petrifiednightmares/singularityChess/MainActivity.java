@@ -13,10 +13,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.petrifiednightmares.singularityChess.io.GameIO;
+import com.petrifiednightmares.singularityChess.logic.Game;
 
 public class MainActivity extends Activity
 {
-	Button	singlePlayerButton, resumeButton;
+	Button	vsHumanButton, resumeButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -29,12 +30,12 @@ public class MainActivity extends Activity
 
 		setContentView(R.layout.activity_main);
 
-		this.singlePlayerButton = (Button) findViewById(R.id.vs_human);
-		this.singlePlayerButton.setOnClickListener(new OnClickListener()
+		this.vsHumanButton = (Button) findViewById(R.id.vs_human);
+		this.vsHumanButton.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				startSinglePlayerGame();
+				startVSHumanGame();
 			}
 		});
 
@@ -50,7 +51,7 @@ public class MainActivity extends Activity
 		GameIO.setContext(this);
 	}
 
-	private void startSinglePlayerGame()
+	private void startVSHumanGame()
 	{
 		GameIO.intentionSaveGame();
 		if (GameIO.hasFile())
@@ -63,6 +64,12 @@ public class MainActivity extends Activity
 						{
 							Intent singlePlayerGameIntent = new Intent(MainActivity.this,
 									GameActivity.class);
+
+							Bundle b = new Bundle();
+							b.putInt("gameType", Game.VSHUMAN);
+							
+							singlePlayerGameIntent.putExtras(b);
+							
 
 							startActivity(singlePlayerGameIntent);
 						}
@@ -79,7 +86,11 @@ public class MainActivity extends Activity
 		else
 		{
 			Intent singlePlayerGameIntent = new Intent(MainActivity.this, GameActivity.class);
-
+			Bundle b = new Bundle();
+			b.putInt("gameType", Game.VSHUMAN);
+			
+			singlePlayerGameIntent.putExtras(b);
+			
 			startActivity(singlePlayerGameIntent);
 		}
 

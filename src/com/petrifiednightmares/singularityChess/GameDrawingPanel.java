@@ -62,7 +62,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 	}
 
-	public void initialize(GameActivity g, ScrollView movesView)
+	public void initialize(GameActivity g, ScrollView movesView, int gameType)
 	{
 		this.gameActivity = g;
 		this.movesView = movesView;
@@ -73,7 +73,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 		board = new Board(this, game, bg);
 
-		game.initialize(board, gui);
+		game.initialize(board, gui, gameType);
 		initialized = true;
 	}
 
@@ -166,19 +166,19 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 	{
 		gameActivity.displayMessage(message);
 	}
-	
-	public void showFinishPrompt(String title,String message)
+
+	public void showFinishPrompt(String title, String message)
 	{
 		new AlertDialog.Builder(getContext()).setIcon(android.R.drawable.ic_dialog_alert)
-		.setTitle(title).setMessage(message)
-		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-		{
-			public void onClick(DialogInterface dialog, int which)
-			{
-				gameActivity.finish();
-			}
+				.setTitle(title).setMessage(message)
+				.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						game.endGame();
+					}
 
-		}).show();
+				}).show();
 	}
 
 	public void redraw()

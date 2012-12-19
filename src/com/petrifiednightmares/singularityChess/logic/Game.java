@@ -12,6 +12,10 @@ import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.io.GameIO;
 import com.petrifiednightmares.singularityChess.io.GameSaveable;
+import com.petrifiednightmares.singularityChess.logic.player.AIPlayer;
+import com.petrifiednightmares.singularityChess.logic.player.NonTrackedPlayer;
+import com.petrifiednightmares.singularityChess.logic.player.Player;
+import com.petrifiednightmares.singularityChess.logic.player.TrackedPlayer;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Bishop;
 import com.petrifiednightmares.singularityChess.pieces.King;
@@ -39,7 +43,10 @@ public class Game extends GameDrawable
 
 	private GameUI	_gui;
 
-	private String	whiteName, blackName;
+	private Player	_whitePlayer, _blackPlayer;
+	private Player	_currentPlayer, _notCurrentPlayer;
+
+	public static final int	VSHUMAN	= 1, VSCOMP = 2, ONLINE = 3;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
@@ -48,15 +55,15 @@ public class Game extends GameDrawable
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
 
-		whiteName = "White";
-		blackName = "Black";
-
 	}
 
-	public void initialize(Board board, GameUI gui)
+	public void initialize(Board board, GameUI gui, int gtype)
 	{
 		this._gui = gui;
-		gui.setTurnName(whiteName, isWhiteTurn);
+
+		initializePlayers(gtype);
+
+		gui.setTurnName(_whitePlayer.getName(), isWhiteTurn);
 
 		isWhiteTurn = true;
 
@@ -84,19 +91,50 @@ public class Game extends GameDrawable
 			blackPieces = gs.getBlackPieces();
 
 			isWhiteTurn = gs.isWhiteTurn();
+
+			_whitePlayer = gs.getWhitePlayer();
+			_blackPlayer = gs.getBlackPlayer();
+
+			_currentPlayer = isWhiteTurn ? _whitePlayer : _blackPlayer;
+			_notCurrentPlayer = isWhiteTurn ? _blackPlayer : _whitePlayer;
+
 			this._gui.setMoveLogger(gs.getMoveLogger());
-			this._gui.setTurnName(isWhiteTurn() ? whiteName : blackName, isWhiteTurn());
+			this._gui.setTurnName(_currentPlayer.getName(), isWhiteTurn());
 		}
 		catch (Exception e)
 		{
 			// for some reason resume didnt work, initializing instead
-			initialize(board, gui);
-			gdp.displayMessage("Resume failed, starting new game");
+			initialize(board, gui, VSCOMP);
+			gdp.displayMessage("Resume failed, starting new game against computer");
+			
+			e.printStackTrace();
 		}
 		finally
 		{
 			GameIO.closeSilently(in);
 		}
+	}
+
+	private void initializePlayers(int gt)
+	{
+		switch (gt)
+		{
+			case ONLINE:
+				break;
+			case VSCOMP:
+				_whitePlayer = new TrackedPlayer(true, "White player", gdp);
+				_blackPlayer = new AIPlayer(false, "Black player", gdp, this);
+				break;
+			case VSHUMAN:
+				_whitePlayer = new NonTrackedPlayer(true, "White player", gdp);
+				_blackPlayer = new NonTrackedPlayer(false, "Black player", gdp);
+				break;
+			default:
+				break;
+
+		}
+		_currentPlayer = _whitePlayer;
+		_notCurrentPlayer = _blackPlayer;
 	}
 
 	private void initializePieces(AbstractPiece[] piecesArray, boolean isWhite)
@@ -242,7 +280,10 @@ public class Game extends GameDrawable
 	private void switchTurns()
 	{
 		isWhiteTurn = !isWhiteTurn;
-		_gui.setTurnName(isWhiteTurn() ? whiteName : blackName, isWhiteTurn());
+		_currentPlayer = isWhiteTurn ? _whitePlayer : _blackPlayer;
+		_notCurrentPlayer = isWhiteTurn ? _blackPlayer : _whitePlayer;
+		_gui.setTurnName(_currentPlayer.getName(), isWhiteTurn());
+		_currentPlayer.doTurn();
 	}
 
 	private boolean checkMoveValidity()
@@ -423,39 +464,26 @@ public class Game extends GameDrawable
 			// try all the pieces and moves, king cannot be saved
 			// The king shall fall, call winGame() or loseGame()
 			// TODO
-			this.winGame();
+			_currentPlayer.winGame();
+			_notCurrentPlayer.loseGame();
+
 			return true;
 		}
 
 		return false;
 	}
 
-	public void winGame()
+	public void endGame()
 	{
-		// I will fill out this method with UI stuff
-		// However, you should add the score tracking code here.
-		// Put score tracking storage stuff in the io package. Ask me about the
-		// IO stuff
-		gdp.showFinishPrompt("You win!", "Congratulations, you win!");
-		endGame();
-	}
-
-	public void loseGame()
-	{
-		gdp.showFinishPrompt("You lose!", "Unfortunately, you lost.");
-		endGame();
-	}
-
-	public void tieGame()
-	{
-		gdp.showFinishPrompt("Stalemate!", "This is stale meat. Should have put it in the fridge.");
-		endGame();
-	}
-
-	private void endGame()
-	{
-		GameIO.intentionSaveGame();
-		GameIO.removeFile();
+		try
+		{
+			GameIO.intentionSaveGame();
+			GameIO.removeFile();
+		}
+		finally
+		{
+			gdp.gameActivity.finish();
+		}
 		// No quitting game here anymore since the finishprompt will do so.
 	}
 
@@ -513,7 +541,8 @@ public class Game extends GameDrawable
 		{
 			GameIO.intentionSaveGame();
 
-			gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces, _gui.getMoveLogger());
+			gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces, _gui.getMoveLogger(),
+					_whitePlayer, _blackPlayer);
 
 			out = GameIO.getOutputStream();
 			gs.serialize(out);

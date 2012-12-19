@@ -39,9 +39,12 @@ public class GameActivity extends Activity implements OnClickListener
 		// Decide whether to start new game or resume
 		boolean resume = false;
 		Intent i = getIntent();
+
+		Bundle b = getIntent().getExtras();
+		
+		System.out.println(b);
 		if (i.hasExtra("resume"))
 		{
-			Bundle b = getIntent().getExtras();
 			resume = b.getBoolean("resume", false);
 		}
 
@@ -51,7 +54,10 @@ public class GameActivity extends Activity implements OnClickListener
 		}
 		else
 		{
-			gdp.initialize(this, movesView);
+			System.out.println(b);
+			System.out.println(gdp);
+			int gameType = b.getInt("gameType");
+			gdp.initialize(this, movesView, gameType);
 		}
 
 	}
@@ -96,7 +102,7 @@ public class GameActivity extends Activity implements OnClickListener
 				}
 				return true;
 			case R.id.show_help:
-				if(gdp!=null)
+				if (gdp != null)
 				{
 					gdp.showInstructions();
 				}

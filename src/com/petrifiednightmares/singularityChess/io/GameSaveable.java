@@ -8,23 +8,30 @@ import java.io.OutputStream;
 
 import com.petrifiednightmares.singularityChess.logging.MoveLogger;
 import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.logic.player.Player;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 
 public class GameSaveable implements Saveable
 {
 
-	boolean isWhiteTurn;
-	AbstractPiece[] whitePieces;
-	AbstractPiece[] blackPieces;
+	boolean				isWhiteTurn;
+	AbstractPiece[]		whitePieces;
+	AbstractPiece[]		blackPieces;
 
-	PieceSaveable[] whitePieceSaveables;
-	PieceSaveable[] blackPieceSaveables;
+	PieceSaveable[]		whitePieceSaveables;
+	PieceSaveable[]		blackPieceSaveables;
 
-	MoveLoggerSaveable mls;
+	PlayerSaveable		whitePlayerSaveable;
+	PlayerSaveable		blackPlayerSaveable;
+
+	Player				whitePlayer;
+	Player				blackPlayer;
+
+	MoveLoggerSaveable	mls;
 
 	// For resuming
-	private Game _game;
-	MoveLogger _ml;
+	private Game		_game;
+	MoveLogger			_ml;
 
 	public boolean isWhiteTurn()
 	{
@@ -46,6 +53,16 @@ public class GameSaveable implements Saveable
 		return _ml;
 	}
 
+	public Player getWhitePlayer()
+	{
+		return whitePlayer;
+	}
+
+	public Player getBlackPlayer()
+	{
+		return blackPlayer;
+	}
+
 	// Empty constructor for reading
 	public GameSaveable(Game game)
 	{
@@ -54,11 +71,14 @@ public class GameSaveable implements Saveable
 
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
+		
+		this.whitePlayerSaveable = new PlayerSaveable(game,game.getDrawingPanel());
+		this.blackPlayerSaveable = new PlayerSaveable(game,game.getDrawingPanel());
 	}
 
 	// full constructor for writing
 	public GameSaveable(boolean isWhiteTurn, AbstractPiece[] whitePieces,
-			AbstractPiece[] blackPieces, MoveLogger ml)
+			AbstractPiece[] blackPieces, MoveLogger ml, Player whitePlayer, Player blackPlayer)
 	{
 		this.isWhiteTurn = isWhiteTurn;
 
@@ -72,6 +92,9 @@ public class GameSaveable implements Saveable
 		}
 
 		mls = new MoveLoggerSaveable(ml);
+
+		this.whitePlayerSaveable = new PlayerSaveable(whitePlayer);
+		this.blackPlayerSaveable = new PlayerSaveable(blackPlayer);
 	}
 
 	// ****************************Saveable ****************************/
@@ -98,6 +121,13 @@ public class GameSaveable implements Saveable
 		}
 		mls.deserialize(dataIn);
 		_ml = mls.getMoveLogger();
+
+		whitePlayerSaveable.deserialize(in);
+		blackPlayerSaveable.deserialize(in);
+
+		whitePlayer = whitePlayerSaveable.getPlayer();
+		blackPlayer = blackPlayerSaveable.getPlayer();
+
 	}
 
 	public void serialize(OutputStream out) throws IOException
@@ -117,7 +147,10 @@ public class GameSaveable implements Saveable
 		}
 
 		mls.serialize(out);
-		
+
+		whitePlayerSaveable.serialize(out);
+		blackPlayerSaveable.serialize(out);
+
 		out.flush();
 	}
 

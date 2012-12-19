@@ -30,12 +30,13 @@ public class TopBar extends GameDrawable
 		c.drawRect(0, 0, SUI.WIDTH, SUI.TOP_BAR_BOTTOM, SUI.topBarTexturePaint);
 		c.drawRect(0, 0, SUI.WIDTH, SUI.TOP_BAR_BOTTOM, SUI.topBarPaint);
 
-		SUI.turnNamePaint.getTextBounds(_turnName, 0, _turnName.length(), bounds);
+//		SUI.turnNamePaint.getTextBounds(_turnName, 0, _turnName.length(), bounds);
+		SUI.turnNamePaint.getTextBounds("m", 0, 1,bounds);
 
-		c.drawCircle(30, SUI.TOP_BAR_BOTTOM / 2, bounds.height() / 2,
+		c.drawCircle(30, SUI.TOP_BAR_BOTTOM / 2, 12,
 				_isWhite ? SUI.turnNameWhitePaint : SUI.turnNameBlackPaint);
 
-		c.drawText(_turnName, 30 + bounds.height(), SUI.TOP_BAR_BOTTOM / 2 + bounds.height() / 2,
+		c.drawText(_turnName, 35 + bounds.height(), SUI.TOP_BAR_BOTTOM / 2 +(bounds.bottom-bounds.top)/2,
 				SUI.turnNamePaint);
 	}
 
