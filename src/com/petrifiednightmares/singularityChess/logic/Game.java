@@ -472,6 +472,11 @@ public class Game extends GameDrawable
 
 		return false;
 	}
+	
+	public void surrender()
+	{
+		
+	}
 
 	public void endGame()
 	{
