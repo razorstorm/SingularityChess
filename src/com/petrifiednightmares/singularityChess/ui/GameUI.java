@@ -51,6 +51,14 @@ public class GameUI extends GameDrawable
 		PROMPT_WAITING = false;
 
 	}
+	
+	public void playPieceSounds()
+	{
+		if (!Preferences.MUTE)
+		{
+			SUI.pieceSound.start();
+		}
+	}
 
 	public void setTurnName(String turnName, boolean isWhite)
 	{

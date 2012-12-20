@@ -25,8 +25,6 @@ import com.petrifiednightmares.singularityChess.pieces.Queen;
 import com.petrifiednightmares.singularityChess.pieces.Rook;
 import com.petrifiednightmares.singularityChess.ui.GameDrawable;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
-import com.petrifiednightmares.singularityChess.ui.Preferences;
-import com.petrifiednightmares.singularityChess.ui.SUI;
 
 public class Game extends GameDrawable
 {
@@ -60,6 +58,10 @@ public class Game extends GameDrawable
 
 	}
 
+	// ================================================================================
+	// Initialization
+	// ================================================================================
+
 	public void initialize(Board board, GameUI gui, int gtype)
 	{
 		this._gui = gui;
@@ -67,9 +69,9 @@ public class Game extends GameDrawable
 		this._gameType = gtype;
 		initializePlayers(gtype);
 
+		isWhiteTurn = true;
 		gui.setTurnName(_whitePlayer.getName(), isWhiteTurn);
 
-		isWhiteTurn = true;
 
 		this._board = board;
 		initializePieces(whitePieces, true);
@@ -177,6 +179,10 @@ public class Game extends GameDrawable
 
 	}
 
+	// ================================================================================
+	// Moves logic
+	// ================================================================================
+
 	public Set<Square> selectAndGetMoves(Square s) throws GameException
 	{
 		AbstractPiece p = s.getPiece();
@@ -268,7 +274,7 @@ public class Game extends GameDrawable
 		{
 			if (!_gui.PROMPT_WAITING)
 			{
-				playPieceSounds();
+				_gui.playPieceSounds();
 				switchTurns();
 				unselect();
 
@@ -285,29 +291,6 @@ public class Game extends GameDrawable
 			capturedPiece.revive(destinationLocation);
 		actor.setLocation(sourceLocation);
 
-	}
-
-	private void playPieceSounds()
-	{
-		if (!Preferences.MUTE)
-		{
-			SUI.pieceSound.start();
-		}
-	}
-
-	private void switchTurns()
-	{
-		isWhiteTurn = !isWhiteTurn;
-		_currentPlayer = isWhiteTurn ? _whitePlayer : _blackPlayer;
-		_notCurrentPlayer = isWhiteTurn ? _blackPlayer : _whitePlayer;
-		_gui.setTurnName(_currentPlayer.getName(), isWhiteTurn());
-
-		if (_gameType == VSHUMAN)
-		{
-			_controllingPlayer = _currentPlayer;
-			_nonControllingPlayer = _notCurrentPlayer;
-		}
-		_currentPlayer.doTurn();
 	}
 
 	private boolean checkMoveValidity()
@@ -347,11 +330,185 @@ public class Game extends GameDrawable
 		return true;
 	}
 
+	private void switchTurns()
+	{
+		isWhiteTurn = !isWhiteTurn;
+		_currentPlayer = isWhiteTurn ? _whitePlayer : _blackPlayer;
+		_notCurrentPlayer = isWhiteTurn ? _blackPlayer : _whitePlayer;
+		_gui.setTurnName(_currentPlayer.getName(), isWhiteTurn());
+
+		if (_gameType == VSHUMAN)
+		{
+			_controllingPlayer = _currentPlayer;
+			_nonControllingPlayer = _notCurrentPlayer;
+		}
+		_currentPlayer.doTurn();
+	}
+
+	// ================================================================================
+	// Promotions
+	// ================================================================================
+
 	private void promptPromotion(AbstractPiece piece)
 	{
 		select(piece);
 		_gui.openPromotionDialog(piece.isWhite());
 	}
+
+	public void promotePiece(AbstractPiece.PieceType pieceType)
+	{
+		if (selectedPiece instanceof Pawn)
+		{
+			AbstractPiece newPiece = ((Pawn) (selectedPiece)).promote(pieceType);
+			replacePiece(selectedPiece, newPiece);
+			finishMove();
+		}
+		else
+		{
+			gdp.displayMessage(selectedPiece + " at location: " + selectedPiece.getLocation()
+					+ " is not a pawn yet was attempted to be promoted");
+		}
+	}
+
+	public void onDraw(Canvas canvas)
+	{
+	}
+
+	// ================================================================================
+	// Ending Game
+	// ================================================================================
+
+	public void surrender()
+	{
+		_controllingPlayer.loseGame();
+		_nonControllingPlayer.winGame();
+	}
+
+	public void endGame()
+	{
+		try
+		{
+			GameIO.intentionSaveGame();
+			GameIO.removeFile();
+		}
+		finally
+		{
+			gdp.gameActivity.finish();
+		}
+		// No quitting game here anymore since the finishprompt will do so.
+	}
+
+	// ================================================================================
+	// Clicks and Selects
+	// ================================================================================
+
+	public boolean onClick(int x, int y)
+	{
+		return false;
+	}
+
+	public void select(AbstractPiece piece)
+	{
+		if (!_gui.PROMPT_WAITING)
+		{
+			try
+			{
+				_board.unhighlightAllSquares();
+				selectedPiece = piece;
+				selectedPieceMoves = piece.getMoves();
+				_board.highlightMoves(selectedPieceMoves);
+				_board.select(piece.getLocation());
+				checkingPiece = null;
+			}
+			catch (GameException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void unselect()
+	{
+		if (!_gui.PROMPT_WAITING)
+		{
+			_board.unhighlightAllSquares();
+			selectedPiece = null;
+			selectedPieceMoves = null;
+		}
+	}
+
+	private void saveGame()
+	{
+		GameSaveable gs;
+		OutputStream out = null;
+		try
+		{
+			GameIO.intentionSaveGame();
+
+			gs = new GameSaveable(_gameType, isWhiteTurn, whitePieces, blackPieces,
+					_gui.getMoveLogger(), _whitePlayer, _blackPlayer,
+					_controllingPlayer.equals(_whitePlayer));
+
+			out = GameIO.getOutputStream();
+			gs.serialize(out);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			gdp.displayMessage(e.getMessage());
+		}
+		finally
+		{
+			GameIO.closeSilently(out);
+		}
+	}
+
+	// ================================================================================
+	// Getters
+	// ================================================================================
+	public boolean isWhiteTurn()
+	{
+		return isWhiteTurn;
+	}
+
+	private boolean isChecked()
+	{
+		AbstractPiece[] enemyPieces = isWhiteTurn() ? whitePieces : blackPieces;
+		for (AbstractPiece p : enemyPieces)
+		{
+			if (p.isAlive())
+			{
+				if (p.checkingKing())
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public Board getBoard()
+	{
+		return _board;
+	}
+
+	public GameDrawingPanel getDrawingPanel()
+	{
+		return gdp;
+	}
+
+	public boolean isTurn()
+	{
+		if (selectedPiece != null)
+			return isWhiteTurn() == selectedPiece.isWhite();
+		else
+			return false;
+	}
+
+	// ================================================================================
+	// Private Helpers
+	// ================================================================================
 
 	// replace the piece in our array so the old one gets thrown away.
 	private void replacePiece(AbstractPiece oldPiece, AbstractPiece newPiece)
@@ -393,61 +550,6 @@ public class Game extends GameDrawable
 			}
 		}
 		return -1;
-	}
-
-	public void promotePiece(AbstractPiece.PieceType pieceType)
-	{
-		if (selectedPiece instanceof Pawn)
-		{
-			AbstractPiece newPiece = ((Pawn) (selectedPiece)).promote(pieceType);
-			replacePiece(selectedPiece, newPiece);
-			finishMove();
-		}
-		else
-		{
-			gdp.displayMessage(selectedPiece + " at location: " + selectedPiece.getLocation()
-					+ " is not a pawn yet was attempted to be promoted");
-		}
-	}
-
-	public boolean isTurn()
-	{
-		if (selectedPiece != null)
-			return isWhiteTurn() == selectedPiece.isWhite();
-		else
-			return false;
-	}
-
-	public void onDraw(Canvas canvas)
-	{
-
-	}
-
-	public Board getBoard()
-	{
-		return _board;
-	}
-
-	public GameDrawingPanel getDrawingPanel()
-	{
-		return gdp;
-	}
-
-	private boolean isChecked()
-	{
-		AbstractPiece[] enemyPieces = isWhiteTurn() ? whitePieces : blackPieces;
-		for (AbstractPiece p : enemyPieces)
-		{
-			if (p.isAlive())
-			{
-				if (p.checkingKing())
-				{
-					return true;
-				}
-			}
-		}
-
-		return false;
 	}
 
 	private boolean checkWinCondition()
@@ -496,97 +598,4 @@ public class Game extends GameDrawable
 
 		return false;
 	}
-
-	public void surrender()
-	{
-		_controllingPlayer.loseGame();
-		_nonControllingPlayer.winGame();
-	}
-
-	public void endGame()
-	{
-		try
-		{
-			GameIO.intentionSaveGame();
-			GameIO.removeFile();
-		}
-		finally
-		{
-			gdp.gameActivity.finish();
-		}
-		// No quitting game here anymore since the finishprompt will do so.
-	}
-
-	// **********************************Saving and restoring
-	// *********************************************************//
-
-	// *********************************UI related
-	// shits***********************************/
-
-	public boolean onClick(int x, int y)
-	{
-		return false;
-	}
-
-	public void select(AbstractPiece piece)
-	{
-		if (!_gui.PROMPT_WAITING)
-		{
-			try
-			{
-				_board.unhighlightAllSquares();
-				selectedPiece = piece;
-				selectedPieceMoves = piece.getMoves();
-				_board.highlightMoves(selectedPieceMoves);
-				_board.select(piece.getLocation());
-				checkingPiece = null;
-			}
-			catch (GameException e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void unselect()
-	{
-		if (!_gui.PROMPT_WAITING)
-		{
-			_board.unhighlightAllSquares();
-			selectedPiece = null;
-			selectedPieceMoves = null;
-		}
-	}
-
-	public boolean isWhiteTurn()
-	{
-		return isWhiteTurn;
-	}
-
-	public void saveGame()
-	{
-		GameSaveable gs;
-		OutputStream out = null;
-		try
-		{
-			GameIO.intentionSaveGame();
-
-			gs = new GameSaveable(_gameType, isWhiteTurn, whitePieces, blackPieces,
-					_gui.getMoveLogger(), _whitePlayer, _blackPlayer,
-					_controllingPlayer.equals(_whitePlayer));
-
-			out = GameIO.getOutputStream();
-			gs.serialize(out);
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-			gdp.displayMessage(e.getMessage());
-		}
-		finally
-		{
-			GameIO.closeSilently(out);
-		}
-	}
-
 }
