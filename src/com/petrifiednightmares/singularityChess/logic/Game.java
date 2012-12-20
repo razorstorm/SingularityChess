@@ -267,7 +267,7 @@ public class Game extends GameDrawable
 		return true;
 	}
 
-	public void finishMove()
+	private void finishMove()
 	{
 		// have to check again.
 		if (!checkWinCondition())
@@ -395,7 +395,6 @@ public class Game extends GameDrawable
 		{
 			gdp.gameActivity.finish();
 		}
-		// No quitting game here anymore since the finishprompt will do so.
 	}
 
 	// ================================================================================
@@ -511,6 +510,11 @@ public class Game extends GameDrawable
 			return isWhiteTurn() == selectedPiece.isWhite();
 		else
 			return false;
+	}
+	
+	public boolean isControllingPlayerTurn()
+	{
+		return _controllingPlayer.equals(_currentPlayer);
 	}
 
 	// ================================================================================

@@ -45,7 +45,8 @@ public class AIPlayer extends Player
 		// TODO DEREK, do shit here.
 		//when ready, call _game.makeMove() 'n shit
 		Log.i("SChess", "AI Player do turns!");
-		this._game.finishMove();
+		//first select a piece.
+		_game.finishMove();
 	}
 
 }

@@ -27,13 +27,16 @@ import com.petrifiednightmares.singularityChess.ui.SUI;
 public class Board extends GameDrawable
 {
 	// hashed by file and rank: "a3" for example.
-	private HashMap<String, Square> squares;
-	public static final int[] boardRanks = new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
-	public static final int[] realBoardRanks = new int[] { 5, 7, 9, 12, 12, 9, 7, 5 };
-	private Game _game; // back reference to game
-	private Resources _res;
+	private HashMap<String, Square>	squares;
+	public static final int[]		boardRanks		= new int[] { 5, 7, 9, 11, 11, 9, 7, 5 };
+	public static final int[]		realBoardRanks	= new int[] { 5, 7, 9, 12, 12, 9, 7, 5 };
+	private Game					_game;														// back
+																								// reference
+																								// to
+																								// game
+	private Resources				_res;
 
-	private Background _bg;
+	private Background				_bg;
 
 	public Board(GameDrawingPanel gdp, Game game, Background bg)
 	{
@@ -72,7 +75,8 @@ public class Board extends GameDrawable
 					Class<R.array> res = R.array.class;
 					Field field = res.getField("corners_" + file + "" + rank);
 					cornersId = field.getInt(null);
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					Log.e("MyTag", "Failure to get corners id.", e);
 					e.printStackTrace();
@@ -96,7 +100,8 @@ public class Board extends GameDrawable
 					Class<R.array> res = R.array.class;
 					Field field = res.getField("sides_" + file + "" + rank);
 					sidesId = field.getInt(null);
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					Log.e("MyTag", "Failure to get sides id.", e);
 					e.printStackTrace();
@@ -204,11 +209,13 @@ public class Board extends GameDrawable
 			if (obstructingPiece == null)
 			{
 				moves.add(currSquare);
-			} else if (obstructingPiece.isWhite() != isWhite)
+			}
+			else if (obstructingPiece.isWhite() != isWhite)
 			{
 				moves.add(currSquare);
 				continue;
-			} else
+			}
+			else
 			{
 				continue;
 			}
@@ -280,11 +287,13 @@ public class Board extends GameDrawable
 			if (obstructingPiece == null)
 			{
 				moves.add(currSquare);
-			} else if (obstructingPiece.isWhite() != isWhite)
+			}
+			else if (obstructingPiece.isWhite() != isWhite)
 			{
 				moves.add(currSquare);
 				continue;
-			} else
+			}
+			else
 			{
 				continue;
 			}
@@ -403,9 +412,10 @@ public class Board extends GameDrawable
 			{
 				next = corners[i];
 
-				//to prevent some stupid thing where the pawn can capture enemy pawn immediately. so bood
-				
-				if (next != null && !isInitialPawnCapture(next, startSquare) &&  next.hasPiece())
+				// to prevent some stupid thing where the pawn can capture enemy
+				// pawn immediately. so bood
+
+				if (next != null && !isInitialPawnCapture(next, startSquare) && next.hasPiece())
 				{
 					AbstractPiece obstructingPiece = next.getPiece();
 					// if the square is capturable
@@ -421,7 +431,8 @@ public class Board extends GameDrawable
 
 	private boolean isInitialPawnCapture(Square next, Square startSquare)
 	{
-		if ((next.getRank() == 2 && startSquare.getRank() == 4) || (next.getRank() == 4 && startSquare.getRank() == 2))
+		if ((next.getRank() == 2 && startSquare.getRank() == 4)
+				|| (next.getRank() == 4 && startSquare.getRank() == 2))
 		{
 			if ((next.getFile() == 'a' && startSquare.getFile() == 'a')
 					|| (next.getFile() == 'h' && startSquare.getFile() == 'h'))
@@ -429,7 +440,7 @@ public class Board extends GameDrawable
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -496,16 +507,8 @@ public class Board extends GameDrawable
 
 	public boolean onClick(int x, int y)
 	{
-		if (this._game.getCurrentPlayer() instanceof AIPlayer ||
-			this._game.getCurrentPlayer() instanceof RemotePlayer)
-		{
-			//TODO what we should allow user to do while they are waiting for game?
-			//this might need to be redone. I suggest we allow user can select. 						
-			return false;
-		}
-			
 		// cycle through Squares to do collision detection
-		// then figure out what to do depending on what the square's stats are.		
+		// then figure out what to do depending on what the square's stats are.
 		for (String key : squares.keySet())
 		{
 			if (key.compareTo("d12") == 0 || key.compareTo("e12") == 0)
@@ -517,15 +520,21 @@ public class Board extends GameDrawable
 				{
 					try
 					{
-						_game.makeMove(s);
-					} catch (InvalidMoveException e)
+						if (_game.isControllingPlayerTurn())
+						{
+							_game.makeMove(s);
+						}
+					}
+					catch (InvalidMoveException e)
 					{
 						e.printStackTrace();
 					}
-				} else if (s.hasPiece())
+				}
+				else if (s.hasPiece())
 				{
 					_game.select(s.getPiece());
-				} else
+				}
+				else
 				{
 					// if didn't hit anything
 					_game.unselect();
