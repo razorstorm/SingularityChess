@@ -516,7 +516,17 @@ public class Game extends GameDrawable
 	{
 		return _controllingPlayer.equals(_currentPlayer);
 	}
+	
+	public AbstractPiece[] getWhitePiece()
+	{
+		return this.whitePieces;
+	}
 
+	public AbstractPiece[] getBlackPiece()
+	{
+		return this.blackPieces;
+	}
+	
 	// ================================================================================
 	// Private Helpers
 	// ================================================================================

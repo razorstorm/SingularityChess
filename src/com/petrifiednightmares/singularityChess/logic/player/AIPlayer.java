@@ -1,6 +1,8 @@
 package com.petrifiednightmares.singularityChess.logic.player;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.InvalidMoveException;
+import com.petrifiednightmares.singularityChess.ai.AIEngine;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import android.util.Log;
 
@@ -43,10 +45,19 @@ public class AIPlayer extends Player
 	public void doTurn()
 	{
 		// TODO DEREK, do shit here.
-		//when ready, call _game.makeMove() 'n shit
-		Log.i("SChess", "AI Player do turns!");
-		//first select a piece.
-		_game.finishMove();
+		Log.i("SChess", "AI Player do turns!");		
+		//1. start AI engine, pass in the current state of game
+		AIEngine aiEngine = new AIEngine(this._game);
+		//2. calculate for the next move, result: selecting piece, and target square. 
+		aiEngine.calcNextMove();
+		//3. user Game.java interface to select the piece and make move.
+		this._game.select(aiEngine.getSelectingPiece());
+		try {
+			this._game.makeMove(aiEngine.getTarget());
+		} catch (InvalidMoveException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
