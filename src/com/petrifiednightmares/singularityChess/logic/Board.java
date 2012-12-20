@@ -13,6 +13,11 @@ import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.R;
+import com.petrifiednightmares.singularityChess.logic.player.AIPlayer;
+import com.petrifiednightmares.singularityChess.logic.player.NonTrackedPlayer;
+import com.petrifiednightmares.singularityChess.logic.player.Player;
+import com.petrifiednightmares.singularityChess.logic.player.RemotePlayer;
+import com.petrifiednightmares.singularityChess.logic.player.TrackedPlayer;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Pawn;
 import com.petrifiednightmares.singularityChess.ui.Background;
@@ -491,21 +496,16 @@ public class Board extends GameDrawable
 
 	public boolean onClick(int x, int y)
 	{
-		/*
-		 * // testing purpose only for(String key: squares.keySet()) { Square s
-		 * = squares.get(key); s.removePiece(); }
-		 * 
-		 * for(String key: squares.keySet()) {
-		 * 
-		 * if (key.compareTo("d12")==0 || key.compareTo("e12")==0) continue;
-		 * Square s = squares.get(key); if (s.containsPoint(x, y)) {
-		 * this.unhighlightAllSquares(); Rook testPiece = new Rook(this._game,
-		 * s, true); s.addPiece(testPiece); _game.select(s.getPiece()); break; }
-		 * }
-		 */
-
+		if (this._game.getCurrentPlayer() instanceof AIPlayer ||
+			this._game.getCurrentPlayer() instanceof RemotePlayer)
+		{
+			//TODO what we should allow user to do while they are waiting for game?
+			//this might need to be redone. I suggest we allow user can select. 						
+			return false;
+		}
+			
 		// cycle through Squares to do collision detection
-		// then figure out what to do depending on what the square's stats are.
+		// then figure out what to do depending on what the square's stats are.		
 		for (String key : squares.keySet())
 		{
 			if (key.compareTo("d12") == 0 || key.compareTo("e12") == 0)

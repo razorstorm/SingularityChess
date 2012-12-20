@@ -1,6 +1,7 @@
 package com.petrifiednightmares.singularityChess.logic.player;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import android.util.Log;
 
 public abstract class Player
 {

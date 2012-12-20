@@ -2,6 +2,7 @@ package com.petrifiednightmares.singularityChess.logic.player;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.logic.Game;
+import android.util.Log;
 
 /**
  * This is the player class that is for human vs computer offline games. The
@@ -39,15 +40,12 @@ public class AIPlayer extends Player
 	{
 	}
 
-	/**
-	 * Do shit here
-	 */
 	public void doTurn()
 	{
 		// TODO DEREK, do shit here.
 		//when ready, call _game.makeMove() 'n shit
-		
-		_game.isWhiteTurn();
+		Log.i("SChess", "AI Player do turns!");
+		this._game.finishMove();
 	}
 
 }
