@@ -13,8 +13,9 @@ import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 
 public class GameSaveable implements Saveable
 {
-
+	int					gameType;
 	boolean				isWhiteTurn;
+	boolean				isControllingWhite;
 	AbstractPiece[]		whitePieces;
 	AbstractPiece[]		blackPieces;
 
@@ -32,6 +33,11 @@ public class GameSaveable implements Saveable
 	// For resuming
 	private Game		_game;
 	MoveLogger			_ml;
+
+	public int getGameType()
+	{
+		return gameType;
+	}
 
 	public boolean isWhiteTurn()
 	{
@@ -62,6 +68,12 @@ public class GameSaveable implements Saveable
 	{
 		return blackPlayer;
 	}
+	
+	public boolean getIsControllingWhite()
+	{
+		return isControllingWhite;
+	}
+
 
 	// Empty constructor for reading
 	public GameSaveable(Game game)
@@ -71,16 +83,18 @@ public class GameSaveable implements Saveable
 
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
-		
-		this.whitePlayerSaveable = new PlayerSaveable(game,game.getDrawingPanel());
-		this.blackPlayerSaveable = new PlayerSaveable(game,game.getDrawingPanel());
+
+		this.whitePlayerSaveable = new PlayerSaveable(game, game.getDrawingPanel());
+		this.blackPlayerSaveable = new PlayerSaveable(game, game.getDrawingPanel());
 	}
 
 	// full constructor for writing
-	public GameSaveable(boolean isWhiteTurn, AbstractPiece[] whitePieces,
-			AbstractPiece[] blackPieces, MoveLogger ml, Player whitePlayer, Player blackPlayer)
+	public GameSaveable(int gameType, boolean isWhiteTurn, AbstractPiece[] whitePieces,
+			AbstractPiece[] blackPieces, MoveLogger ml, Player whitePlayer, Player blackPlayer, boolean isControllingWhite)
 	{
+		this.gameType = gameType;
 		this.isWhiteTurn = isWhiteTurn;
+		this.isControllingWhite = isControllingWhite;
 
 		whitePieceSaveables = new PieceSaveable[16];
 		blackPieceSaveables = new PieceSaveable[16];
@@ -103,7 +117,12 @@ public class GameSaveable implements Saveable
 	public void deserialize(InputStream in) throws IOException
 	{
 		DataInputStream dataIn = new DataInputStream(in);
+
+		gameType = dataIn.readInt();
+
 		isWhiteTurn = dataIn.readBoolean();
+		
+		isControllingWhite = dataIn.readBoolean();
 
 		PieceSaveable ps;
 		for (int i = 0; i < 16; i++)
@@ -134,7 +153,11 @@ public class GameSaveable implements Saveable
 	{
 		DataOutputStream dataOut = new DataOutputStream(out);
 
+		dataOut.writeInt(gameType);
+
 		dataOut.writeBoolean(isWhiteTurn);
+		
+		dataOut.writeBoolean(isControllingWhite);
 
 		for (int i = 0; i < 16; i++)
 		{
@@ -153,5 +176,6 @@ public class GameSaveable implements Saveable
 
 		out.flush();
 	}
+
 
 }

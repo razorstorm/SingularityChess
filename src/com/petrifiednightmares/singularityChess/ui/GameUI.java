@@ -1,9 +1,12 @@
 package com.petrifiednightmares.singularityChess.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.widget.ScrollView;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.logging.MoveLogger;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.Square;
@@ -144,6 +147,22 @@ public class GameUI extends GameDrawable
 		this._ml = ml;
 		((MovesLogDialog) movesDialog).setMoveLogger(_ml);
 		((CapturesDialog) capturesDialog).setMoveLogger(_ml);
+	}
+	
+	public void surrender()
+	{
+		new AlertDialog.Builder(gdp.getContext()).setIcon(android.R.drawable.ic_dialog_alert)
+		.setTitle(R.string.surrender).setMessage(R.string.really_surrender)
+		.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int which)
+			{
+				// Stop the activity
+				_game.surrender();
+			}
+
+		}).setNegativeButton(R.string.no, null).show();
+
 	}
 
 }

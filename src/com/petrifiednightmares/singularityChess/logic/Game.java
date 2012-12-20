@@ -45,8 +45,11 @@ public class Game extends GameDrawable
 
 	private Player	_whitePlayer, _blackPlayer;
 	private Player	_currentPlayer, _notCurrentPlayer;
+	private Player	_controllingPlayer, _nonControllingPlayer;
 
 	public static final int	VSHUMAN	= 1, VSCOMP = 2, ONLINE = 3;
+
+	private int				_gameType;
 
 	public Game(GameDrawingPanel drawingPanel)
 	{
@@ -61,6 +64,7 @@ public class Game extends GameDrawable
 	{
 		this._gui = gui;
 
+		this._gameType = gtype;
 		initializePlayers(gtype);
 
 		gui.setTurnName(_whitePlayer.getName(), isWhiteTurn);
@@ -87,6 +91,8 @@ public class Game extends GameDrawable
 
 			gs.deserialize(in);
 
+			this._gameType = gs.getGameType();
+
 			whitePieces = gs.getWhitePieces();
 			blackPieces = gs.getBlackPieces();
 
@@ -98,15 +104,21 @@ public class Game extends GameDrawable
 			_currentPlayer = isWhiteTurn ? _whitePlayer : _blackPlayer;
 			_notCurrentPlayer = isWhiteTurn ? _blackPlayer : _whitePlayer;
 
+			boolean isControllingWhite = gs.getIsControllingWhite();
+			// TODO fix
+			_controllingPlayer = isControllingWhite ? _whitePlayer : _blackPlayer;
+			_nonControllingPlayer = isControllingWhite ? _blackPlayer : _whitePlayer;
+
 			this._gui.setMoveLogger(gs.getMoveLogger());
 			this._gui.setTurnName(_currentPlayer.getName(), isWhiteTurn());
 		}
 		catch (Exception e)
 		{
 			// for some reason resume didnt work, initializing instead
-			initialize(board, gui, VSCOMP);
-			gdp.displayMessage("Resume failed, starting new game against computer");
-			
+			this._gameType = VSHUMAN;
+			initialize(board, gui, _gameType);
+			gdp.displayMessage("Resume failed, starting new game against human");
+
 			e.printStackTrace();
 		}
 		finally
@@ -122,12 +134,18 @@ public class Game extends GameDrawable
 			case ONLINE:
 				break;
 			case VSCOMP:
+				// TODO in the future we need to put logic that allows player to
+				// choose which side he/she wants to play as
 				_whitePlayer = new TrackedPlayer(true, "White player", gdp);
 				_blackPlayer = new AIPlayer(false, "Black player", gdp, this);
+				_controllingPlayer = _whitePlayer;
+				_nonControllingPlayer = _blackPlayer;
 				break;
 			case VSHUMAN:
 				_whitePlayer = new NonTrackedPlayer(true, "White player", gdp);
 				_blackPlayer = new NonTrackedPlayer(false, "Black player", gdp);
+				_controllingPlayer = _whitePlayer;
+				_nonControllingPlayer = _blackPlayer;
 				break;
 			default:
 				break;
@@ -283,6 +301,12 @@ public class Game extends GameDrawable
 		_currentPlayer = isWhiteTurn ? _whitePlayer : _blackPlayer;
 		_notCurrentPlayer = isWhiteTurn ? _blackPlayer : _whitePlayer;
 		_gui.setTurnName(_currentPlayer.getName(), isWhiteTurn());
+
+		if (_gameType == VSHUMAN)
+		{
+			_controllingPlayer = _currentPlayer;
+			_nonControllingPlayer = _notCurrentPlayer;
+		}
 		_currentPlayer.doTurn();
 	}
 
@@ -472,10 +496,11 @@ public class Game extends GameDrawable
 
 		return false;
 	}
-	
+
 	public void surrender()
 	{
-		
+		_controllingPlayer.loseGame();
+		_nonControllingPlayer.winGame();
 	}
 
 	public void endGame()
@@ -546,8 +571,9 @@ public class Game extends GameDrawable
 		{
 			GameIO.intentionSaveGame();
 
-			gs = new GameSaveable(isWhiteTurn, whitePieces, blackPieces, _gui.getMoveLogger(),
-					_whitePlayer, _blackPlayer);
+			gs = new GameSaveable(_gameType, isWhiteTurn, whitePieces, blackPieces,
+					_gui.getMoveLogger(), _whitePlayer, _blackPlayer,
+					_controllingPlayer.equals(_whitePlayer));
 
 			out = GameIO.getOutputStream();
 			gs.serialize(out);

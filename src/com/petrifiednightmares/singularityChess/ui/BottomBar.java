@@ -9,10 +9,10 @@ import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class BottomBar extends GameDrawable
 {
-	ActionButton[] buttons;
-	private int _barWidth, _space, _buttonWidth, _top, _height, _thinButtonWidth;
+	ActionButton[]	buttons;
+	private int		_barWidth, _space, _buttonWidth, _top, _height, _thinButtonWidth;
 
-	private GameUI _gui;
+	private GameUI	_gui;
 
 	public BottomBar(GameUI gui, GameDrawingPanel gdp)
 	{
@@ -53,24 +53,25 @@ public class BottomBar extends GameDrawable
 			{
 				switch (i)
 				{
-				case 0:
-					_gui.movesDialog.display();
-					_gui.PROMPT_WAITING = true;
-					_gui.PROMPT = _gui.movesDialog;
-					gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-					break;
-				case 1:
-					_gui.capturesDialog.display();
-					_gui.PROMPT_WAITING = true;
-					_gui.PROMPT = _gui.capturesDialog;
-					gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-					break;
-				case 3:
-					// expand menu
-					((GameActivity) gdp.getContext()).openOptionsMenu();
-					gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-					break;
+					case 0:
+						_gui.movesDialog.display();
+						_gui.PROMPT_WAITING = true;
+						_gui.PROMPT = _gui.movesDialog;
+						break;
+					case 1:
+						_gui.capturesDialog.display();
+						_gui.PROMPT_WAITING = true;
+						_gui.PROMPT = _gui.capturesDialog;
+						break;
+					case 2:
+						_gui.surrender();
+						break;
+					case 3:
+						// expand menu
+						((GameActivity) gdp.getContext()).openOptionsMenu();
+						break;
 				}
+				gdp.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 			}
 		}
 		return false;
