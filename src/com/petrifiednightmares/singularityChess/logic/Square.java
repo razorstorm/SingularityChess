@@ -307,14 +307,14 @@ public class Square extends GameDrawable
 		throw new GameException("given side square " + firstSide
 				+ " is not adjacent to this square" + this);
 	}
-
+	
 	// This is for knights, it gets the elbow shaped ones.
 	public Square[] getAdjacentSides(Square firstSide) throws GameException
 	{
 		for (int i = 0; i < 4; i++)
 		{
 			Square s = _sides[i];
-			if (firstSide.equals(s))
+			if (isSquareEqual(firstSide, s))
 			{
 				// + 3 is same thing as -1
 				return new Square[] { _sides[(i + 1) % 4], _sides[(i + 3) % 4] };
@@ -381,4 +381,23 @@ public class Square extends GameDrawable
 		return this._highlighted;
 	}
 
+	private boolean isSquareEqual(Square s1, Square s2)
+	{
+		if (s1.getTag().equals("d6") || s1.getTag().equals("d12"))
+		{
+			if (s2.getTag().equals("d6") || s2.getTag().equals("d12"))
+				return true;
+			return false;
+		}
+		
+		if (s1.getTag().equals("e6") || s1.getTag().equals("e12"))
+		{
+			if (s2.getTag().equals("e6") || s2.getTag().equals("e12"))
+				return true;
+			return false;
+		}
+		
+		return s1.equals(s2);
+	}
+	
 }
