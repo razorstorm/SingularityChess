@@ -16,9 +16,12 @@ public class AIEngine {
 
 	public static final int	EASY = 1, MEDUIM = 2, HOLYSHIT = 3;
 	
+	@SuppressWarnings("unused")
 	private int	aiLevel;
 
+	@SuppressWarnings("unused")
 	private Game _game; // a link to the actual game
+	@SuppressWarnings("unused")
 	private Board _board;	// a link to the actual board
 	private AbstractPiece _selectingPiece;
 	private Square _target;

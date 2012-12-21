@@ -63,6 +63,11 @@ public class SUI
 
 		// 60 from shadow, 10 from padding
 		BOTTOM = HEIGHT_CENTER + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH + 60 + 10;
+		
+		if(CIRCLE_RADIUS_DIFFERENCE * 6 + HEIGHT_CENTER > BOTTOM - UNIT)
+		{
+			CIRCLE_RADIUS_DIFFERENCE = ((BOTTOM -UNIT) - HEIGHT_CENTER) / 6;
+		}
 	}
 
 	private static void setupColorPaints()
