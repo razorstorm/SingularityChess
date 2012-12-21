@@ -44,8 +44,6 @@ public class AIPlayer extends Player
 
 	public void doTurn()
 	{
-		// TODO DEREK, do shit here.
-		Log.i("SChess", "AI Player do turns!");		
 		//1. start AI engine, pass in the current state of game
 		AIEngine aiEngine = new AIEngine(this._game);
 		//2. calculate for the next move, result: selecting piece, and target square. 
