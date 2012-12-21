@@ -4,7 +4,6 @@ import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
 import com.petrifiednightmares.singularityChess.ai.AIEngine;
 import com.petrifiednightmares.singularityChess.logic.Game;
-import android.util.Log;
 
 /**
  * This is the player class that is for human vs computer offline games. The

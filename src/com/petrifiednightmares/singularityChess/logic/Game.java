@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
+
 import android.graphics.Canvas;
+
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
@@ -13,7 +15,6 @@ import com.petrifiednightmares.singularityChess.io.GameSaveable;
 import com.petrifiednightmares.singularityChess.logic.player.AIPlayer;
 import com.petrifiednightmares.singularityChess.logic.player.NonTrackedPlayer;
 import com.petrifiednightmares.singularityChess.logic.player.Player;
-import com.petrifiednightmares.singularityChess.logic.player.RemotePlayer;
 import com.petrifiednightmares.singularityChess.logic.player.TrackedPlayer;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.pieces.Bishop;

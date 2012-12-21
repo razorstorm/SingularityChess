@@ -2,7 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg" >
+    android:background="@drawable/background" >
+
+    <TextView
+        android:id="@+id/offline_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/vs_human"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:text="@string/offline_label"
+        android:textColor="#CCFFFFFF"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/vs_human"
@@ -10,7 +21,12 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/vs_computer"
         android:layout_alignParentLeft="true"
-        android:text="@string/vs_human" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button_background_normal"
+        android:text="@string/vs_human"
+        android:textColor="#AAFFFFFF" />
 
     <Button
         android:id="@+id/vs_computer"
@@ -18,15 +34,36 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/resume"
         android:layout_alignParentLeft="true"
-        android:text="@string/vs_computer" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button_background_normal"
+        android:text="@string/vs_computer"
+        android:textColor="#AAFFFFFF" />
 
     <Button
         android:id="@+id/resume"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/multi_player"
+        android:layout_above="@+id/online_view"
         android:layout_alignParentLeft="true"
-        android:text="@string/resume" />
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button_background_normal"
+        android:text="@string/resume"
+        android:textColor="#AAFFFFFF" />
+
+    <TextView
+        android:id="@+id/online_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/multi_player"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:text="@string/online_label"
+        android:textColor="#CCFFFFFF"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <Button
         android:id="@+id/multi_player"
@@ -34,6 +71,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="@string/multi_player" />
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button_background_normal"
+        android:text="@string/multi_player"
+        android:textColor="#AAFFFFFF" />
 
 </RelativeLayout>

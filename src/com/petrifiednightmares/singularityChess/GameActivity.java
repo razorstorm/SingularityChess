@@ -42,7 +42,6 @@ public class GameActivity extends Activity implements OnClickListener
 
 		Bundle b = getIntent().getExtras();
 		
-		System.out.println(b);
 		if (i.hasExtra("resume"))
 		{
 			resume = b.getBoolean("resume", false);
@@ -54,8 +53,6 @@ public class GameActivity extends Activity implements OnClickListener
 		}
 		else
 		{
-			System.out.println(b);
-			System.out.println(gdp);
 			int gameType = b.getInt("gameType");
 			gdp.initialize(this, movesView, gameType);
 		}

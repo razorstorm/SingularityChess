@@ -29,7 +29,6 @@ public class ActionButton
 		initialize(top, left, width, height);
 		this._title = title;
 
-
 		_textBounds = new Rect();
 		_iconPaint.getTextBounds(_title, 0, _title.length(), _textBounds);
 		_mHeight = new Rect();
