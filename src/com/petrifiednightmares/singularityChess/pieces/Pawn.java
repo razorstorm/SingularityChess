@@ -13,7 +13,6 @@ import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 
 public class Pawn extends AbstractPiece
 {
-	private boolean canJump = true;
 	private boolean jumped = false;
 
 	public Pawn(Game game, Square location, boolean isWhite)
@@ -35,8 +34,6 @@ public class Pawn extends AbstractPiece
 
 	public AbstractPiece makeMove(Square target)
 	{
-		canJump = false;
-
 		return super.makeMove(target);
 	}
 

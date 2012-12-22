@@ -15,12 +15,19 @@ import android.view.WindowManager;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.google.ads.Ad;
+import com.google.ads.AdListener;
+import com.google.ads.AdRequest;
+import com.google.ads.AdRequest.ErrorCode;
+import com.google.ads.InterstitialAd;
+import com.petrifiednightmares.singularityChess.revenue.AdMob;
 import com.petrifiednightmares.singularityChess.ui.Preferences;
 
-public class GameActivity extends Activity implements OnClickListener
+public class GameActivity extends Activity implements OnClickListener, AdListener
 {
 
-	GameDrawingPanel	gdp;
+	GameDrawingPanel		gdp;
+	private InterstitialAd	interstitial;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -41,7 +48,7 @@ public class GameActivity extends Activity implements OnClickListener
 		Intent i = getIntent();
 
 		Bundle b = getIntent().getExtras();
-		
+
 		if (i.hasExtra("resume"))
 		{
 			resume = b.getBoolean("resume", false);
@@ -50,12 +57,29 @@ public class GameActivity extends Activity implements OnClickListener
 		if (resume)
 		{
 			gdp.resume(this, movesView);
+			doAds();
 		}
 		else
 		{
 			int gameType = b.getInt("gameType");
 			gdp.initialize(this, movesView, gameType);
 		}
+
+	}
+
+	private void doAds()
+	{
+		// Create the interstitial
+		interstitial = new InterstitialAd(this, AdMob.PUBLISHER_ID);
+
+		// Create ad request
+		AdRequest adRequest = new AdRequest();
+
+		// Begin loading your interstitial
+		interstitial.loadAd(adRequest);
+
+		// Set Ad Listener to use the callbacks below
+		interstitial.setAdListener(this);
 
 	}
 
@@ -139,6 +163,39 @@ public class GameActivity extends Activity implements OnClickListener
 	public void onClick(View v)
 	{
 		// TODO Auto-generated method stub
+
+	}
+
+	public void onDismissScreen(Ad arg0)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	public void onLeaveApplication(Ad arg0)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	public void onPresentScreen(Ad arg0)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	public void onReceiveAd(Ad ad)
+	{
+		if (ad == interstitial)
+		{
+			interstitial.show();
+		}
 
 	}
 
