@@ -20,7 +20,7 @@ public class SUI
 
 	public static int			WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE,
 			TOP_PADDING, CIRCLE_RADIUS_DIFFERENCE, TOP_BAR_BOTTOM, BORDER_WIDTH, HEIGHT_CENTER,
-			BOTTOM;
+			BOTTOM, BOTTOM_BAR_HEIGHT;
 
 	public static Paint			darkPaint, lightPaint, highlightPaint, highlightPaint2,
 			attackPaint, attackPaint2, piecePaint, labelPaint, flashPaint, flashPaint2,
@@ -60,11 +60,14 @@ public class SUI
 		CIRCLE_RADIUS_DIFFERENCE = 11 * UNIT; // 12
 		BORDER_WIDTH = (WIDTH / 2 - PADDING) - 4 * CIRCLE_RADIUS_DIFFERENCE;
 		HEIGHT_CENTER = TOP_PADDING + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH;
+		
+		BOTTOM_BAR_HEIGHT = SUI.UNIT * 10;
 
 		// 60 from shadow, 10 from padding
 		BOTTOM = HEIGHT_CENTER + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH + 60 + 10;
 		
-		if(CIRCLE_RADIUS_DIFFERENCE * 6 + HEIGHT_CENTER > BOTTOM - UNIT)
+		//If the circle is so big it pushes away the bottom bar
+		if(BOTTOM + SUI.PADDING  > SUI.HEIGHT - SUI.PADDING - SUI.BOTTOM_BAR_HEIGHT)
 		{
 			CIRCLE_RADIUS_DIFFERENCE = ((BOTTOM -UNIT) - HEIGHT_CENTER) / 6;
 		}

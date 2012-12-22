@@ -10,7 +10,7 @@ import com.petrifiednightmares.singularityChess.utilities.SingularBitmapFactory;
 public class BottomBar extends GameDrawable
 {
 	ActionButton[]	buttons;
-	private int		_barWidth, _space, _buttonWidth, _top, _height, _thinButtonWidth;
+	private int		_barWidth, _space, _buttonWidth, _top, _thinButtonWidth;
 
 	private GameUI	_gui;
 
@@ -22,24 +22,23 @@ public class BottomBar extends GameDrawable
 		_barWidth = SUI.WIDTH - SUI.PADDING * 2;
 		_buttonWidth = SUI.UNIT * 25;
 		_thinButtonWidth = SUI.UNIT * 8;
-		_height = SUI.UNIT * 10;
-		_top = SUI.HEIGHT - SUI.PADDING - _height;
+		_top = SUI.HEIGHT - SUI.PADDING - SUI.BOTTOM_BAR_HEIGHT;
 
 		_space = (_barWidth - 3 * _buttonWidth - _thinButtonWidth) / 6;
 
 		buttons = new ActionButton[4];
-		buttons[0] = new ActionButton("Show Moves", _top, SUI.PADDING, _buttonWidth, _height);
+		buttons[0] = new ActionButton("Show Moves", _top, SUI.PADDING, _buttonWidth, SUI.BOTTOM_BAR_HEIGHT);
 
 		buttons[1] = new ActionButton("Show Captures", _top, SUI.PADDING + _space * 2
-				+ _buttonWidth, _buttonWidth, _height);
+				+ _buttonWidth, _buttonWidth, SUI.BOTTOM_BAR_HEIGHT);
 
 		buttons[2] = new ActionButton("Surrender", _top, SUI.PADDING + _space * 4 + _buttonWidth
-				* 2, _buttonWidth, _height);
+				* 2, _buttonWidth, SUI.BOTTOM_BAR_HEIGHT);
 
 		buttons[3] = new ActionButton(SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
 				android.R.drawable.ic_menu_preferences, (int) (_thinButtonWidth * 0.6),
-				(int) (_height * 0.5)), _top, SUI.PADDING + _space * 6 + _buttonWidth * 3,
-				_thinButtonWidth, _height);
+				(int) (SUI.BOTTOM_BAR_HEIGHT * 0.5)), _top, SUI.PADDING + _space * 6 + _buttonWidth * 3,
+				_thinButtonWidth, SUI.BOTTOM_BAR_HEIGHT);
 
 	}
 
