@@ -28,6 +28,7 @@ public class AIPlayer extends Player
 	 */
 	public void winGame()
 	{
+		_gdp.showFinishPrompt("Checkmate!", "You Lose to my Robot :P");
 	}
 
 	/**
