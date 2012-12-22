@@ -42,7 +42,25 @@ public class Pawn extends AbstractPiece
 
 	public boolean canJump()
 	{
-		return canJump;
+		if (this.isWhite())
+		{
+			if (this.location.getRank()==2)
+				return true;
+			else 
+				return false;
+		}
+		else
+		{
+			if (this.location.getTag().equals("a4")) return true;
+			if (this.location.getTag().equals("b6")) return true;
+			if (this.location.getTag().equals("c8")) return true;
+			if (this.location.getTag().equals("d10")) return true;
+			if (this.location.getTag().equals("e10")) return true;
+			if (this.location.getTag().equals("f8")) return true;
+			if (this.location.getTag().equals("g6")) return true;
+			if (this.location.getTag().equals("h4")) return true;
+			return false;
+		}
 	}
 
 	public boolean isJumped()
