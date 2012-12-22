@@ -5,17 +5,10 @@ import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
 
-/**
- * This is the player class that is for online games with remote player. The
- * scores are tracked for this mode.
- * 
- * @author formatjam
- * 
- */
-public class RemotePlayer extends Player
+public class HumanPlayer extends Player
 {
 
-	public RemotePlayer(boolean isWhite, String name, GameDrawingPanel gdp, Game g, GameUI gui)
+	public HumanPlayer(boolean isWhite, String name, GameDrawingPanel gdp, Game g, GameUI gui)
 	{
 		super(isWhite, name, gdp, g, gui);
 	}
@@ -38,7 +31,7 @@ public class RemotePlayer extends Player
 	}
 
 	/**
-	 * this will trigger the Internet communication
+	 * Since this is a human player, this doesn't do anything
 	 */
 	public void doTurn()
 	{
@@ -48,8 +41,9 @@ public class RemotePlayer extends Player
 	@Override
 	public void promote(AbstractPiece p)
 	{
-		// TODO Auto-generated method stub
+		_game.select(p);
 
+		_gui.openPromotionDialog(p.isWhite());
 	}
 
 }

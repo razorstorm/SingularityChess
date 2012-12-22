@@ -1,6 +1,8 @@
 package com.petrifiednightmares.singularityChess.logic.player;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.ui.GameUI;
 
 /**
  * This is the player class that is for human vs human offline games. The scores
@@ -9,35 +11,12 @@ import com.petrifiednightmares.singularityChess.GameDrawingPanel;
  * @author jason
  * 
  */
-public class NonTrackedPlayer extends Player
+public class NonTrackedPlayer extends HumanPlayer
 {
 
-	public NonTrackedPlayer(boolean isWhite, String name, GameDrawingPanel gdp)
+	public NonTrackedPlayer(boolean isWhite, String name, GameDrawingPanel gdp, Game g, GameUI gui)
 	{
-		super(isWhite, name, gdp);
-	}
-
-	public void winGame()
-	{
-		_gdp.showFinishPrompt("Checkmate!", _name + " won!");
-	}
-
-	public void loseGame()
-	{
-		// Do nothing, only have the win show something
-	}
-
-	public void tieGame()
-	{
-		_gdp.showFinishPrompt("Stalemate!", "This is stale meat. Should have put it in the fridge.");
-	}
-
-	/**
-	 * Since this is a human player, this doesn't do anything
-	 */
-	public void doTurn()
-	{
-
+		super(isWhite, name, gdp, g, gui);
 	}
 
 }

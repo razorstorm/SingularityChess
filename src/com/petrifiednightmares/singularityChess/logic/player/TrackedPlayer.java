@@ -1,44 +1,40 @@
 package com.petrifiednightmares.singularityChess.logic.player;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.logic.Game;
+import com.petrifiednightmares.singularityChess.ui.GameUI;
 
 /**
- * This is the player class that is for human vs computer offline games. The scores
- * are tracked for this mode.
+ * This is the player class that is for human vs computer offline games. The
+ * scores are tracked for this mode.
  * 
  * @author jason
  * 
  */
-public class TrackedPlayer extends Player
+public class TrackedPlayer extends HumanPlayer
 {
 
-	public TrackedPlayer(boolean isWhite, String name, GameDrawingPanel gdp)
+	public TrackedPlayer(boolean isWhite, String name, GameDrawingPanel gdp, Game g, GameUI gui)
 	{
-		super(isWhite, name, gdp);
+		super(isWhite, name, gdp, g, gui);
 	}
 
 	public void winGame()
 	{
-		_gdp.showFinishPrompt("You win!", "Congratulations, you win!");
+		//stat tracking goes here
+		super.winGame();
 	}
 
 	public void loseGame()
 	{
-		//because machine player doesn't show anything, both will need to be shown
-		_gdp.showFinishPrompt("You lose!", "Unfortunately, you lost.");
+		//stat tracking goes here
+		super.loseGame();
 	}
 
 	public void tieGame()
 	{
-		_gdp.showFinishPrompt("Stalemate!", "This is stale meat. Should have put it in the fridge.");
-	}
-
-	/**
-	 * Since this is a human player, this doesn't do anything
-	 */
-	public void doTurn()
-	{
-
+		//stat tracking goes here
+		super.tieGame();
 	}
 
 }

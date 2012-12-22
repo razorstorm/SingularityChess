@@ -71,7 +71,6 @@ public class Game extends GameDrawable
 		isWhiteTurn = true;
 		gui.setTurnName(_whitePlayer.getName(), isWhiteTurn);
 
-
 		this._board = board;
 		initializePieces(whitePieces, true);
 		initializePieces(blackPieces, false);
@@ -85,7 +84,7 @@ public class Game extends GameDrawable
 			this._gui = gui;
 			this._board = board;
 
-			GameSaveable gs = new GameSaveable(this);
+			GameSaveable gs = new GameSaveable(this, gui);
 
 			GameIO.intentionSaveGame();
 			in = GameIO.getInputStream();
@@ -133,20 +132,20 @@ public class Game extends GameDrawable
 		switch (gt)
 		{
 			case ONLINE:
-				//use TrackedPlayer and Remote Player
-				//TODO
+				// use TrackedPlayer and Remote Player
+				// TODO
 				break;
 			case VSCOMP:
 				// TODO in the future we need to put logic that allows player to
 				// choose which side he/she wants to play as
-				_whitePlayer = new TrackedPlayer(true, "White player", gdp);
-				_blackPlayer = new AIPlayer(false, "Black player", gdp, this);
+				_whitePlayer = new TrackedPlayer(true, "White player", gdp, this, _gui);
+				_blackPlayer = new AIPlayer(false, "Black player", gdp, this, _gui);
 				_controllingPlayer = _whitePlayer;
 				_nonControllingPlayer = _blackPlayer;
 				break;
 			case VSHUMAN:
-				_whitePlayer = new NonTrackedPlayer(true, "White player", gdp);
-				_blackPlayer = new NonTrackedPlayer(false, "Black player", gdp);
+				_whitePlayer = new NonTrackedPlayer(true, "White player", gdp, this, _gui);
+				_blackPlayer = new NonTrackedPlayer(false, "Black player", gdp, this, _gui);
 				_controllingPlayer = _whitePlayer;
 				_nonControllingPlayer = _blackPlayer;
 				break;
@@ -263,7 +262,8 @@ public class Game extends GameDrawable
 		else
 		{
 			throw new InvalidMoveException(
-					"Invalid Move: Either piece not selected or illegal move");
+					"Invalid Move: Either piece not selected or illegal move. Piece: "
+							+ selectedPiece + " Target: " + target);
 		}
 		return true;
 	}
@@ -324,7 +324,8 @@ public class Game extends GameDrawable
 			if (Board.isEndOfFile(selectedPiece.getLocation()))
 			{
 				// can be promoted
-				promptPromotion(selectedPiece);
+				_currentPlayer.promote(selectedPiece);
+
 				return false;
 			}
 		}
@@ -349,12 +350,6 @@ public class Game extends GameDrawable
 	// ================================================================================
 	// Promotions
 	// ================================================================================
-
-	private void promptPromotion(AbstractPiece piece)
-	{
-		select(piece);
-		_gui.openPromotionDialog(piece.isWhite());
-	}
 
 	public void promotePiece(AbstractPiece.PieceType pieceType)
 	{
@@ -463,12 +458,10 @@ public class Game extends GameDrawable
 		}
 	}
 
-	
 	public Player getCurrentPlayer()
 	{
 		return this._currentPlayer;
 	}
-
 
 	// ================================================================================
 	// Getters
@@ -512,12 +505,12 @@ public class Game extends GameDrawable
 		else
 			return false;
 	}
-	
+
 	public boolean isControllingPlayerTurn()
 	{
 		return _controllingPlayer.equals(_currentPlayer);
 	}
-	
+
 	public AbstractPiece[] getWhitePiece()
 	{
 		return this.whitePieces;
@@ -527,7 +520,7 @@ public class Game extends GameDrawable
 	{
 		return this.blackPieces;
 	}
-	
+
 	// ================================================================================
 	// Private Helpers
 	// ================================================================================

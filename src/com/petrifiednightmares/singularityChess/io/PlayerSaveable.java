@@ -12,6 +12,7 @@ import com.petrifiednightmares.singularityChess.logic.player.AIPlayer;
 import com.petrifiednightmares.singularityChess.logic.player.NonTrackedPlayer;
 import com.petrifiednightmares.singularityChess.logic.player.Player;
 import com.petrifiednightmares.singularityChess.logic.player.TrackedPlayer;
+import com.petrifiednightmares.singularityChess.ui.GameUI;
 
 public class PlayerSaveable implements Saveable
 {
@@ -20,6 +21,7 @@ public class PlayerSaveable implements Saveable
 	boolean				isWhite;
 	Game				g;
 	GameDrawingPanel	gdp;
+	GameUI				gui;
 
 	// for resuming
 	Player				p;
@@ -30,10 +32,11 @@ public class PlayerSaveable implements Saveable
 	}
 
 	// Empty constructor for reading
-	public PlayerSaveable(Game g, GameDrawingPanel gdp)
+	public PlayerSaveable(Game g, GameDrawingPanel gdp, GameUI gui)
 	{
 		this.g = g;
 		this.gdp = gdp;
+		this.gui = gui;
 	}
 
 	// full constructor for writing
@@ -79,15 +82,15 @@ public class PlayerSaveable implements Saveable
 
 		if (playerType.equals("AIPlayer"))
 		{
-			p = new AIPlayer(isWhite, name, gdp, g);
+			p = new AIPlayer(isWhite, name, gdp, g, gui);
 		}
 		else if (playerType.equals("NonTrackedPlayer"))
 		{
-			p = new NonTrackedPlayer(isWhite, name, gdp);
+			p = new NonTrackedPlayer(isWhite, name, gdp, g, gui);
 		}
 		else if (playerType.equals("TrackedPlayer"))
 		{
-			p = new TrackedPlayer(isWhite, name, gdp);
+			p = new TrackedPlayer(isWhite, name, gdp, g, gui);
 		}
 	}
 

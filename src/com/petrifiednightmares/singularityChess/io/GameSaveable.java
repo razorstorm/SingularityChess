@@ -10,6 +10,7 @@ import com.petrifiednightmares.singularityChess.logging.MoveLogger;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.logic.player.Player;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
+import com.petrifiednightmares.singularityChess.ui.GameUI;
 
 public class GameSaveable implements Saveable
 {
@@ -68,15 +69,14 @@ public class GameSaveable implements Saveable
 	{
 		return blackPlayer;
 	}
-	
+
 	public boolean getIsControllingWhite()
 	{
 		return isControllingWhite;
 	}
 
-
 	// Empty constructor for reading
-	public GameSaveable(Game game)
+	public GameSaveable(Game game, GameUI gui)
 	{
 		this._game = game;
 		mls = new MoveLoggerSaveable();
@@ -84,13 +84,14 @@ public class GameSaveable implements Saveable
 		whitePieces = new AbstractPiece[16];
 		blackPieces = new AbstractPiece[16];
 
-		this.whitePlayerSaveable = new PlayerSaveable(game, game.getDrawingPanel());
-		this.blackPlayerSaveable = new PlayerSaveable(game, game.getDrawingPanel());
+		this.whitePlayerSaveable = new PlayerSaveable(game, game.getDrawingPanel(), gui);
+		this.blackPlayerSaveable = new PlayerSaveable(game, game.getDrawingPanel(), gui);
 	}
 
 	// full constructor for writing
 	public GameSaveable(int gameType, boolean isWhiteTurn, AbstractPiece[] whitePieces,
-			AbstractPiece[] blackPieces, MoveLogger ml, Player whitePlayer, Player blackPlayer, boolean isControllingWhite)
+			AbstractPiece[] blackPieces, MoveLogger ml, Player whitePlayer, Player blackPlayer,
+			boolean isControllingWhite)
 	{
 		this.gameType = gameType;
 		this.isWhiteTurn = isWhiteTurn;
@@ -121,7 +122,7 @@ public class GameSaveable implements Saveable
 		gameType = dataIn.readInt();
 
 		isWhiteTurn = dataIn.readBoolean();
-		
+
 		isControllingWhite = dataIn.readBoolean();
 
 		PieceSaveable ps;
@@ -156,7 +157,7 @@ public class GameSaveable implements Saveable
 		dataOut.writeInt(gameType);
 
 		dataOut.writeBoolean(isWhiteTurn);
-		
+
 		dataOut.writeBoolean(isControllingWhite);
 
 		for (int i = 0; i < 16; i++)
@@ -176,6 +177,5 @@ public class GameSaveable implements Saveable
 
 		out.flush();
 	}
-
 
 }
