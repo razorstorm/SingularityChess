@@ -12,8 +12,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:text="@string/offline_label"
-        android:textColor="#AAFFFFFF"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/faded_white" />
 
     <Button
         android:id="@+id/vs_human"
@@ -26,7 +26,7 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/button_background_normal"
         android:text="@string/vs_human"
-        android:textColor="#AAFFFFFF" />
+        android:textColor="@color/faded_white" />
 
     <Button
         android:id="@+id/vs_computer"
@@ -39,7 +39,7 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/button_background_normal"
         android:text="@string/vs_computer"
-        android:textColor="#AAFFFFFF" />
+        android:textColor="@color/faded_white" />
 
     <Button
         android:id="@+id/resume"
@@ -52,7 +52,7 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/button_background_normal"
         android:text="@string/resume"
-        android:textColor="#AAFFFFFF" />
+        android:textColor="@color/faded_white" />
 
     <TextView
         android:id="@+id/online_view"
@@ -62,8 +62,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:text="@string/online_label"
-        android:textColor="#CCFFFFFF"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/faded_white" />
 
     <Button
         android:id="@+id/multi_player"
@@ -76,14 +76,7 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/button_background_normal"
         android:text="@string/multi_player"
-        android:textColor="#AAFFFFFF" />
+        android:textColor="@color/faded_white" />
 
-    <QuickContactBadge
-        android:id="@+id/quickContactBadge1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp" />
 
 </RelativeLayout>
