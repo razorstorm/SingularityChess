@@ -19,4 +19,8 @@ public class NonTrackedPlayer extends HumanPlayer
 		super(isWhite, name, gdp, g, gui);
 	}
 
+	public void winGame()
+	{
+		_gdp.showFinishPrompt("CheckMate!", _isWhite?"White":"Black"+" player wins!");
+	}
 }
