@@ -71,7 +71,7 @@ public class AIEngine {
 						if (this.isPieceInDanger(p))
 						{
 							Log.i("SChess", "Piece in Danger");							
-							score = this.getPieceScore(p)-1;
+							score = this.getPieceScore(p) - 1;
 						}
 						Square sourceLocation = p.getLocation();						
 						AbstractPiece capturedPiece = p.makeMove(target);
@@ -81,7 +81,7 @@ public class AIEngine {
 							if (this.isPieceInDanger(p))
 							{
 								Log.i("SChess", "Piece in Danger again");								
-								score -= this.getPieceScore(p)-1;
+								score -= this.getPieceScore(p) - 1;
 							}
 							
 							if (capturedPiece != null)
