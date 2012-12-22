@@ -23,6 +23,8 @@
     <string name="offline_label">Offline Game</string>
     <string name="online_label">Online Game</string>
     
+    <string name="crash_toast">Oops! I got an error, but a report has been sent to my developer to help fix the issue!</string>
+    
     <string name="start_new_game">Start new game</string>
     <string name="really_start_new_game">Start new game?</string>
     <string name="no_resume">No, resume old game</string>
