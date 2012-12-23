@@ -69,7 +69,7 @@ public class SUI
 		//If the circle is so big it pushes away the bottom bar
 		if(BOTTOM + SUI.PADDING  > SUI.HEIGHT - SUI.PADDING - SUI.BOTTOM_BAR_HEIGHT)
 		{
-			CIRCLE_RADIUS_DIFFERENCE = ((BOTTOM -UNIT) - HEIGHT_CENTER) / 6;
+			CIRCLE_RADIUS_DIFFERENCE = ((SUI.HEIGHT - SUI.PADDING - SUI.BOTTOM_BAR_HEIGHT) - HEIGHT_CENTER) / 6;
 		}
 	}
 
