@@ -69,11 +69,16 @@ public class GameActivity extends Activity implements OnClickListener, AdListene
 
 	private void doAds()
 	{
+
 		// Create the interstitial
 		interstitial = new InterstitialAd(this, AdMob.PUBLISHER_ID);
 
 		// Create ad request
 		AdRequest adRequest = new AdRequest();
+
+		// Set test mode for developer devices
+		adRequest.addTestDevice(AdRequest.TEST_EMULATOR);               // Emulator
+		adRequest.addTestDevice("07D8BDC5588893E0D84EC2165FDEA282");                      // Test Android Device
 
 		// Begin loading your interstitial
 		interstitial.loadAd(adRequest);
