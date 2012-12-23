@@ -606,12 +606,50 @@ public class Game extends GameDrawable
 			}
 
 			// try all the pieces and moves, king cannot be saved
-			// The king shall fall, call winGame() or loseGame()
-			// TODO
+			// The king shall fall, call winGame() or loseGame()						
 			_currentPlayer.winGame();
 			_notCurrentPlayer.loseGame();
 
 			return true;
+		}
+		else
+		{
+			boolean isTie = true;
+			// iterates all moves to see if any can save the king's ass.
+			AbstractPiece[] pieces = isWhiteTurn() ? blackPieces : whitePieces;
+			for (AbstractPiece p : pieces)
+			{
+				if (p.isAlive())
+				{
+					try
+					{
+						Set<Square> moves = p.getMoves();
+						for (Square target : moves)
+						{
+							Square sourceLocation = p.getLocation();
+							AbstractPiece capturedPiece = p.makeMove(target);
+							if (!this.isChecked())
+							{
+								// someone's ass got saved
+								unmakeMove(capturedPiece, p, target, sourceLocation);
+								isTie = false;
+								return false;								
+							}
+							unmakeMove(capturedPiece, p, target, sourceLocation);
+						}
+					}
+					catch (GameException e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+
+			// try all the pieces and moves, no legal move can be made
+			// Stalemate!
+			this.gdp.showFinishPrompt("Stalemate!", 
+					"This is stale meat. Should have put it in the fridge ;) Let's Play again!");
+			
 		}
 
 		return false;

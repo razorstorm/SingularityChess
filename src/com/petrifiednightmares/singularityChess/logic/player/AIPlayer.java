@@ -29,8 +29,8 @@ public class AIPlayer extends Player
 	 * Machine player has no emotions, don't show it shit.
 	 */
 	public void winGame()
-	{
-		_gdp.showFinishPrompt("Checkmate!", "You Lose to my Robot :P");
+	{		
+		_gdp.showFinishPrompt("You lose!", "My lovely AI Lila beat you! :P");
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class AIPlayer extends Player
 	}
 
 	public void tieGame()
-	{
+	{		
 	}
 
 	public void doTurn()
@@ -52,6 +52,7 @@ public class AIPlayer extends Player
 		// square.
 		aiEngine.calcNextMove();
 		// 3. use Game.java interface to select the piece and make move.
+		
 		this._game.select(aiEngine.getSelectingPiece());
 		try
 		{
