@@ -64,8 +64,7 @@ public class MainActivity extends Activity
 	
 	private void startVSCompGame()
 	{
-		GameIO.intentionSaveGame();
-		if (GameIO.hasFile())
+		if (GameIO.hasFile(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE))
 		{
 			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_media_play)
 					.setTitle(R.string.start_new_game).setMessage(R.string.really_start_new_game)
@@ -108,8 +107,7 @@ public class MainActivity extends Activity
 
 	private void startVSHumanGame()
 	{
-		GameIO.intentionSaveGame();
-		if (GameIO.hasFile())
+		if (GameIO.hasFile(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE))
 		{
 			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_media_play)
 					.setTitle(R.string.start_new_game).setMessage(R.string.really_start_new_game)

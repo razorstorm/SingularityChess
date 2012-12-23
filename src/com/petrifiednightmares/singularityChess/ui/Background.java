@@ -44,7 +44,8 @@ public class Background extends GameDrawable
 
 			_backgroundCanvas.save();
 			_backgroundCanvas.clipRect(SUI.BOARD_AREA);
-//			_backgroundCanvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
+			// _backgroundCanvas.clipRect(SUI.PADDING, 0, SUI.WIDTH -
+			// SUI.PADDING, SUI.HEIGHT);
 			_backgroundCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6
 					* SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH, SUI.borderPaint);
 			_backgroundCanvas.restore();
@@ -123,8 +124,7 @@ public class Background extends GameDrawable
 			{
 				try
 				{
-					GameIO.intentionCacheBg();
-					out = GameIO.getOutputStream();
+					out = GameIO.getOutputStream(GameIO.Intention.CACHE_BG,GameIO.StorageOption.IMAGE_CACHE);
 					_background.compress(Bitmap.CompressFormat.PNG, 100, out);
 				}
 				catch (Exception e)

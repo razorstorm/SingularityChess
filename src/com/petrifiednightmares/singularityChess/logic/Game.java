@@ -78,7 +78,7 @@ public class Game extends GameDrawable
 		initializePieces(blackPieces, false);
 	}
 
-	public void resume(Board board, GameUI gui)
+	public synchronized void resume(Board board, GameUI gui)
 	{
 		InputStream in = null;
 		try
@@ -88,8 +88,7 @@ public class Game extends GameDrawable
 
 			GameSaveable gs = new GameSaveable(this, gui);
 
-			GameIO.intentionSaveGame();
-			in = GameIO.getInputStream();
+			in = GameIO.getInputStream(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE);
 
 			gs.deserialize(in);
 
@@ -387,8 +386,7 @@ public class Game extends GameDrawable
 	{
 		try
 		{
-			GameIO.intentionSaveGame();
-			GameIO.removeFile();
+			GameIO.removeFile(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE);
 		}
 		finally
 		{
@@ -441,13 +439,12 @@ public class Game extends GameDrawable
 		OutputStream out = null;
 		try
 		{
-			GameIO.intentionSaveGame();
 
 			gs = new GameSaveable(_gameType, isWhiteTurn, whitePieces, blackPieces,
 					_gui.getMoveLogger(), _whitePlayer, _blackPlayer,
 					_controllingPlayer.equals(_whitePlayer));
 
-			out = GameIO.getOutputStream();
+			out = GameIO.getOutputStream(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE);
 			gs.serialize(out);
 		}
 		catch (IOException e)
