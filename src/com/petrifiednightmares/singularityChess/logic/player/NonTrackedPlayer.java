@@ -21,6 +21,6 @@ public class NonTrackedPlayer extends HumanPlayer
 
 	public void winGame()
 	{
-		_gdp.showFinishPrompt("CheckMate!", _isWhite?"White":"Black"+" player wins!");
+		_gdp.showFinishPrompt("CheckMate!", (_isWhite ? "White" : "Black") + " player wins!");
 	}
 }
