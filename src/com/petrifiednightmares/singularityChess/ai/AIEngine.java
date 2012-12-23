@@ -26,7 +26,7 @@ public class AIEngine {
 	private AbstractPiece _selectingPiece;
 	private Square _target;
 	private boolean	isWhiteTurn;
-
+	
 	private AbstractPiece[]	_whitePieces;
 	private AbstractPiece[]	_blackPieces;
 	

@@ -22,12 +22,11 @@ public class HumanPlayer extends Player
 	{
 		// because machine player doesn't show anything, both will need to be
 		// shown
-//		_gdp.showFinishPrompt("You lose!", "Unfortunately, you lost.");
+		//_gdp.showFinishPrompt("You lose!", "Unfortunately, you lost.");
 	}
 
 	public void tieGame()
 	{
-		_gdp.showFinishPrompt("Stalemate!", "This is stale meat. Should have put it in the fridge.");
 	}
 
 	/**
