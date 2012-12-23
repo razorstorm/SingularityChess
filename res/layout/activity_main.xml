@@ -1,82 +1,79 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_centerVertical="true"
     android:background="@drawable/background" >
 
-    <TextView
-        android:id="@+id/offline_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/vs_human"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:text="@string/offline_label"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/faded_white" />
-
-    <Button
-        android:id="@+id/vs_human"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/vs_computer"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/button_background_normal"
-        android:text="@string/vs_human"
-        android:textColor="@color/faded_white" />
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/vs_computer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/resume"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/button_background_normal"
-        android:text="@string/vs_computer"
-        android:textColor="@color/faded_white" />
+        <TextView
+            android:id="@+id/offline_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:text="@string/offline_label"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/faded_white" />
 
-    <Button
-        android:id="@+id/resume"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/online_view"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/button_background_normal"
-        android:text="@string/resume"
-        android:textColor="@color/faded_white" />
+        <Button
+            android:id="@+id/vs_human"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_background_normal"
+            android:text="@string/vs_human"
+            android:textColor="@color/faded_white" />
 
-    <TextView
-        android:id="@+id/online_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/multi_player"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:text="@string/online_label"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/faded_white" />
+        <Button
+            android:id="@+id/vs_computer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_background_normal"
+            android:text="@string/vs_computer"
+            android:textColor="@color/faded_white" />
 
-    <Button
-        android:id="@+id/multi_player"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/button_background_normal"
-        android:text="@string/multi_player"
-        android:textColor="@color/faded_white" />
+        <Button
+            android:id="@+id/resume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_background_normal"
+            android:text="@string/resume"
+            android:textColor="@color/faded_white" />
 
+        <TextView
+            android:id="@+id/online_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:text="@string/online_label"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/faded_white" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/multi_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_background_normal"
+            android:text="@string/multi_player"
+            android:textColor="@color/faded_white" />
+    </LinearLayout>
+
+</LinearLayout>
