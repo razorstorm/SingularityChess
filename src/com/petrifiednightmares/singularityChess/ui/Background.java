@@ -43,7 +43,8 @@ public class Background extends GameDrawable
 			setupBorderShadow();
 
 			_backgroundCanvas.save();
-			_backgroundCanvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
+			_backgroundCanvas.clipRect(SUI.BOARD_AREA);
+//			_backgroundCanvas.clipRect(SUI.PADDING, 0, SUI.WIDTH - SUI.PADDING, SUI.HEIGHT);
 			_backgroundCanvas.drawCircle(SUI.WIDTH / 2, SUI.HEIGHT_CENTER, 6
 					* SUI.CIRCLE_RADIUS_DIFFERENCE + SUI.BORDER_WIDTH, SUI.borderPaint);
 			_backgroundCanvas.restore();

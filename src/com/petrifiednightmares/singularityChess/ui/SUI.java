@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
+import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -20,7 +21,9 @@ public class SUI
 
 	public static int			WIDTH, HEIGHT, MIN_DIMENSION, UNIT, PADDING, PIECE_SIZE,
 			TOP_PADDING, CIRCLE_RADIUS_DIFFERENCE, TOP_BAR_BOTTOM, BORDER_WIDTH, HEIGHT_CENTER,
-			BOTTOM, BOTTOM_BAR_HEIGHT;
+			BOTTOM, BOTTOM_BAR_HEIGHT, BORDER_LEFT, BORDER_RIGHT;
+
+	public static Rect			BOARD_AREA;
 
 	public static Paint			darkPaint, lightPaint, highlightPaint, highlightPaint2,
 			attackPaint, attackPaint2, piecePaint, labelPaint, flashPaint, flashPaint2,
@@ -52,32 +55,33 @@ public class SUI
 		WIDTH = width;
 		HEIGHT = height;
 		MIN_DIMENSION = Math.min(WIDTH, HEIGHT);
+
 		UNIT = (int) (MIN_DIMENSION / 100.0);
+
 		PADDING = 5 * UNIT;
 		PIECE_SIZE = 10 * UNIT;
-		TOP_PADDING = 70; // Derived from: 10 * UNIT;
+		TOP_PADDING = 80; // Derived from: 10 * UNIT;
 		TOP_BAR_BOTTOM = 56; // Derived from: 8 * UNIT;
-		CIRCLE_RADIUS_DIFFERENCE = 11 * UNIT; // 12
-		
-		BORDER_WIDTH = CIRCLE_RADIUS_DIFFERENCE / 3;
-
-		HEIGHT_CENTER = TOP_PADDING + 6 * CIRCLE_RADIUS_DIFFERENCE + BORDER_WIDTH;
 
 		BOTTOM_BAR_HEIGHT = SUI.UNIT * 10;
 
-		// 60 from shadow, 10 from padding
-		BOTTOM = HEIGHT_CENTER + 6 * CIRCLE_RADIUS_DIFFERENCE + 60 + 10;
+		BOARD_AREA = new Rect(PADDING, TOP_PADDING, WIDTH - PADDING, HEIGHT - BOTTOM_BAR_HEIGHT
+				- PADDING);
 
-		// If the circle is so big it pushes away the bottom bar
-		if (BOTTOM > SUI.HEIGHT - SUI.PADDING - SUI.BOTTOM_BAR_HEIGHT)
-		{
-			HEIGHT_CENTER = (height - SUI.PADDING - SUI.BOTTOM_BAR_HEIGHT - TOP_PADDING - 70) / 2
-					+ TOP_PADDING + BORDER_WIDTH;
+		double borderFactor = 4;
+		// Minimize over calculating horizontally and calculating vertically
+		// 8 columns and 1/3.5 + 1/3.5 for border
+		CIRCLE_RADIUS_DIFFERENCE = Math.min((int) (BOARD_AREA.width() / (8 + 2. / borderFactor)),
+				(int) (BOARD_AREA.height() / (12 + 2. / borderFactor)));
+		
 
-			CIRCLE_RADIUS_DIFFERENCE = ((SUI.HEIGHT - SUI.PADDING - SUI.BOTTOM_BAR_HEIGHT - 70) - HEIGHT_CENTER) / 6;
-		}
+		BORDER_WIDTH = (int) (CIRCLE_RADIUS_DIFFERENCE / borderFactor);
 
-		BORDER_WIDTH = (int)(CIRCLE_RADIUS_DIFFERENCE / 3.5);
+		HEIGHT_CENTER = BOARD_AREA.top + (CIRCLE_RADIUS_DIFFERENCE * 6) + BORDER_WIDTH;
+		
+		//recalculate to consolidate rounding errors
+		BOARD_AREA.left=WIDTH/2 - (CIRCLE_RADIUS_DIFFERENCE * 4) - BORDER_WIDTH;
+		BOARD_AREA.right=WIDTH/2 + (CIRCLE_RADIUS_DIFFERENCE * 4) + BORDER_WIDTH;
 
 	}
 
