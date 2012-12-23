@@ -614,7 +614,6 @@ public class Game extends GameDrawable
 		}
 		else
 		{
-			boolean isTie = true;
 			// iterates all moves to see if any can save the king's ass.
 			AbstractPiece[] pieces = isWhiteTurn() ? blackPieces : whitePieces;
 			for (AbstractPiece p : pieces)
@@ -632,7 +631,6 @@ public class Game extends GameDrawable
 							{
 								// someone's ass got saved
 								unmakeMove(capturedPiece, p, target, sourceLocation);
-								isTie = false;
 								return false;								
 							}
 							unmakeMove(capturedPiece, p, target, sourceLocation);
