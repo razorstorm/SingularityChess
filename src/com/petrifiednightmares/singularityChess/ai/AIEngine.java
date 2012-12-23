@@ -54,7 +54,6 @@ public class AIEngine {
 	public void calcNextMove()
 	{
 		AbstractPiece[] pieces = this.isWhiteTurn ? _whitePieces: _blackPieces;
-		boolean isBeingChecked = this.isChecked();
 		int highestScore = -2000;		
 		Random random = new Random();
 		
@@ -78,7 +77,7 @@ public class AIEngine {
 						Square sourceLocation = p.getLocation();						
 						AbstractPiece capturedPiece = p.makeMove(target);
 						
-						if (!isBeingChecked || (isBeingChecked && !this.isChecked()))
+						if (!this.isChecked())
 						{
 							if (this.isPieceInDanger(p))
 							{
