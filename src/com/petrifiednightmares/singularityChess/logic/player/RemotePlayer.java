@@ -1,6 +1,7 @@
 package com.petrifiednightmares.singularityChess.logic.player;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
@@ -22,19 +23,17 @@ public class RemotePlayer extends Player
 
 	public void winGame()
 	{
-		_gdp.showFinishPrompt("You win!", "Congratulations, you win!");
+		_gdp.showFinishPrompt(R.string.win_title, R.string.win_message);
 	}
 
 	public void loseGame()
 	{
-		// because machine player doesn't show anything, both will need to be
-		// shown
-		_gdp.showFinishPrompt("You lose!", "Unfortunately, you lost.");
+		_gdp.showFinishPrompt(R.string.lose_title, R.string.lose_message);
 	}
 
 	public void tieGame()
 	{
-		_gdp.showFinishPrompt("Stalemate!", "This is stale meat. Should have put it in the fridge.");
+		_gdp.showFinishPrompt(R.string.stalemate_title, R.string.stalemate_message);
 	}
 
 	/**

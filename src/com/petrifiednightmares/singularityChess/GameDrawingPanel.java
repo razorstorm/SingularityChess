@@ -14,7 +14,6 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.ScrollView;
 
-import com.petrifiednightmares.singularityChess.io.GameIO;
 import com.petrifiednightmares.singularityChess.logic.Board;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.ui.Background;
@@ -28,7 +27,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 
 	public GameActivity	gameActivity;
 
-	private Context		_context;
 
 	public Game			game;
 	public Background	bg;
@@ -46,7 +44,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		super(context, aSet);
 
 		NEEDS_REDRAW = true;
-		this._context = context;
 		getHolder().addCallback(this);
 
 		Display disp = ((WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE))
@@ -55,8 +52,6 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		SUI.setup(disp.getWidth(), disp.getHeight(), getResources(), getContext());
 
 		this.setOnTouchListener(this);
-
-		GameIO.setContext(_context);
 
 		bg = new Background(this);
 
@@ -167,7 +162,7 @@ public class GameDrawingPanel extends SurfaceView implements OnTouchListener,
 		gameActivity.displayMessage(message);
 	}
 
-	public void showFinishPrompt(String title, String message)
+	public void showFinishPrompt(int title, int message)
 	{
 		new AlertDialog.Builder(getContext()).setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle(title).setMessage(message)

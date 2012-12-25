@@ -1,6 +1,5 @@
 package com.petrifiednightmares.singularityChess;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -24,7 +23,6 @@ public class MainActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -49,7 +47,7 @@ public class MainActivity extends Activity
 				resumeSinglePlayerGame();
 			}
 		});
-		
+
 		this.vsCompButton = (Button) findViewById(R.id.vs_computer);
 		this.vsCompButton.setOnClickListener(new OnClickListener()
 		{
@@ -59,12 +57,11 @@ public class MainActivity extends Activity
 			}
 		});
 
-		GameIO.setContext(this);
 	}
-	
+
 	private void startVSCompGame()
 	{
-		if (GameIO.hasFile(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE))
+		if (GameIO.hasFile(this, GameIO.Intention.SAVE_GAME, GameIO.StorageOption.FILE))
 		{
 			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_media_play)
 					.setTitle(R.string.start_new_game).setMessage(R.string.really_start_new_game)
@@ -77,9 +74,8 @@ public class MainActivity extends Activity
 
 							Bundle b = new Bundle();
 							b.putInt("gameType", Game.VSCOMP);
-							
+
 							singlePlayerGameIntent.putExtras(b);
-							
 
 							startActivity(singlePlayerGameIntent);
 						}
@@ -98,16 +94,16 @@ public class MainActivity extends Activity
 			Intent singlePlayerGameIntent = new Intent(MainActivity.this, GameActivity.class);
 			Bundle b = new Bundle();
 			b.putInt("gameType", Game.VSCOMP);
-			
+
 			singlePlayerGameIntent.putExtras(b);
-			
+
 			startActivity(singlePlayerGameIntent);
-		}		
+		}
 	}
 
 	private void startVSHumanGame()
 	{
-		if (GameIO.hasFile(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE))
+		if (GameIO.hasFile(this, GameIO.Intention.SAVE_GAME, GameIO.StorageOption.FILE))
 		{
 			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_media_play)
 					.setTitle(R.string.start_new_game).setMessage(R.string.really_start_new_game)
@@ -120,9 +116,8 @@ public class MainActivity extends Activity
 
 							Bundle b = new Bundle();
 							b.putInt("gameType", Game.VSHUMAN);
-							
+
 							singlePlayerGameIntent.putExtras(b);
-							
 
 							startActivity(singlePlayerGameIntent);
 						}
@@ -141,9 +136,9 @@ public class MainActivity extends Activity
 			Intent singlePlayerGameIntent = new Intent(MainActivity.this, GameActivity.class);
 			Bundle b = new Bundle();
 			b.putInt("gameType", Game.VSHUMAN);
-			
+
 			singlePlayerGameIntent.putExtras(b);
-			
+
 			startActivity(singlePlayerGameIntent);
 		}
 

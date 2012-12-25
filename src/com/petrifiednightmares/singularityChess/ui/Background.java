@@ -26,14 +26,22 @@ public class Background extends GameDrawable
 
 	private void setupBackgroundAndBorder()
 	{
-		File file = new File(GameIO.getCacheBgFileName());
-		if (file.exists())
+		String filename = GameIO.getCacheBgFileName(gdp.getContext());
+		File file = null;
+		if (filename != null)
 		{
-			_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
-					GameIO.getCacheBgFileName(), SUI.WIDTH, SUI.HEIGHT);
-			SUI.CACHED_BACKGROUND = true;
+			file = new File(filename);
+			if (file != null && file.exists())
+			{
+				_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
+						GameIO.getCacheBgFileName(gdp.getContext()), SUI.WIDTH, SUI.HEIGHT);
+				SUI.CACHED_BACKGROUND = true;
+			}
 		}
-		else if (!file.exists() || _background == null)
+
+		// if file doesnt exist or background is still null even after trying to
+		// access
+		if (file == null || !file.exists() || _background == null)
 		{
 			SUI.CACHED_BACKGROUND = false;
 			_background = SingularBitmapFactory.buildScaledBitmap(gdp.getResources(),
@@ -124,7 +132,8 @@ public class Background extends GameDrawable
 			{
 				try
 				{
-					out = GameIO.getOutputStream(GameIO.Intention.CACHE_BG,GameIO.StorageOption.IMAGE_CACHE);
+					out = GameIO.getOutputStream(gdp.getContext(), GameIO.Intention.CACHE_BG,
+							GameIO.StorageOption.IMAGE_CACHE);
 					_background.compress(Bitmap.CompressFormat.PNG, 100, out);
 				}
 				catch (Exception e)

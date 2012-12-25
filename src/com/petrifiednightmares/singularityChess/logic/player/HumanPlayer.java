@@ -1,6 +1,7 @@
 package com.petrifiednightmares.singularityChess.logic.player;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
+import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
 import com.petrifiednightmares.singularityChess.ui.GameUI;
@@ -15,7 +16,7 @@ public class HumanPlayer extends Player
 
 	public void winGame()
 	{
-		_gdp.showFinishPrompt("You win!", "Congratulations, you win!");
+		_gdp.showFinishPrompt(R.string.win_title, R.string.win_message);
 	}
 
 	public void loseGame()

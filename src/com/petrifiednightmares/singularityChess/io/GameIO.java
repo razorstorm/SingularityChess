@@ -26,13 +26,6 @@ public class GameIO
 		SAVE_GAME, CACHE_BG
 	}
 
-	private static Context	_context;
-
-	public static void setContext(Context context)
-	{
-		_context = context;
-	}
-
 	private static String getFileName(Intention i)
 	{
 		switch (i)
@@ -45,50 +38,53 @@ public class GameIO
 		return null;
 	}
 
-	public static boolean hasFile(Intention i, StorageOption storageOption)
+	public static boolean hasFile(Context c, Intention i, StorageOption storageOption)
 	{
 		String fileName = getFileName(i);
 		File toCheck;
 		switch (storageOption)
 		{
 			case FILE:
-				toCheck = new File(_context.getExternalFilesDir(null), fileName);
+				toCheck = new File(c.getExternalFilesDir(null), fileName);
 				return toCheck.exists();
 			case IMAGE_CACHE:
-				toCheck = new File(_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-						fileName);
+				toCheck = new File(c.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName);
 				return toCheck.exists();
 			default:
 				return false;
 		}
 	}
 
-	public static boolean removeFile(Intention i, StorageOption storageOption)
+	public static boolean removeFile(Context c, Intention i, StorageOption storageOption)
 	{
 		String fileName = getFileName(i);
 		File toBeDeleted;
 		switch (storageOption)
 		{
 			case FILE:
-				toBeDeleted = new File(_context.getExternalFilesDir(null), fileName);
+				toBeDeleted = new File(c.getExternalFilesDir(null), fileName);
 				return toBeDeleted.delete();
 			case IMAGE_CACHE:
-				toBeDeleted = new File(
-						_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName);
+				toBeDeleted = new File(c.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+						fileName);
 				return toBeDeleted.delete();
 			default:
 				return false;
 		}
 	}
 
-	public static String getCacheBgFileName()
+	public static String getCacheBgFileName(Context c)
 	{
-		return _context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + "/"
-				+ getFileName(Intention.CACHE_BG);
+		File picturesDir = c.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+		if (picturesDir != null)
+			return picturesDir.getAbsolutePath() + "/" + getFileName(Intention.CACHE_BG);
+		else
+			return null;
 	}
 
 	// for saving
-	public static OutputStream getOutputStream(Intention i, StorageOption storageOption)
+	public static OutputStream getOutputStream(Context c, Intention i, StorageOption storageOption)
 			throws FileNotFoundException
 	{
 		String fileName = getFileName(i);
@@ -98,7 +94,7 @@ public class GameIO
 			case STDOUT:
 				return new BufferedOutputStream(System.out);
 			case FILE:
-				fos = new FileOutputStream(new File(_context.getExternalFilesDir(null), fileName));
+				fos = new FileOutputStream(new File(c.getExternalFilesDir(null), fileName));
 				// FileOutputStream fos = _context.openFileOutput(_fileName,
 				// Context.MODE_PRIVATE);
 				return new BufferedOutputStream(fos);
@@ -106,7 +102,7 @@ public class GameIO
 				return null;
 			case IMAGE_CACHE:
 				fos = new FileOutputStream(new File(
-						_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName));
+						c.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName));
 				return new BufferedOutputStream(fos);
 			default:
 				return null;
@@ -114,22 +110,21 @@ public class GameIO
 	}
 
 	// for reading
-	public static InputStream getInputStream(Intention i, StorageOption storageOption)
+	public static InputStream getInputStream(Context c, Intention i, StorageOption storageOption)
 			throws FileNotFoundException
 	{
 		String fileName = getFileName(i);
-		System.out.println(fileName);
 		switch (storageOption)
 		{
 			case STDOUT:
 				return null;
 			case FILE:
-				FileInputStream fos = new FileInputStream(new File(
-						_context.getExternalFilesDir(null), fileName));
+				FileInputStream fos = new FileInputStream(new File(c.getExternalFilesDir(null),
+						fileName));
 				return new BufferedInputStream(fos);
 			case IMAGE_CACHE:
 				fos = new FileInputStream(new File(
-						_context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName));
+						c.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName));
 				return new BufferedInputStream(fos);
 			case SQLITE:
 				return null;

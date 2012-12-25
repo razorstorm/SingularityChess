@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.GameException;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
+import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.io.GameIO;
 import com.petrifiednightmares.singularityChess.io.GameSaveable;
 import com.petrifiednightmares.singularityChess.logic.player.AIPlayer;
@@ -88,7 +89,8 @@ public class Game extends GameDrawable
 
 			GameSaveable gs = new GameSaveable(this, gui);
 
-			in = GameIO.getInputStream(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE);
+			in = GameIO.getInputStream(gdp.getContext(), GameIO.Intention.SAVE_GAME,
+					GameIO.StorageOption.FILE);
 
 			gs.deserialize(in);
 
@@ -386,7 +388,8 @@ public class Game extends GameDrawable
 	{
 		try
 		{
-			GameIO.removeFile(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE);
+			GameIO.removeFile(gdp.getContext(), GameIO.Intention.SAVE_GAME,
+					GameIO.StorageOption.FILE);
 		}
 		finally
 		{
@@ -444,7 +447,8 @@ public class Game extends GameDrawable
 					_gui.getMoveLogger(), _whitePlayer, _blackPlayer,
 					_controllingPlayer.equals(_whitePlayer));
 
-			out = GameIO.getOutputStream(GameIO.Intention.SAVE_GAME,GameIO.StorageOption.FILE);
+			out = GameIO.getOutputStream(gdp.getContext(), GameIO.Intention.SAVE_GAME,
+					GameIO.StorageOption.FILE);
 			gs.serialize(out);
 		}
 		catch (IOException e)
@@ -603,7 +607,7 @@ public class Game extends GameDrawable
 			}
 
 			// try all the pieces and moves, king cannot be saved
-			// The king shall fall, call winGame() or loseGame()						
+			// The king shall fall, call winGame() or loseGame()
 			_currentPlayer.winGame();
 			_notCurrentPlayer.loseGame();
 
@@ -628,7 +632,7 @@ public class Game extends GameDrawable
 							{
 								// someone's ass got saved
 								unmakeMove(capturedPiece, p, target, sourceLocation);
-								return false;								
+								return false;
 							}
 							unmakeMove(capturedPiece, p, target, sourceLocation);
 						}
@@ -642,9 +646,8 @@ public class Game extends GameDrawable
 
 			// try all the pieces and moves, no legal move can be made
 			// Stalemate!
-			this.gdp.showFinishPrompt("Stalemate!", 
-					"This is stale meat. Should have put it in the fridge ;) Let's Play again!");
-			
+			this.gdp.showFinishPrompt(R.string.stalemate_title, R.string.stalemate_message);
+
 		}
 
 		return false;

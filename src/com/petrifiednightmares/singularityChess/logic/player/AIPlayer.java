@@ -2,6 +2,7 @@ package com.petrifiednightmares.singularityChess.logic.player;
 
 import com.petrifiednightmares.singularityChess.GameDrawingPanel;
 import com.petrifiednightmares.singularityChess.InvalidMoveException;
+import com.petrifiednightmares.singularityChess.R;
 import com.petrifiednightmares.singularityChess.ai.AIEngine;
 import com.petrifiednightmares.singularityChess.logic.Game;
 import com.petrifiednightmares.singularityChess.pieces.AbstractPiece;
@@ -30,7 +31,7 @@ public class AIPlayer extends Player
 	 */
 	public void winGame()
 	{		
-		_gdp.showFinishPrompt("You lose!", "My lovely AI Lila beat you! :P");
+		_gdp.showFinishPrompt(R.string.lose_title, R.string.lose_to_AI_message);
 	}
 
 	/**
